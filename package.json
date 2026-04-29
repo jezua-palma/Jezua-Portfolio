@@ -1,15 +1,13 @@
 {
-  "name": "workspace",
+  "name": "jezua-portfolio",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node scripts/serve-static.mjs",
+    "test": "node scripts/validate-static-site.mjs"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "serve": "^14.2.5"
-  }
+  "description": "Static portfolio site deployed with GitHub Pages."
 }

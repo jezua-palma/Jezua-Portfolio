@@ -1,12 +1,14 @@
 // Modern Portfolio JavaScript
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize AOS
-    AOS.init({
-        duration: 1000,
-        easing: 'ease-out-cubic',
-        once: true,
-        offset: 50
-    });
+    if (typeof AOS !== 'undefined') {
+        AOS.init({
+            duration: 1000,
+            easing: 'ease-out-cubic',
+            once: true,
+            offset: 50
+        });
+    }
 
     // Initialize Particles.js
     if (typeof particlesJS !== 'undefined') {
@@ -114,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Close mobile menu
                 const navbarCollapse = document.querySelector('.navbar-collapse');
-                if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+                if (navbarCollapse && navbarCollapse.classList.contains('show') && typeof bootstrap !== 'undefined') {
                     const bsCollapse = new bootstrap.Collapse(navbarCollapse);
                     bsCollapse.hide();
                 }
@@ -383,7 +385,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const alerts = document.querySelectorAll('.alert');
     alerts.forEach(alert => {
         setTimeout(() => {
-            if (alert && alert.parentNode) {
+            if (alert && alert.parentNode && typeof bootstrap !== 'undefined') {
                 const bsAlert = new bootstrap.Alert(alert);
                 bsAlert.close();
             }
@@ -527,7 +529,7 @@ document.addEventListener('DOMContentLoaded', function() {
     animateSkills();
     animateTimeline();
 
-    console.log('🚀 Portfolio initialized successfully!');
+    console.log('Portfolio initialized successfully!');
 });
 
 
@@ -572,6 +574,15 @@ function sendEmail(event) {
     // Show loading state
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+
+    if (typeof emailjs === 'undefined') {
+        const mailto = `mailto:jezuapalma@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`From: ${name} <${email}>\n\n${message}`)}`;
+        window.location.href = mailto;
+        showNotification('Email app opened. Send the message from there to finish.', 'success');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Send Message';
+        return false;
+    }
     
     // Send email via EmailJS
     emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
@@ -632,9 +643,13 @@ function loadGitHubProjects() {
     const container = document.getElementById('github-projects');
     if (!container) return;
     
-    fetch('https://api.github.com/users/Errzua/repos?sort=updated&per_page=6')
+    fetch('https://api.github.com/users/jezua-palma/repos?sort=updated&per_page=6')
         .then(response => response.json())
         .then(data => {
+            if (!Array.isArray(data)) {
+                throw new Error('GitHub API returned an unexpected response.');
+            }
+
             const repos = data.map(repo => ({
                 name: repo.name,
                 description: repo.description || 'No description available',
@@ -675,6 +690,10 @@ function loadGitHubProjects() {
             repos.forEach((repo, index) => {
                 const icon = languageIcons[repo.language] || 'fas fa-code';
                 const color = languageColors[repo.language] || '#00d4ff';
+                const name = escapeHTML(repo.name);
+                const description = escapeHTML(repo.description);
+                const language = escapeHTML(repo.language);
+                const url = escapeAttribute(repo.html_url);
                 
                 html += `
                     <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="${(index + 1) * 100}">
@@ -687,10 +706,10 @@ function loadGitHubProjects() {
                                 </div>
                             </div>
                             <div class="project-content">
-                                <h5 class="gradient-text mb-3">${repo.name}</h5>
-                                <p class="text-light mb-3">${repo.description}</p>
+                                <h5 class="gradient-text mb-3">${name}</h5>
+                                <p class="text-light mb-3">${description}</p>
                                 <div class="project-tech mb-3">
-                                    <span class="tech-tag">${repo.language}</span>
+                                    <span class="tech-tag">${language}</span>
                                 </div>
                                 <div class="project-stats mb-3">
                                     <div class="row text-center">
@@ -705,7 +724,7 @@ function loadGitHubProjects() {
                                     </div>
                                 </div>
                                 <div class="project-links">
-                                    <a href="${repo.html_url}" target="_blank" class="btn btn-outline-primary btn-sm">
+                                    <a href="${url}" target="_blank" rel="noreferrer" class="btn btn-outline-primary btn-sm">
                                         <i class="fab fa-github me-1"></i>View on GitHub
                                     </a>
                                 </div>
@@ -716,7 +735,9 @@ function loadGitHubProjects() {
             });
             
             container.innerHTML = html;
-            AOS.refresh();
+            if (typeof AOS !== 'undefined') {
+                AOS.refresh();
+            }
         })
         .catch(error => {
             console.error('Error loading GitHub projects:', error);
@@ -725,3 +746,16 @@ function loadGitHubProjects() {
 }
 
 document.addEventListener('DOMContentLoaded', loadGitHubProjects);
+
+function escapeHTML(value) {
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+function escapeAttribute(value) {
+    return escapeHTML(value).replace(/`/g, '&#096;');
+}
