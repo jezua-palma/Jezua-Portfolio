@@ -97,7 +97,7 @@ const Navbar = ({ theme, setTheme }) => {
           <a 
             href="#home" 
             onClick={(e) => handleClick(e, '#home')}
-            className="flex items-center space-x-2 text-xl font-bold tracking-tight text-white group"
+            className="magnetic-target flex items-center space-x-2 text-xl font-bold tracking-tight text-white group"
           >
             <Code2 className="w-6 h-6 text-neon-cyan group-hover:rotate-12 transition-transform duration-300" />
             <span className="gradient-text">Jezua.dev</span>
@@ -111,7 +111,7 @@ const Navbar = ({ theme, setTheme }) => {
                   key={item.name}
                   href={item.href}
                   onClick={(e) => handleClick(e, item.href)}
-                  className={`relative px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider transition-all duration-300 rounded-lg hover:text-neon-cyan ${
+                  className={`magnetic-target relative px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider transition-all duration-300 rounded-lg hover:text-neon-cyan ${
                     activeSection === item.href.substring(1)
                       ? 'text-neon-cyan bg-white/5 border border-white/10'
                       : 'text-gray-400 hover:bg-white/5 border border-transparent'
@@ -130,7 +130,7 @@ const Navbar = ({ theme, setTheme }) => {
             {theme === 'dark-dashboard' ? (
               <button
                 onClick={() => setTheme('white-cv')}
-                className="p-2.5 rounded-full border border-white/10 bg-white/5 text-gray-400 hover:text-neon-cyan hover:border-neon-cyan hover:bg-neon-cyan/5 transition-all hover:scale-105 active:scale-95 group shadow-lg shadow-neon-cyan/5 no-print"
+                className="magnetic-target p-2.5 rounded-full border border-white/10 bg-white/5 text-gray-400 hover:text-neon-cyan hover:border-neon-cyan hover:bg-neon-cyan/5 transition-all hover:scale-105 active:scale-95 group shadow-lg shadow-neon-cyan/5 no-print"
                 title="Switch to Printable CV fact-sheet"
               >
                 <Sun className="w-5 h-5 group-hover:rotate-45 transition-transform duration-300 text-neon-cyan" />
@@ -138,7 +138,7 @@ const Navbar = ({ theme, setTheme }) => {
             ) : (
               <button
                 onClick={() => setTheme('dark-dashboard')}
-                className="p-2.5 rounded-full border border-zinc-200 bg-zinc-50 text-zinc-500 hover:text-zinc-950 hover:border-zinc-400 hover:bg-zinc-100 transition-all hover:scale-105 active:scale-95 shadow-sm no-print"
+                className="magnetic-target p-2.5 rounded-full border border-zinc-200 bg-zinc-50 text-zinc-500 hover:text-zinc-950 hover:border-zinc-400 hover:bg-zinc-100 transition-all hover:scale-105 active:scale-95 shadow-sm no-print"
                 title="Switch to Cyberpunk Dashboard"
               >
                 <Moon className="w-5 h-5 text-zinc-800" />

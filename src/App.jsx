@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -12,6 +14,9 @@ import Testimonials from './components/Testimonials';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import PrintableCV from './components/PrintableCV';
+
+// Register GSAP ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger);
 
 // 🌌 Holographic 3D Floating Tech Symbols Aligning to Developer & Designer Job (Awwwards-Inspired full-bleed parallax grid)
 const techItems = [
@@ -40,6 +45,7 @@ function App() {
   const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 }); // Fraction coordinates (-0.5 to 0.5) for smooth 3D tilt
   const [cursorHovered, setCursorHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const canvasRef = useRef(null);
 
   // Scroll Parallax Hooks (for viewport-fixed glowing spheres)
   const { scrollYProgress } = useScroll();
@@ -102,6 +108,235 @@ function App() {
     }
   };
 
+  // Global HTML5 Cybernetic Particle Canvas Engine
+  useEffect(() => {
+    if (isLoading || theme !== 'dark-dashboard') return;
+    
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    
+    let animationFrameId;
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+    
+    const handleResize = () => {
+      if (!canvas) return;
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    };
+    window.addEventListener('resize', handleResize);
+
+    const mouse = { x: -1000, y: -1000, active: false };
+
+    const handleMouseMove = (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+      mouse.active = true;
+    };
+
+    const handleMouseLeave = () => {
+      mouse.x = -1000;
+      mouse.y = -1000;
+      mouse.active = false;
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseleave', handleMouseLeave);
+
+    // Scroll velocity tracking
+    let lastScrollY = window.scrollY;
+    let scrollVelocity = 0;
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      scrollVelocity += currentScrollY - lastScrollY;
+      lastScrollY = currentScrollY;
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Cyber particle configuration
+    const particles = [];
+    const particleCount = 75; // increased for screen-wide coverage
+    const connectionDistance = 120;
+    
+    const colors = [
+      'rgba(0, 240, 255, ',   // Neon Cyan
+      'rgba(139, 92, 246, ',  // Neon Violet
+      'rgba(244, 63, 94, ',   // Neon Rose
+    ];
+
+    class Particle {
+      constructor() {
+        this.reset(true);
+      }
+
+      reset(init = false) {
+        this.x = Math.random() * width;
+        this.y = init ? Math.random() * height : (Math.random() > 0.5 ? -10 : height + 10);
+        this.vx = (Math.random() - 0.5) * 0.45;
+        this.vy = (Math.random() - 0.5) * 0.45;
+        this.radius = Math.random() * 1.5 + 1; // 1px to 2.5px
+        this.colorPrefix = colors[Math.floor(Math.random() * colors.length)];
+        this.baseAlpha = Math.random() * 0.3 + 0.12;
+        this.alpha = this.baseAlpha;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Apply scroll drift velocity page-wide
+        this.y -= scrollVelocity * 0.08;
+
+        // Mouse gravity pull
+        if (mouse.active) {
+          const dx = mouse.x - this.x;
+          const dy = mouse.y - this.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 200) {
+            const force = (200 - dist) / 200;
+            this.vx += (dx / dist) * force * 0.035;
+            this.vy += (dy / dist) * force * 0.035;
+            
+            const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+            if (speed > 1.6) {
+              this.vx = (this.vx / speed) * 1.6;
+              this.vy = (this.vy / speed) * 1.6;
+            }
+            this.alpha = Math.min(0.85, this.baseAlpha + force * 0.45);
+          } else {
+            this.vx *= 0.96;
+            this.vy *= 0.96;
+            this.alpha += (this.baseAlpha - this.alpha) * 0.06;
+          }
+        } else {
+          this.alpha += (this.baseAlpha - this.alpha) * 0.06;
+        }
+
+        // Screen boundary safety wrap (fixed coords)
+        if (this.x < -30 || this.x > width + 30 || this.y < -30 || this.y > height + 30) {
+          this.reset(false);
+        }
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `${this.colorPrefix}${this.alpha})`;
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+
+    const animate = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      scrollVelocity *= 0.92;
+
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+
+      // Render networking vector lines
+      for (let i = 0; i < particles.length; i++) {
+        const p1 = particles[i];
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p1.x - p2.x;
+          const dy = p1.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < connectionDistance) {
+            const force = (connectionDistance - dist) / connectionDistance;
+            const opacity = Math.min(p1.alpha, p2.alpha) * force * 0.3;
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.lineWidth = 0.5;
+            ctx.strokeStyle = `rgba(139, 92, 246, ${opacity})`;
+            ctx.stroke();
+          }
+        }
+
+        // Starburst cursor connection page-wide
+        if (mouse.active) {
+          const dx = p1.x - mouse.x;
+          const dy = p1.y - mouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 150) {
+            const force = (150 - dist) / 150;
+            const opacity = force * 0.35;
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.lineWidth = 0.55;
+            ctx.strokeStyle = `rgba(0, 240, 255, ${opacity})`;
+            ctx.stroke();
+          }
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, [isLoading, theme]);
+
+  // GSAP ScrollTrigger dynamic scroll circuit path wire & node pulse triggers
+  useEffect(() => {
+    if (isLoading || theme !== 'dark-dashboard') return;
+
+    const ctx = gsap.context(() => {
+      // 1. Draw circuit line based on page scroll progress
+      gsap.fromTo('.scroll-wire-active',
+        { height: '0%' },
+        {
+          height: '100%',
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.dashboard-content',
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 0.5,
+          }
+        }
+      );
+
+      // 2. Animate nodes as they scroll into view
+      const nodeElements = gsap.utils.toArray('.circuit-node');
+      nodeElements.forEach((node) => {
+        gsap.fromTo(node.querySelector('.pulse-glow'),
+          { opacity: 0.15, scale: 0.9 },
+          {
+            opacity: 1,
+            scale: 1.4,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: node,
+              start: 'top 75%',
+              end: 'top 45%',
+              scrub: true,
+            }
+          }
+        );
+      });
+    });
+
+    return () => ctx.revert();
+  }, [isLoading, theme]);
+
   useEffect(() => {
     // 1. Initial page loader mock
     const timer = setTimeout(() => {
@@ -126,12 +361,41 @@ function App() {
     window.addEventListener('mousemove', handleMouseMove);
     mediaCheck.addEventListener('change', handleMediaChange);
 
-    // 4. Global Hover listeners
+    // 4. Global Hover & Magnetic listeners
     const addHoverListeners = () => {
       const targets = document.querySelectorAll('a, button, [role="button"], select, textarea, input, .project-card, .glass-panel-hover');
       targets.forEach(tar => {
         tar.addEventListener('mouseenter', () => setCursorHovered(true));
         tar.addEventListener('mouseleave', () => setCursorHovered(false));
+      });
+
+      // Central magnetic hover physics tracking
+      const magneticTargets = document.querySelectorAll('.magnetic-target');
+      magneticTargets.forEach(btn => {
+        const handleMagnetMove = (e) => {
+          const bound = btn.getBoundingClientRect();
+          const mouseX = e.clientX - (bound.left + bound.width / 2);
+          const mouseY = e.clientY - (bound.top + bound.height / 2);
+          
+          gsap.to(btn, {
+            x: mouseX * 0.35,
+            y: mouseY * 0.35,
+            duration: 0.3,
+            ease: 'power2.out'
+          });
+        };
+        
+        const handleMagnetLeave = () => {
+          gsap.to(btn, {
+            x: 0,
+            y: 0,
+            duration: 0.6,
+            ease: 'elastic.out(1.1, 0.5)'
+          });
+        };
+
+        btn.addEventListener('mousemove', handleMagnetMove);
+        btn.addEventListener('mouseleave', handleMagnetLeave);
       });
     };
 
@@ -216,6 +480,9 @@ function App() {
               transition={{ duration: 0.5 }}
               className="relative min-h-screen"
             >
+              {/* Global Cybernetic Particle Canvas Background */}
+              <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none opacity-45 mix-blend-screen" />
+
               {/* Scroll-linked glowing background mesh elements */}
               <motion.div 
                 style={{ y: floatY1, scale: scale1, rotate: rotateGlow, opacity: opacityGlow }}
@@ -234,77 +501,76 @@ function App() {
                 className="fixed w-[600px] h-[600px] rounded-full bg-neon-rose/8 blur-[140px] bottom-[-100px] right-[10%] pointer-events-none z-[-1]" 
               />
 
-              {/* Scroll-Drawing Neon Circuit Path Wire */}
-              <div className="absolute left-[4%] sm:left-[6%] top-0 bottom-0 w-[2px] bg-white/[0.03] pointer-events-none z-[-1]" />
-              <motion.div 
-                style={{ height: scrollWireHeight }}
-                className="absolute left-[4%] sm:left-[6%] top-0 w-[2px] bg-gradient-to-b from-neon-cyan via-neon-violet to-neon-fuchsia shadow-[0_0_15px_rgba(0,240,255,0.7),_0_0_5px_rgba(139,92,246,0.5)] z-[-1] pointer-events-none"
-              />
-
-              {/* Glowing circuit junction nodes that pulse as user scrolls past */}
-              {nodes.map((node, idx) => (
-                <div 
-                  key={idx}
-                  style={{ top: `${node.pct * 100}%` }}
-                  className="absolute left-[4%] sm:left-[6%] -translate-x-[4px] w-2.5 h-2.5 rounded-full bg-[#030014] border border-white/20 z-[-1] pointer-events-none"
-                >
-                  <motion.div 
-                    style={{
-                      opacity: node.opacity,
-                      scale: node.scale
-                    }}
-                    className="w-full h-full rounded-full bg-neon-cyan shadow-[0_0_8px_#00F0FF,0_0_15px_#00F0FF]"
+              <div className="dashboard-content w-full relative">
+                {/* Scroll-Drawing Neon Circuit Path Wire & Junction Nodes using native GSAP ScrollTrigger */}
+                <div className="absolute inset-0 pointer-events-none overflow-hidden z-[-1]">
+                  <div className="absolute left-[4%] sm:left-[6%] top-0 bottom-0 w-[2px] bg-white/[0.03]" />
+                  <div 
+                    className="scroll-wire-active absolute left-[4%] sm:left-[6%] top-0 w-[2px] bg-gradient-to-b from-neon-cyan via-neon-violet to-neon-fuchsia shadow-[0_0_15px_rgba(0,240,255,0.7),_0_0_5px_rgba(139,92,246,0.5)] origin-top h-0"
                   />
+
+                  {/* Glowing circuit junction nodes positioned accurately relative to full height */}
+                  {nodes.map((node, idx) => (
+                    <div 
+                      key={idx}
+                      style={{ top: `${node.pct * 100}%` }}
+                      className="circuit-node absolute left-[4%] sm:left-[6%] -translate-x-[4px] w-2.5 h-2.5 rounded-full bg-[#030014] border border-white/20"
+                    >
+                      <div 
+                        className="pulse-glow w-full h-full rounded-full bg-neon-cyan shadow-[0_0_8px_#00F0FF,0_0_15px_#00F0FF] opacity-15 scale-90 transition-all duration-300"
+                      />
+                    </div>
+                  ))}
                 </div>
-              ))}
 
-              {/* 3D Holographic Parallax Tech Stack Symbols (Viewport-Fixed Field) */}
-              {!isMobile && (
-                <div className="fixed inset-0 pointer-events-none overflow-hidden z-[-1] select-none">
-                  {techItems.map((item, idx) => {
-                    const scrollTransform = getScrollTransform(item.depthLayer);
-                    const mouseMultiplier = item.depthLayer * 35;
-                    const translateX = -mouseOffset.x * mouseMultiplier;
-                    const translateY = -mouseOffset.y * mouseMultiplier;
-                    return (
-                      <motion.div
-                        key={idx}
-                        style={{
-                          y: scrollTransform,
-                          position: 'fixed',
-                          top: item.top,
-                          left: item.left,
-                          transform: `translate3d(${translateX}px, ${translateY}px, 0)`,
-                          transition: 'transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                          willChange: 'transform'
-                        }}
-                        className={`hidden md:block ${item.size} ${item.color} text-glow-neon select-none font-sans`}
-                      >
-                        {item.text}
-                      </motion.div>
-                    );
-                  })}
-                </div>
-              )}
+                {/* 3D Holographic Parallax Tech Stack Symbols (Viewport-Fixed Field) */}
+                {!isMobile && (
+                  <div className="fixed inset-0 pointer-events-none overflow-hidden z-[-1] select-none">
+                    {techItems.map((item, idx) => {
+                      const scrollTransform = getScrollTransform(item.depthLayer);
+                      const mouseMultiplier = item.depthLayer * 35;
+                      const translateX = -mouseOffset.x * mouseMultiplier;
+                      const translateY = -mouseOffset.y * mouseMultiplier;
+                      return (
+                        <motion.div
+                          key={idx}
+                          style={{
+                            y: scrollTransform,
+                            position: 'fixed',
+                            top: item.top,
+                            left: item.left,
+                            transform: `translate3d(${translateX}px, ${translateY}px, 0)`,
+                            transition: 'transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                            willChange: 'transform'
+                          }}
+                          className={`hidden md:block ${item.size} ${item.color} text-glow-neon select-none font-sans`}
+                        >
+                          {item.text}
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                )}
 
-              {/* Floating Dock Header */}
-              <Navbar theme={theme} setTheme={setTheme} />
+                {/* Floating Dock Header */}
+                <Navbar theme={theme} setTheme={setTheme} />
 
-              {/* Interactive Dashboard stack */}
-              <main>
-                <Hero />
-                <About />
-                <Skills />
-                <Projects />
-                <Experience />
-                <Certificates />
-                <Services />
-                <Testimonials />
-                <Contact />
-              </main>
+                {/* Interactive Dashboard stack */}
+                <main>
+                  <Hero />
+                  <About />
+                  <Skills />
+                  <Projects />
+                  <Experience />
+                  <Certificates />
+                  <Services />
+                  <Testimonials />
+                  <Contact />
+                </main>
 
-              {/* Footer */}
-              <Footer />
+                {/* Footer */}
+                <Footer />
+              </div>
             </motion.div>
           ) : (
             

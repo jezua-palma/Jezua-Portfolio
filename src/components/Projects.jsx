@@ -1,11 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ExternalLink, Sparkles, X, Terminal, Award, TrendingUp } from 'lucide-react';
+import { gsap } from 'gsap';
 
 const Projects = () => {
   const [filter, setFilter] = useState('all');
   const [activeModal, setActiveModal] = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
+
+  // GSAP 3D Interactive Card Rotations & Cursor glare reflections
+  useEffect(() => {
+    const cards = document.querySelectorAll('.depth-card-trigger');
+    cards.forEach(card => {
+      const shine = card.querySelector('.shine-element');
+      const inner = card.querySelector('.depth-inner');
+
+      const handleMouseMove = (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+
+        // Angle rotations (max 10deg)
+        const tiltX = -(y / (rect.height / 2)) * 10;
+        const tiltY = (x / (rect.width / 2)) * 10;
+
+        // Glare spot reflection properties
+        const shineX = ((e.clientX - rect.left) / rect.width) * 100;
+        const shineY = ((e.clientY - rect.top) / rect.height) * 100;
+        if (shine) {
+          shine.style.setProperty('--shine-x', `${shineX}%`);
+          shine.style.setProperty('--shine-y', `${shineY}%`);
+        }
+
+        gsap.to(inner, {
+          rotateX: tiltX,
+          rotateY: tiltY,
+          x: x * 0.03,
+          y: y * 0.03,
+          duration: 0.25,
+          ease: 'power2.out'
+        });
+      };
+
+      const handleMouseLeave = () => {
+        gsap.to(inner, {
+          rotateX: 0,
+          rotateY: 0,
+          x: 0,
+          y: 0,
+          duration: 0.6,
+          ease: 'power2.out'
+        });
+      };
+
+      card.addEventListener('mousemove', handleMouseMove);
+      card.addEventListener('mouseleave', handleMouseLeave);
+    });
+  }, [filter]); // Re-run when filter changes to bind new elements
 
   const projects = [
     {
@@ -219,82 +270,87 @@ const Projects = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3 }}
-                className="glass-panel rounded-2xl border border-white/5 overflow-hidden flex flex-col h-full group hover:border-neon-cyan/30 transition-all duration-300"
+                className="depth-card-trigger perspective-1000 rounded-2xl flex flex-col h-full cursor-default"
               >
-                {/* Visual Top Bar / Accent */}
-                <div className="h-1 bg-gradient-to-r from-neon-cyan/40 via-neon-violet/40 to-neon-fuchsia/40" />
+                <div className="depth-inner flex flex-col h-full relative preserve-3d glass-panel border border-white/5 overflow-hidden hover:border-neon-cyan/30 transition-all duration-300 rounded-2xl">
+                  {/* Glare sheen cursor-linked overlay */}
+                  <div className="shine-element card-shine-overlay" />
 
-                <div className="p-6 flex flex-col h-full justify-between space-y-4">
-                  <div>
-                    {/* Header */}
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-lg font-bold text-white group-hover:text-neon-cyan transition-colors duration-200">
-                        {proj.title}
-                      </h3>
-                      {proj.category === 'ai' && (
-                        <span className="p-1.5 rounded-lg bg-neon-rose/10 text-neon-rose border border-neon-rose/20">
-                          <Sparkles className="w-3.5 h-3.5" />
-                        </span>
-                      )}
+                  {/* Visual Top Bar / Accent */}
+                  <div className="h-1 bg-gradient-to-r from-neon-cyan/40 via-neon-violet/40 to-neon-fuchsia/40" />
+
+                  <div className="p-6 flex flex-col h-full justify-between space-y-4 depth-layer-mid">
+                    <div>
+                      {/* Header */}
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-lg font-bold text-white group-hover:text-neon-cyan transition-colors duration-200">
+                          {proj.title}
+                        </h3>
+                        {proj.category === 'ai' && (
+                          <span className="p-1.5 rounded-lg bg-neon-rose/10 text-neon-rose border border-neon-rose/20">
+                            <Sparkles className="w-3.5 h-3.5" />
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Desc */}
+                      <p className="text-gray-400 text-xs sm:text-sm leading-relaxed mb-4 line-clamp-3">
+                        {proj.desc}
+                      </p>
+
+                      {/* Badges */}
+                      <div className="flex flex-wrap gap-1.5 mb-4">
+                        {proj.tech.map((badge) => (
+                          <span
+                            key={badge}
+                            className="px-2 py-1 rounded-md bg-white/5 border border-white/5 text-[10px] text-gray-400 font-medium"
+                          >
+                            {badge}
+                          </span>
+                        ))}
+                      </div>
                     </div>
 
-                    {/* Desc */}
-                    <p className="text-gray-400 text-xs sm:text-sm leading-relaxed mb-4 line-clamp-3">
-                      {proj.desc}
-                    </p>
-
-                    {/* Badges */}
-                    <div className="flex flex-wrap gap-1.5 mb-4">
-                      {proj.tech.map((badge) => (
-                        <span
-                          key={badge}
-                          className="px-2 py-1 rounded-md bg-white/5 border border-white/5 text-[10px] text-gray-400 font-medium"
-                        >
-                          {badge}
-                        </span>
-                      ))}
+                    {/* Actions */}
+                    <div className="flex items-center justify-between border-t border-white/5 pt-4">
+                      <button
+                        onClick={() => { setActiveModal(proj); setActiveTab('overview'); }}
+                        className="magnetic-target group flex items-center space-x-1.5 px-3.5 py-2 rounded-lg border border-neon-cyan/20 bg-neon-cyan/5 text-[11px] font-extrabold text-neon-cyan hover:border-neon-cyan/50 hover:bg-neon-cyan/10 transition-all duration-300 hover:shadow-[0_0_12px_rgba(0,240,255,0.15)] active:scale-95 cursor-pointer select-none"
+                      >
+                        <span>Case Study Details</span>
+                        <span className="group-hover:translate-x-1 transition-transform duration-200">&rarr;</span>
+                      </button>
+                      
+                      <div className="flex space-x-2">
+                        {proj.githubUrl && (
+                          <a
+                            href={proj.githubUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="magnetic-target p-2 rounded-lg border border-white/10 bg-white/5 text-gray-400 hover:text-white hover:border-white/20 transition-all"
+                            aria-label="GitHub Code"
+                          >
+                            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+                              <path d="M9 18c-4.51 2-5-2-7-2" />
+                            </svg>
+                          </a>
+                        )}
+                        {proj.liveUrl && (
+                          <a
+                            href={proj.liveUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="magnetic-target p-2 rounded-lg border border-white/10 bg-white/5 text-gray-400 hover:text-white hover:border-white/20 transition-all"
+                            aria-label="Live Demo"
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                          </a>
+                        )}
+                      </div>
                     </div>
+
                   </div>
-
-                  {/* Actions */}
-                  <div className="flex items-center justify-between border-t border-white/5 pt-4">
-                    <button
-                      onClick={() => { setActiveModal(proj); setActiveTab('overview'); }}
-                      className="group flex items-center space-x-1.5 px-3.5 py-2 rounded-lg border border-neon-cyan/20 bg-neon-cyan/5 text-[11px] font-extrabold text-neon-cyan hover:border-neon-cyan/50 hover:bg-neon-cyan/10 transition-all duration-300 hover:shadow-[0_0_12px_rgba(0,240,255,0.15)] active:scale-95 cursor-pointer select-none"
-                    >
-                      <span>Case Study Details</span>
-                      <span className="group-hover:translate-x-1 transition-transform duration-200">&rarr;</span>
-                    </button>
-                    
-                    <div className="flex space-x-2">
-                      {proj.githubUrl && (
-                        <a
-                          href={proj.githubUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="p-2 rounded-lg border border-white/10 bg-white/5 text-gray-400 hover:text-white hover:border-white/20 transition-all"
-                          aria-label="GitHub Code"
-                        >
-                          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
-                            <path d="M9 18c-4.51 2-5-2-7-2" />
-                          </svg>
-                        </a>
-                      )}
-                      {proj.liveUrl && (
-                        <a
-                          href={proj.liveUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="p-2 rounded-lg border border-white/10 bg-white/5 text-gray-400 hover:text-white hover:border-white/20 transition-all"
-                          aria-label="Live Demo"
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                        </a>
-                      )}
-                    </div>
-                  </div>
-
                 </div>
               </motion.div>
             ))}

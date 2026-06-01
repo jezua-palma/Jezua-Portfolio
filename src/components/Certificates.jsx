@@ -10,6 +10,30 @@ const Certificates = () => {
 
   const certs = [
     {
+      title: 'Fundamentals of Pitching and Startup Projects',
+      issuer: 'DICT Region IV-A',
+      date: 'March 3-4, 2025',
+      img: '/assets/cert_dict.png',
+      verifyUrl: 'https://dict.gov.ph/',
+      id: 'R4A_IIDB_DICT-R4A-2026184'
+    },
+    {
+      title: 'Elevate Your Security Career: Mastering Microsoft Security',
+      issuer: 'Trainocate (Microsoft Gold Partner)',
+      date: 'May 23, 2025',
+      img: '/assets/cert_trainocate.png',
+      verifyUrl: 'https://trainocate.com/',
+      id: 'VILT-Microsoft-Security'
+    },
+    {
+      title: 'Building Your Digital Backbone: Unlocking Secrets of Network Communication',
+      issuer: 'LSPU College of Computer Studies',
+      date: 'May 28, 2024',
+      img: '/assets/cert_lspu_networking.png',
+      verifyUrl: 'https://lspu.edu.ph/',
+      id: 'LSPU-CCS-Network-Communication'
+    },
+    {
       title: 'Prompt Engineering Certification',
       issuer: 'Sololearn',
       date: 'March 11, 2026',
