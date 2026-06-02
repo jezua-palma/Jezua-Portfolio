@@ -401,7 +401,6 @@ function App() {
     const hoverTimer = setTimeout(addHoverListeners, 2000);
 
     return () => {
-      clearTimeout(timer);
       clearTimeout(hoverTimer);
       window.removeEventListener('mousemove', handleMouseMove);
       mediaCheck.removeEventListener('change', handleMediaChange);
