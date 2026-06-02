@@ -300,9 +300,9 @@ const Hero = () => {
     e.preventDefault();
     const target = document.querySelector(href);
     if (target) {
-      const offsetTop = target.offsetTop - 80;
+      const top = target.getBoundingClientRect().top + window.scrollY - 80;
       window.scrollTo({
-        top: offsetTop,
+        top: top,
         behavior: 'smooth'
       });
     }

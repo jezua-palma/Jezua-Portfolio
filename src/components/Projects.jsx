@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ExternalLink, Sparkles, X, Terminal, Award, TrendingUp } from 'lucide-react';
 
@@ -309,9 +310,10 @@ const Projects = () => {
         </div>
 
         {/* Showcase Modal */}
-        <AnimatePresence>
-          {activeModal && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        {createPortal(
+          <AnimatePresence>
+            {activeModal && (
+              <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
               {/* Blur backdrop overlay */}
               <motion.div
                 initial={{ opacity: 0 }}
@@ -551,7 +553,9 @@ const Projects = () => {
               </motion.div>
             </div>
           )}
-        </AnimatePresence>
+        </AnimatePresence>,
+        document.body
+      )}
 
       </div>
     </section>

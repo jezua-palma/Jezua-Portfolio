@@ -60,8 +60,9 @@ const Navbar = ({ theme, setTheme }) => {
       setTimeout(() => {
         const target = document.querySelector(href);
         if (target) {
+          const top = target.getBoundingClientRect().top + window.scrollY - 80;
           window.scrollTo({
-            top: target.offsetTop - 80,
+            top,
             behavior: 'smooth',
           });
         }
@@ -70,8 +71,9 @@ const Navbar = ({ theme, setTheme }) => {
       setIsOpen(false);
       const target = document.querySelector(href);
       if (target) {
+        const top = target.getBoundingClientRect().top + window.scrollY - 80;
         window.scrollTo({
-          top: target.offsetTop - 80,
+          top,
           behavior: 'smooth',
         });
       }
