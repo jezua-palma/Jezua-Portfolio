@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Printer, Moon, Eye } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Mail, Phone, MapPin, Printer, Moon, Eye, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const PrintableCV = ({ onBack }) => {
+const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
   const [cvLightbox, setCvLightbox] = useState(null);
 
   const certifications = [
@@ -23,34 +23,106 @@ const PrintableCV = ({ onBack }) => {
     return age;
   })();
 
+  const [downloading, setDownloading] = useState(false);
+
   const handlePrint = () => {
     window.print();
   };
+
+  const handleDownloadPDF = () => {
+    const element = document.getElementById('cv-document-card');
+    if (!element) return;
+    
+    setDownloading(true);
+    
+    const opt = {
+      margin:       [10, 10, 10, 10],
+      filename:     'Jezua_Errol_Palma_CV.pdf',
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { 
+        scale: 2, 
+        useCORS: true,
+        logging: false
+      },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    const runHtml2Pdf = () => {
+      window.html2pdf().from(element).set(opt).save()
+        .then(() => setDownloading(false))
+        .catch(() => setDownloading(false));
+    };
+
+    if (window.html2pdf) {
+      runHtml2Pdf();
+    } else {
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+      script.onload = runHtml2Pdf;
+      script.onerror = () => setDownloading(false);
+      document.body.appendChild(script);
+    }
+  };
+
+  useEffect(() => {
+    if (autoDownload) {
+      handleDownloadPDF();
+      if (clearAutoDownload) {
+        clearAutoDownload();
+      }
+    }
+  }, [autoDownload]);
 
   return (
     <div className="min-h-screen bg-zinc-100 text-zinc-900 py-12 px-4 sm:px-6 lg:px-8 font-sans antialiased selection:bg-zinc-200">
       
       {/* Control Navigation Header (Hidden on Print) */}
-      <div className="max-w-4xl mx-auto mb-8 flex justify-between items-center no-print bg-white p-4 rounded-xl shadow-sm border border-zinc-200">
-        <button
-          onClick={onBack}
-          className="p-2.5 rounded-full border border-zinc-200 bg-zinc-50 text-zinc-500 hover:text-zinc-950 hover:border-zinc-300 hover:bg-zinc-100 transition-all hover:scale-105 active:scale-95 shadow-sm"
-          title="Switch to Dark Mode (Cyberpunk Dashboard)"
-        >
-          <Moon className="w-5 h-5 text-zinc-800" />
-        </button>
+      <div className="max-w-4xl mx-auto mb-8 flex flex-col sm:flex-row gap-4 justify-between items-center no-print bg-white p-4 rounded-xl shadow-sm border border-zinc-200">
+        <div className="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-start">
+          <button
+            onClick={onBack}
+            className="p-2.5 rounded-full border border-zinc-200 bg-zinc-50 text-zinc-500 hover:text-zinc-950 hover:border-zinc-300 hover:bg-zinc-100 transition-all hover:scale-105 active:scale-95 shadow-sm"
+            title="Switch to Dark Mode (Cyberpunk Dashboard)"
+          >
+            <Moon className="w-5 h-5 text-zinc-800" />
+          </button>
+          <span className="text-sm font-semibold text-zinc-500 hidden sm:inline">Jezua Palma CV</span>
+        </div>
         
-        <button
-          onClick={handlePrint}
-          className="flex items-center space-x-2 px-5 py-2.5 text-sm font-bold rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 shadow-md shadow-indigo-600/10 transition-all"
-        >
-          <Printer className="w-4 h-4" />
-          <span>Print / Save CV as PDF</span>
-        </button>
+        <div className="flex space-x-3 w-full sm:w-auto">
+          <button
+            onClick={handleDownloadPDF}
+            disabled={downloading}
+            className="flex-1 sm:flex-initial flex items-center justify-center space-x-2 px-5 py-2.5 text-sm font-bold rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 disabled:bg-indigo-400 shadow-md shadow-indigo-600/10 transition-all"
+          >
+            {downloading ? (
+              <>
+                <svg className="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                </svg>
+                <span>Generating PDF...</span>
+              </>
+            ) : (
+              <>
+                <Download className="w-4 h-4" />
+                <span>Download CV as PDF</span>
+              </>
+            )}
+          </button>
+
+          <button
+            onClick={handlePrint}
+            className="flex-1 sm:flex-initial flex items-center justify-center space-x-2 px-5 py-2.5 text-sm font-bold rounded-lg border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50 transition-all"
+          >
+            <Printer className="w-4 h-4" />
+            <span>Print CV</span>
+          </button>
+        </div>
       </div>
 
       {/* Main Printable Document Page Box (Retains border, rounded corners, shadow in print) */}
-      <div className="max-w-4xl mx-auto bg-white p-10 sm:p-14 border border-zinc-200 shadow-lg rounded-2xl relative overflow-hidden">
+      <div id="cv-document-card" className="max-w-4xl mx-auto bg-white p-10 sm:p-14 border border-zinc-200 shadow-lg rounded-2xl relative overflow-hidden">
         
         {/* Document Header Section */}
         <div className="flex flex-col md:flex-row print:flex-row justify-between items-start md:items-center print:items-center border-b-2 border-zinc-900 pb-8 print:pb-4 gap-6 print:gap-4">

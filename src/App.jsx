@@ -42,6 +42,7 @@ const techItems = [
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [theme, setTheme] = useState('dark-dashboard'); // 'dark-dashboard' vs 'white-cv'
+  const [autoDownloadCV, setAutoDownloadCV] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 }); // Fraction coordinates (-0.5 to 0.5) for smooth 3D tilt
   const [cursorHovered, setCursorHovered] = useState(false);
@@ -542,7 +543,7 @@ function App() {
 
                 {/* Interactive Dashboard stack */}
                 <main>
-                  <Hero />
+                  <Hero setTheme={setTheme} setAutoDownloadCV={setAutoDownloadCV} />
                   <About />
                   <Skills />
                   <Projects />
@@ -571,7 +572,11 @@ function App() {
               <Navbar theme={theme} setTheme={setTheme} />
               
               <main className="pt-20">
-                <PrintableCV onBack={() => setTheme('dark-dashboard')} />
+                <PrintableCV 
+                  onBack={() => setTheme('dark-dashboard')} 
+                  autoDownload={autoDownloadCV} 
+                  clearAutoDownload={() => setAutoDownloadCV(false)} 
+                />
               </main>
             </motion.div>
           )}
