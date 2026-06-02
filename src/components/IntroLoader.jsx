@@ -93,13 +93,6 @@ const IntroLoader = ({ onComplete }) => {
         ))}
       </div>
 
-      {/* Skip Button */}
-      <button 
-        onClick={onComplete}
-        className="absolute top-6 right-6 z-50 text-[10px] sm:text-xs text-gray-500 hover:text-neon-cyan border border-white/10 hover:border-neon-cyan/40 bg-white/5 hover:bg-neon-cyan/5 px-3 py-1.5 rounded-md transition-all duration-300 tracking-widest cursor-pointer select-none"
-      >
-        SKIP &rarr;
-      </button>
 
       {/* 2. Interactive 3D Perspective Card Container */}
       <motion.div
