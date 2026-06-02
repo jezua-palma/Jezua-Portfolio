@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import emailjs from '@emailjs/browser';
 import { Send, Phone, Mail, MapPin, CheckCircle, AlertCircle, Loader } from 'lucide-react';
 
 const Contact = () => {
@@ -17,9 +16,8 @@ const Contact = () => {
     message: ''
   });
 
-  const EMAILJS_PUBLIC_KEY = '-V3Ncdd2qb4U_y9_n';
-  const EMAILJS_SERVICE_ID = 'service_fkfzevk';
-  const EMAILJS_TEMPLATE_ID = 'template_dibwp17';
+  // 📝 Web3Forms Access Key: Kumuha ng access key sa https://web3forms.com/ gamit ang iyong email (jezuapalma@gmail.com)
+  const WEB3FORMS_ACCESS_KEY = 'YOUR_ACCESS_KEY_HERE';
 
   const handleChange = (e) => {
     setFormData({
@@ -39,26 +37,42 @@ const Contact = () => {
 
     setStatus({ submitting: true, success: null, message: '' });
 
-    // Send email using EmailJS
-    emailjs.send(
-      EMAILJS_SERVICE_ID,
-      EMAILJS_TEMPLATE_ID,
-      {
-        from_name: formData.name,
-        from_email: formData.email,
-        subject: `${formData.subject}: ${formData.name}`,
-        message: formData.message,
-        to_email: 'jezuapalma@gmail.com'
+    if (!WEB3FORMS_ACCESS_KEY || WEB3FORMS_ACCESS_KEY === 'YOUR_ACCESS_KEY_HERE') {
+      // Fallback to mailto link directly if the key is not set
+      const mailtoUrl = `mailto:jezuapalma@gmail.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`From: ${formData.name} <${formData.email}>\n\n${formData.message}`)}`;
+      window.location.href = mailtoUrl;
+      showFeedback(true, 'Opening your local email client to complete submission (Access Key not set).');
+      setStatus({ submitting: false, success: true, message: 'Redirected to local email application.' });
+      return;
+    }
+
+    // Send email using Web3Forms API
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
       },
-      EMAILJS_PUBLIC_KEY
-    )
-    .then((response) => {
-      console.log('Email sent successfully:', response);
-      showFeedback(true, 'Message sent successfully! I will reach back to you shortly.');
-      setFormData({ name: '', email: '', subject: 'Hire Me', message: '' });
+      body: JSON.stringify({
+        access_key: WEB3FORMS_ACCESS_KEY,
+        name: formData.name,
+        email: formData.email,
+        subject: `New Portfolio Inquiry: ${formData.subject} from ${formData.name}`,
+        message: formData.message,
+        from_name: 'Jezua dev Portfolio'
+      })
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.success) {
+        showFeedback(true, 'Message sent successfully! I will reach back to you shortly.');
+        setFormData({ name: '', email: '', subject: 'Hire Me', message: '' });
+      } else {
+        throw new Error(data.message || 'Submission failed');
+      }
     })
     .catch((error) => {
-      console.error('EmailJS error:', error);
+      console.error('Web3Forms error:', error);
       
       // Fallback to mailto link
       const mailtoUrl = `mailto:jezuapalma@gmail.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`From: ${formData.name} <${formData.email}>\n\n${formData.message}`)}`;
