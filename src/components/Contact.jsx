@@ -17,7 +17,7 @@ const Contact = () => {
   });
 
   // 📝 Web3Forms Access Key: Kumuha ng access key sa https://web3forms.com/ gamit ang iyong email (jezuapalma@gmail.com)
-  const WEB3FORMS_ACCESS_KEY = 'YOUR_ACCESS_KEY_HERE';
+  const WEB3FORMS_ACCESS_KEY = 'ca6e8497-a5a9-4bbd-90cf-710c06896b1f';
 
   const handleChange = (e) => {
     setFormData({
