@@ -1,38 +1,33 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Terminal, Shield, Cpu, Play } from 'lucide-react';
+import { Terminal, Cpu, ShieldAlert } from 'lucide-react';
 
 const IntroLoader = ({ onComplete }) => {
   const [progress, setProgress] = useState(0);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const [bootStep, setBootStep] = useState(0);
-  const [isReady, setIsReady] = useState(false);
   const [isGlitching, setIsGlitching] = useState(false);
-  const videoRef = useRef(null);
 
   // Simulated cyber logs
   const logMessages = [
-    'CORPUS CONNECTION ESTABLISHED [PORT: 8080]',
-    'DECRYPTING PORTFOLIO SECURE DECK...',
-    'INJECTING DESIGN SYSTEM CONFIGS...',
-    'LOADING HIGH-FIDELITY PARALLAX LAYERS...',
-    'ESTABLISHING GLITCH CORE ALIGNMENTS...',
-    'NEURAL LINK ONLINE: READY FOR INITIALIZATION'
+    'SYSTEM OK: INIT DECK CORE ASSEMBLY',
+    'ENCRYPTED SHELL AUTHENTICATED SUCCESSFULLY',
+    'PARALLAX SCENE DEPTH OPTIMIZED',
+    'INJECTING NEON DESIGN STYLESHEETS',
+    'CLEARING TILT PARALLAX CACHES',
+    'NEURAL SYNERGIES MATCHED: LAUNCHING DASHBOARD'
   ];
 
   // Mouse tilt logic for 3D card
   useEffect(() => {
     const handleMouseMove = (e) => {
       const { innerWidth, innerHeight } = window;
-      // Coordinates normalized between -0.5 and 0.5
       const x = (e.clientX / innerWidth) - 0.5;
       const y = (e.clientY / innerHeight) - 0.5;
       
-      setMousePos({ x: e.clientX, y: e.clientY });
       setRotation({
-        x: -y * 18, // tilt on horizontal axis (pitch)
-        y: x * 18   // tilt on vertical axis (yaw)
+        x: -y * 18, // tilt pitch
+        y: x * 18   // tilt yaw
       });
     };
 
@@ -40,13 +35,14 @@ const IntroLoader = ({ onComplete }) => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Progress loader timer
+  // Precise 5-second progress loader timer with auto-complete
   useEffect(() => {
     let currentProgress = 0;
-    const interval = setInterval(() => {
-      // Add random progress step for a realistic loading feel
-      const increment = Math.floor(Math.random() * 8) + 4;
-      currentProgress = Math.min(currentProgress + increment, 100);
+    const duration = 5000; // 5 seconds
+    const stepInterval = 50; // increment every 50ms
+    
+    const timer = setInterval(() => {
+      currentProgress += 1;
       setProgress(currentProgress);
 
       // Advance log steps based on progress milestones
@@ -56,38 +52,43 @@ const IntroLoader = ({ onComplete }) => {
       else if (currentProgress > 25) setBootStep(2);
       else if (currentProgress > 10) setBootStep(1);
 
-      if (currentProgress === 100) {
-        clearInterval(interval);
+      if (currentProgress >= 100) {
+        clearInterval(timer);
+        setIsGlitching(true);
+        // Play final glitch fadeout and transition to main app
         setTimeout(() => {
-          setIsReady(true);
-        }, 300);
+          onComplete();
+        }, 550);
       }
-    }, 120);
+    }, stepInterval);
 
-    return () => clearInterval(interval);
-  }, []);
-
-  // Handle entry boot click with a brief digital glitch before transition
-  const handleBoot = () => {
-    setIsGlitching(true);
-    // Play any audio sync if needed or proceed directly after visual glitch duration
-    setTimeout(() => {
-      onComplete();
-    }, 600);
-  };
+    return () => clearInterval(timer);
+  }, [onComplete]);
 
   return (
     <div className="fixed inset-0 z-[9999] overflow-hidden bg-[#02000c] flex items-center justify-center font-mono select-none">
       
+      {/* Self-contained animations style block */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes scan-sweep {
+          0% { top: 0%; }
+          50% { opacity: 1; }
+          100% { top: 100%; }
+        }
+        .animate-scan-sweep {
+          animation: scan-sweep 3s linear infinite;
+        }
+      `}} />
+
       {/* 1. Holographic Scanline & Cyber Grid Background */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,_rgba(0,0,0,0.3)_50%)] bg-[length:100%_4px] pointer-events-none z-10 opacity-40" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(139,92,246,0.12)_0%,rgba(0,0,0,0)_75%)] pointer-events-none z-10" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,_rgba(0,0,0,0.3)_50%)] bg-[length:100%_4px] pointer-events-none z-10 opacity-30" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(139,92,246,0.15)_0%,rgba(0,0,0,0)_75%)] pointer-events-none z-10" />
       
-      {/* Subtle background tech symbols */}
+      {/* Background logs scrolling by */}
       <div className="absolute inset-0 opacity-10 flex flex-wrap gap-12 p-8 justify-around items-center pointer-events-none text-neon-cyan/20 text-xs">
         {Array.from({ length: 15 }).map((_, i) => (
           <div key={i} className="animate-pulse" style={{ animationDelay: `${i * 0.4}s` }}>
-            {`0x${(i * 47).toString(16).toUpperCase()} // LINK_OK`}
+            {`0x${(i * 47).toString(16).toUpperCase()} // BOOT_STEP_${i}`}
           </div>
         ))}
       </div>
@@ -97,7 +98,7 @@ const IntroLoader = ({ onComplete }) => {
         onClick={onComplete}
         className="absolute top-6 right-6 z-50 text-[10px] sm:text-xs text-gray-500 hover:text-neon-cyan border border-white/10 hover:border-neon-cyan/40 bg-white/5 hover:bg-neon-cyan/5 px-3 py-1.5 rounded-md transition-all duration-300 tracking-widest cursor-pointer select-none"
       >
-        SKIP_BOOT_SEQUENCE &rarr;
+        SKIP &rarr;
       </button>
 
       {/* 2. Interactive 3D Perspective Card Container */}
@@ -109,56 +110,54 @@ const IntroLoader = ({ onComplete }) => {
           transform: `perspective(1000px) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
           transformStyle: 'preserve-3d',
         }}
-        className="relative w-[92vw] max-w-[550px] aspect-[4/3] rounded-2xl border border-white/10 bg-black/60 shadow-[0_0_50px_rgba(0,240,255,0.05)] overflow-hidden transition-shadow duration-300 hover:shadow-[0_0_60px_rgba(0,240,255,0.1)] flex flex-col p-6 cursor-default"
+        className="relative w-[92vw] max-w-[500px] aspect-[4/3] rounded-2xl border border-white/10 bg-black/75 shadow-[0_0_50px_rgba(0,240,255,0.08)] overflow-hidden flex flex-col p-6 cursor-default"
       >
         
-        {/* Holographic glowing borders & corners in 3D */}
+        {/* Holographic borders & corner ticks */}
         <div className="absolute inset-0 border border-neon-cyan/20 rounded-2xl pointer-events-none" />
-        
-        {/* Diagnostic crosshairs */}
         <div className="absolute top-3 left-3 w-3 h-3 border-t border-l border-neon-cyan/50 pointer-events-none" style={{ transform: 'translateZ(20px)' }} />
         <div className="absolute top-3 right-3 w-3 h-3 border-t border-r border-neon-cyan/50 pointer-events-none" style={{ transform: 'translateZ(20px)' }} />
         <div className="absolute bottom-3 left-3 w-3 h-3 border-b border-l border-neon-cyan/50 pointer-events-none" style={{ transform: 'translateZ(20px)' }} />
         <div className="absolute bottom-3 right-3 w-3 h-3 border-b border-r border-neon-cyan/50 pointer-events-none" style={{ transform: 'translateZ(20px)' }} />
 
-        {/* 3. Looping Matroska (.mkv) Video Display Block */}
-        <div className="absolute inset-0 w-full h-full opacity-40 z-0 pointer-events-none mix-blend-screen overflow-hidden rounded-2xl">
-          <video
-            ref={videoRef}
-            src="/assets/video.mkv"
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-full object-cover"
-          />
-          {/* Cyan/Rose screen gradient tint */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-80" />
+        {/* Glowing Scan Sweep Line */}
+        <div className="absolute left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-neon-cyan/50 to-transparent shadow-[0_0_12px_rgba(0,240,255,0.8)] z-10 pointer-events-none animate-scan-sweep" />
+
+        {/* Animated Cyber Grid Pattern Background */}
+        <div className="absolute inset-0 w-full h-full opacity-[0.08] z-0 pointer-events-none overflow-hidden rounded-2xl">
+          <svg className="w-full h-full text-neon-cyan" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="loader-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+                <path d="M 24 0 L 0 0 0 24" fill="none" stroke="currentColor" strokeWidth="0.5" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#loader-grid)" />
+          </svg>
         </div>
 
-        {/* 4. Interactive HUD Layout (Floating on translate-Z) */}
+        {/* 4. Interactive HUD Layout (Floating in Z-space) */}
         <div className="relative z-10 flex flex-col h-full justify-between" style={{ transform: 'translateZ(30px)' }}>
           
-          {/* Loader Header */}
+          {/* Header */}
           <div className="flex items-center justify-between border-b border-white/5 pb-3">
             <div className="flex items-center space-x-2">
               <Cpu className="w-4 h-4 text-neon-cyan animate-pulse" />
               <span className="text-[10px] sm:text-xs font-bold text-white tracking-widest uppercase">
-                JEZUA_PORTFOLIO_SYSTEM
+                PORTFOLIO_SYSTEM_BOOT
               </span>
             </div>
             <div className="flex items-center space-x-1.5 bg-neon-cyan/10 border border-neon-cyan/30 px-2 py-0.5 rounded text-[8px] sm:text-[10px] text-neon-cyan">
               <span className="w-1.5 h-1.5 rounded-full bg-neon-cyan animate-ping inline-block" />
-              <span>ONLINE</span>
+              <span>DECRYPTING</span>
             </div>
           </div>
 
-          {/* Main Content Area: Logs Console */}
+          {/* Console Output */}
           <div className="flex-grow flex flex-col justify-center space-y-3 py-4">
-            <div className="bg-black/40 border border-white/5 rounded-lg p-3 sm:p-4 text-[9px] sm:text-xs space-y-1.5 max-h-[140px] overflow-hidden">
+            <div className="bg-black/50 border border-white/5 rounded-lg p-3 sm:p-4 text-[9px] sm:text-xs space-y-1.5 max-h-[140px] overflow-hidden">
               <div className="text-gray-500 font-bold flex items-center space-x-1">
                 <Terminal className="w-3.5 h-3.5 text-neon-violet" />
-                <span>TERMINAL_OUTPUT // SYSTEM_BOOT:</span>
+                <span>BOOT_LOGS // EXECUTION_STREAM:</span>
               </div>
               
               {/* Display boot logs sequentially */}
@@ -167,7 +166,7 @@ const IntroLoader = ({ onComplete }) => {
                   key={idx}
                   initial={{ opacity: 0, x: -5 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className={`flex items-center space-x-1.5 font-mono ${idx === bootStep ? 'text-neon-cyan font-semibold' : 'text-gray-400'}`}
+                  className={`flex items-center space-x-1.5 font-mono ${idx === bootStep ? 'text-neon-cyan font-semibold animate-pulse' : 'text-gray-400'}`}
                 >
                   <span className="text-neon-violet">&gt;</span>
                   <span className="truncate">{log}</span>
@@ -176,53 +175,31 @@ const IntroLoader = ({ onComplete }) => {
             </div>
           </div>
 
-          {/* Bottom Area: Progress Bar or Enter Button */}
+          {/* Loading Progress tracker */}
           <div className="border-t border-white/5 pt-4 flex flex-col justify-end">
-            <AnimatePresence mode="wait">
-              {!isReady ? (
-                // Loading Progress State
-                <motion.div 
-                  key="loader-progress"
-                  exit={{ opacity: 0, y: 10 }}
-                  className="space-y-2.5"
-                >
-                  <div className="flex items-center justify-between text-[10px] sm:text-xs">
-                    <span className="text-gray-400 tracking-wider">SYSTEM DECRYPT STATUS:</span>
-                    <span className="text-neon-cyan font-bold font-mono">{progress}%</span>
-                  </div>
-                  {/* Progress track */}
-                  <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden border border-white/5">
-                    <motion.div 
-                      className="h-full bg-gradient-to-r from-neon-cyan via-neon-violet to-neon-fuchsia shadow-[0_0_10px_rgba(0,240,255,0.4)]"
-                      style={{ width: `${progress}%` }}
-                      layoutId="loading-bar-fill"
-                    />
-                  </div>
-                </motion.div>
-              ) : (
-                // Boot Initialization Button
-                <motion.button
-                  key="boot-button"
-                  initial={{ opacity: 0, scale: 0.9, y: 10 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleBoot}
-                  className="w-full flex items-center justify-center space-x-2 py-3 rounded-lg bg-gradient-to-r from-neon-cyan/20 to-neon-violet/20 border border-neon-cyan/40 hover:border-neon-cyan text-white text-[11px] sm:text-xs font-bold tracking-[0.2em] hover:bg-gradient-to-r hover:from-neon-cyan/35 hover:to-neon-violet/35 hover:shadow-[0_0_20px_rgba(0,240,255,0.25)] transition-all duration-300 cursor-pointer select-none uppercase"
-                >
-                  <Shield className="w-4 h-4 text-neon-cyan animate-pulse" />
-                  <span>INITIALIZE SYSTEM DECK</span>
-                </motion.button>
-              )}
-            </AnimatePresence>
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between text-[10px] sm:text-xs">
+                <span className="text-gray-400 tracking-wider flex items-center space-x-1">
+                  <ShieldAlert className="w-3.5 h-3.5 text-neon-fuchsia animate-pulse inline mr-1" />
+                  <span>INITIALIZING DASHBOARD DECK:</span>
+                </span>
+                <span className="text-neon-cyan font-bold font-mono">{progress}%</span>
+              </div>
+              <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden border border-white/5">
+                <div 
+                  className="h-full bg-gradient-to-r from-neon-cyan via-neon-violet to-neon-fuchsia shadow-[0_0_10px_rgba(0,240,255,0.4)] transition-all duration-100 ease-out"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+            </div>
           </div>
 
         </div>
 
-        {/* 5. Cyber Glitch Screen Overlay during transition */}
+        {/* Cyber Glitch Transition effect */}
         {isGlitching && (
-          <div className="absolute inset-0 bg-neon-cyan/10 z-[999] pointer-events-none animate-ping flex items-center justify-center">
-            <div className="absolute inset-0 bg-repeat bg-center mix-blend-difference opacity-20 bg-[linear-gradient(90deg,red,blue,green)]" />
+          <div className="absolute inset-0 bg-neon-cyan/25 z-[999] pointer-events-none animate-pulse flex items-center justify-center">
+            <div className="absolute inset-0 bg-repeat bg-center mix-blend-difference opacity-30 bg-[linear-gradient(90deg,red,blue,green)]" />
           </div>
         )}
 

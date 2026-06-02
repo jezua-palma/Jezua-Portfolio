@@ -5,19 +5,45 @@ import { gsap } from 'gsap';
 
 const Hero = () => {
   const [typedTitle, setTypedTitle] = useState('');
-  const fullTitle = "Developer & Designer | AI-Assisted Developer | UI/UX Enthusiast";
+  const titles = [
+    "Developer & Designer",
+    "AI-Assisted Developer",
+    "UI/UX Enthusiast",
+    "Full Stack Builder"
+  ];
+  const [titleIdx, setTitleIdx] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
   
   useEffect(() => {
-    let index = 0;
-    const interval = setInterval(() => {
-      setTypedTitle(fullTitle.substring(0, index));
-      index++;
-      if (index > fullTitle.length) {
-        clearInterval(interval);
-      }
-    }, 50);
-    return () => clearInterval(interval);
-  }, []);
+    let timer;
+    const currentFullTitle = titles[titleIdx];
+    
+    if (isDeleting) {
+      // Deleting character by character
+      timer = setTimeout(() => {
+        setTypedTitle(prev => prev.substring(0, prev.length - 1));
+      }, 30);
+    } else {
+      // Typing character by character
+      timer = setTimeout(() => {
+        setTypedTitle(currentFullTitle.substring(0, typedTitle.length + 1));
+      }, 60);
+    }
+
+    // Handle typing state transitions
+    if (!isDeleting && typedTitle === currentFullTitle) {
+      // Pause at the end of typing before deleting
+      timer = setTimeout(() => {
+        setIsDeleting(true);
+      }, 2000);
+    } else if (isDeleting && typedTitle === '') {
+      // Switch to next title index once erased
+      setIsDeleting(false);
+      setTitleIdx(prev => (prev + 1) % titles.length);
+    }
+
+    return () => clearTimeout(timer);
+  }, [typedTitle, isDeleting, titleIdx]);
 
   // GSAP 3D Hover & Parallax Mouse Tracking Effect
   useEffect(() => {
