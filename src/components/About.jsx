@@ -146,7 +146,7 @@ const About = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm">
                 <div className="flex items-center space-x-2.5">
                   <Calendar className="w-4 h-4 text-neon-cyan" />
-                  <span><strong>Birthday:</strong> October 11 (Age {age})</span>
+                  <span><strong>Birthday:</strong> October 11, 2003 (Age {age})</span>
                 </div>
                 <div className="flex items-center space-x-2.5">
                   <Terminal className="w-4 h-4 text-neon-violet" />

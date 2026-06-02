@@ -15,7 +15,7 @@ const Experience = () => {
     },
     {
       type: 'work',
-      date: '2024 - Present',
+      date: 'March 2023 - Present',
       role: 'Freelance Developer & Designer',
       company: 'Bespoke Software Services',
       desc: 'Translating client ideas into high-performance web products. Designing fluid visual layouts and configuring backend database systems with robust user access permissions.',
@@ -48,24 +48,6 @@ const Experience = () => {
       desc: '4th year IT student maintaining a stellar General Weighted Average (GWA) of 1.73. Successfully completed academic Capstone Research developing **StreetSmart**, a web-based educational safety game designed to teach children navigation and street caution.',
       tech: ['Capstone Research', 'Relational DBs', 'Algorithms', 'Game Development'],
       highlights: ['Maintained an outstanding GWA academic score of 1.73', 'Researched road safety matrices for children', 'Developed interactive path decision vectors', 'Lead system designer & developer']
-    },
-    {
-      type: 'education',
-      date: '2020 - 2022',
-      role: 'Senior High School (Pandemic Era)',
-      company: 'Siniloan Integrated National High School',
-      desc: 'Successfully adapted to visual e-learning grids and digital workspaces. Cultivated strict self-discipline and task scheduling routines.',
-      tech: ['Remote Systems', 'Self-Discipline', 'E-Learning Tools'],
-      highlights: ['Mastered independent study & timeline scheduling', 'Academic excellence across virtual core modules']
-    },
-    {
-      type: 'education',
-      date: '2016 - 2020',
-      role: 'Junior High School',
-      company: 'Siniloan Integrated National High School',
-      desc: 'Explored core technology foundations and built strong peer collaboration dynamics.',
-      tech: ['Core Science', 'Group Projects', 'Presentation Skills'],
-      highlights: ['Developed strong interpersonal teamwork skills', 'Participated in collaborative science fairs']
     }
   ];
 

@@ -459,23 +459,25 @@ function App() {
               {/* Global Cybernetic Particle Canvas Background */}
               <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none opacity-45 mix-blend-screen" />
 
-              {/* Scroll-linked glowing background mesh elements */}
-              <motion.div 
-                style={{ y: floatY1, scale: scale1, rotate: rotateGlow, opacity: opacityGlow }}
-                className="fixed w-[600px] h-[600px] rounded-full bg-neon-indigo/20 blur-[130px] -top-20 -left-20 pointer-events-none z-[-1]" 
-              />
-              <motion.div 
-                style={{ y: floatY2, scale: scale2, rotate: rotateGlow, opacity: opacityGlow }}
-                className="fixed w-[700px] h-[700px] rounded-full bg-neon-cyan/15 blur-[150px] top-[15%] -right-40 pointer-events-none z-[-1]" 
-              />
-              <motion.div 
-                style={{ y: floatY3, scale: scale2, rotate: rotateGlow, opacity: opacityGlow }}
-                className="fixed w-[500px] h-[500px] rounded-full bg-neon-fuchsia/12 blur-[120px] bottom-[25%] left-10 pointer-events-none z-[-1]" 
-              />
-              <motion.div 
-                style={{ y: floatY1, scale: scale1, rotate: rotateGlow, opacity: opacityGlow }}
-                className="fixed w-[600px] h-[600px] rounded-full bg-neon-rose/8 blur-[140px] bottom-[-100px] right-[10%] pointer-events-none z-[-1]" 
-              />
+              {/* Viewport-constrained Background Mesh Elements */}
+              <div className="fixed inset-0 overflow-hidden pointer-events-none z-[-1]">
+                <motion.div 
+                  style={{ y: floatY1, scale: scale1, rotate: rotateGlow, opacity: opacityGlow }}
+                  className="absolute w-[600px] h-[600px] rounded-full bg-neon-indigo/20 blur-[130px] -top-20 -left-20 pointer-events-none" 
+                />
+                <motion.div 
+                  style={{ y: floatY2, scale: scale2, rotate: rotateGlow, opacity: opacityGlow }}
+                  className="absolute w-[700px] h-[700px] rounded-full bg-neon-cyan/15 blur-[150px] top-[15%] -right-40 pointer-events-none" 
+                />
+                <motion.div 
+                  style={{ y: floatY3, scale: scale2, rotate: rotateGlow, opacity: opacityGlow }}
+                  className="absolute w-[500px] h-[500px] rounded-full bg-neon-fuchsia/12 blur-[120px] bottom-[25%] left-10 pointer-events-none" 
+                />
+                <motion.div 
+                  style={{ y: floatY1, scale: scale1, rotate: rotateGlow, opacity: opacityGlow }}
+                  className="absolute w-[600px] h-[600px] rounded-full bg-neon-rose/8 blur-[140px] bottom-[-100px] right-[10%] pointer-events-none" 
+                />
+              </div>
 
               <div className="dashboard-content w-full relative">
                 {/* Scroll-Drawing Neon Circuit Path Wire & Junction Nodes using native GSAP ScrollTrigger */}

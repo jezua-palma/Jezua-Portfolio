@@ -111,7 +111,7 @@ const PrintableCV = ({ onBack }) => {
           </div>
           <div className="flex items-center space-x-2">
             <span className="font-bold text-zinc-400 font-mono text-[10px] w-4 flex-shrink-0">AGE</span>
-            <span>{currentAge} Years Old (Oct 11)</span>
+            <span>{currentAge} Years Old (Oct 11, 2003)</span>
           </div>
         </div>
 
@@ -160,7 +160,7 @@ const PrintableCV = ({ onBack }) => {
                       <h3 className="font-extrabold text-zinc-900 text-sm sm:text-base">Freelance Developer & Designer</h3>
                       <div className="text-zinc-500 font-medium">Bespoke Software Services</div>
                     </div>
-                    <span className="font-mono text-zinc-500 text-right">2024 - Present</span>
+                    <span className="font-mono text-zinc-500 text-right">March 2023 - Present</span>
                   </div>
                   <p className="text-zinc-600 text-xs sm:text-sm leading-relaxed">
                     Architected customized software solutions, high-conversion landing pages, and responsive inventory trackers for small-to-medium clients. Structured relational databases, role-based dashboards, and automated triggers with 100% project completion scores and satisfied client reviews.
@@ -188,7 +188,7 @@ const PrintableCV = ({ onBack }) => {
                       <h3 className="font-extrabold text-zinc-900 text-sm sm:text-base">Capstone Research & Development Lead</h3>
                       <div className="text-zinc-500 font-medium">LSPU Academic Innovation Projects</div>
                     </div>
-                    <span className="font-mono text-zinc-500 text-right">2025 - 2026</span>
+                    <span className="font-mono text-zinc-500 text-right">2024 - 2026</span>
                   </div>
                   <p className="text-zinc-600 text-xs sm:text-sm leading-relaxed">
                     Researched early-childhood navigation safety and led the complete software implementation of **StreetSmart**, a web-based interactive safety game designed for children. Coded responsive canvas boards, branch-story paths, and safety matrices to educate young students about road caution.
@@ -212,13 +212,6 @@ const PrintableCV = ({ onBack }) => {
                     <p className="text-indigo-600 text-[10px] sm:text-xs font-bold mt-0.5">General Weighted Average (GWA): 1.73</p>
                   </div>
                   <span className="font-mono text-zinc-500 text-right">2022 - Present</span>
-                </div>
-                <div className="flex justify-between items-start text-xs sm:text-sm">
-                  <div>
-                    <h3 className="font-bold text-zinc-900">Siniloan Integrated National High School</h3>
-                    <p className="text-zinc-500 text-xs">Senior High School Graduate (Pandemic Remote Grids)</p>
-                  </div>
-                  <span className="font-mono text-zinc-500 text-right">2020 - 2022</span>
                 </div>
               </div>
             </div>

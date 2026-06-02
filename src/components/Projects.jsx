@@ -175,7 +175,7 @@ const Projects = () => {
   );
 
   return (
-    <section id="projects" className="relative py-24 border-t border-white/5 overflow-hidden">
+    <section id="projects" className={`relative py-24 border-t border-white/5 overflow-hidden ${activeModal ? 'z-50' : 'z-10'}`}>
       <div className="glow-sphere w-[500px] h-[500px] bg-neon-cyan/5 -bottom-20 -left-20" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -318,7 +318,7 @@ const Projects = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setActiveModal(null)}
-                className="fixed inset-0 bg-[#030014]/90 backdrop-blur-md cursor-pointer"
+                className="absolute inset-0 bg-[#030014]/90 backdrop-blur-md cursor-pointer z-0"
               />
 
               {/* Modal Box */}
