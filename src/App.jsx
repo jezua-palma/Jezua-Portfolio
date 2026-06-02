@@ -14,6 +14,7 @@ import Testimonials from './components/Testimonials';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import PrintableCV from './components/PrintableCV';
+import IntroLoader from './components/IntroLoader';
 
 // Register GSAP ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -338,10 +339,7 @@ function App() {
   }, [isLoading, theme]);
 
   useEffect(() => {
-    // 1. Initial page loader mock
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1850);
+    // 1. Loader is managed by IntroLoader component, no auto-dismiss timer.
 
     // 2. Cursor position tracking
     const handleMouseMove = (e) => {
@@ -441,28 +439,7 @@ function App() {
       {/* Entry Loading Animation */}
       <AnimatePresence>
         {isLoading && (
-          <motion.div 
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: 'easeInOut' }}
-            className="fixed inset-0 z-[9999] bg-[#030014] flex flex-col items-center justify-center font-mono select-none"
-          >
-            <div className="space-y-4 text-center">
-              <motion.div 
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
-                className="w-12 h-12 rounded-full border-[3px] border-neon-cyan/20 border-t-neon-cyan mx-auto"
-              />
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: [0, 1, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-                className="text-xs sm:text-sm font-semibold tracking-widest text-gray-500 uppercase mt-4"
-              >
-                Initializing Systems...
-              </motion.div>
-            </div>
-          </motion.div>
+          <IntroLoader onComplete={() => setIsLoading(false)} />
         )}
       </AnimatePresence>
 
