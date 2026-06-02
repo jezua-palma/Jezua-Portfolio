@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Laptop, Database, Cpu, Wrench } from 'lucide-react';
+import { Laptop, Database, Cpu, Wrench, Palette } from 'lucide-react';
 import { gsap } from 'gsap';
 
 const Skills = () => {
@@ -78,6 +78,7 @@ const Skills = () => {
   const categories = [
     { id: 'frontend', name: 'Frontend Dev', icon: <Laptop className="w-4 h-4" /> },
     { id: 'backend', name: 'Backend & DB', icon: <Database className="w-4 h-4" /> },
+    { id: 'design', name: 'UI/UX Design', icon: <Palette className="w-4 h-4" /> },
     { id: 'tools', name: 'Platforms & Tools', icon: <Wrench className="w-4 h-4" /> },
     { id: 'ai', name: 'AI & Automation', icon: <Cpu className="w-4 h-4" /> }
   ];
@@ -96,10 +97,16 @@ const Skills = () => {
       { name: 'PostgreSQL', level: 96 },
       { name: 'MySQL', level: 96 }
     ],
+    design: [
+      { name: 'Figma (UI/UX Design)', level: 90 },
+      { name: 'Wireframing & Prototyping', level: 88 },
+      { name: 'Color Theory & Typography', level: 85 },
+      { name: 'Responsive Design Architecture', level: 92 },
+      { name: 'Graphic & Vector Art', level: 80 }
+    ],
     tools: [
       { name: 'Bubble.io (Low-Code)', level: 85 },
       { name: 'Git & GitHub', level: 90 },
-      { name: 'Figma (UI/UX Design)', level: 80 },
       { name: 'VS Code & XAMPP', level: 92 }
     ],
     ai: [
@@ -114,7 +121,8 @@ const Skills = () => {
     switch (tab) {
       case 'frontend': return 'from-neon-cyan to-blue-500';
       case 'backend': return 'from-neon-violet to-indigo-500';
-      case 'tools': return 'from-neon-fuchsia to-purple-500';
+      case 'design': return 'from-neon-fuchsia to-purple-500';
+      case 'tools': return 'from-purple-500 to-pink-500';
       case 'ai': return 'from-neon-rose to-red-500';
       default: return 'from-neon-cyan to-neon-violet';
     }
@@ -124,7 +132,8 @@ const Skills = () => {
     switch (tab) {
       case 'frontend': return 'bg-neon-cyan shadow-[0_0_12px_rgba(0,240,255,0.6)]';
       case 'backend': return 'bg-neon-violet shadow-[0_0_12px_rgba(139,92,246,0.6)]';
-      case 'tools': return 'bg-neon-fuchsia shadow-[0_0_12px_rgba(217,70,239,0.6)]';
+      case 'design': return 'bg-neon-fuchsia shadow-[0_0_12px_rgba(217,70,239,0.6)]';
+      case 'tools': return 'bg-purple-500 shadow-[0_0_12px_rgba(168,85,247,0.6)]';
       case 'ai': return 'bg-neon-rose shadow-[0_0_12px_rgba(244,63,94,0.6)]';
       default: return 'bg-indigo-500';
     }
@@ -165,44 +174,85 @@ const Skills = () => {
         </div>
 
         {/* Dynamic Skills display panels */}
-        <div className="max-w-3xl mx-auto perspective-1000">
-          <AnimatePresence mode="wait">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center max-w-5xl mx-auto">
+          
+          {/* Skills List Panel (Left/Main) */}
+          <div className="lg:col-span-7 w-full perspective-1000">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.3 }}
+                className="skills-panel glass-panel p-8 rounded-2xl border border-white/10 shadow-2xl relative group preserve-3d overflow-hidden"
+              >
+                {/* Card glossy light reflection */}
+                <div className="card-shine-overlay" />
+
+                {/* Glowing header bar based on active theme color */}
+                <div className={`absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r ${getThemeColor(activeTab)} pointer-events-none`} />
+
+                <div className="space-y-6 depth-layer-mid pointer-events-none">
+                  {skillData[activeTab].map((skill, idx) => (
+                    <div key={idx} className="space-y-2 pointer-events-none">
+                      <div className="flex justify-between items-center text-sm font-semibold">
+                        <span className="text-gray-200 group-hover:text-white">{skill.name}</span>
+                        <span className="text-gray-400 font-mono">{skill.level}%</span>
+                      </div>
+
+                      {/* Meter channel */}
+                      <div className="h-2.5 w-full bg-white/5 rounded-full overflow-hidden border border-white/5 relative">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          animate={{ width: `${skill.level}%` }}
+                          transition={{ duration: 1.1, ease: 'easeOut' }}
+                          className={`h-full rounded-full ${getMeterColor(activeTab)}`}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* 3D Floating Programming Languages Icon illustration (Right) */}
+          <div className="lg:col-span-5 w-full flex justify-center">
             <motion.div
-              key={activeTab}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.3 }}
-              className="skills-panel glass-panel p-8 rounded-2xl border border-white/10 shadow-2xl relative group preserve-3d overflow-hidden"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative w-full max-w-[280px] sm:max-w-[320px] aspect-square flex items-center justify-center p-6 glass-panel rounded-2xl border border-white/5 shadow-2xl overflow-hidden group/art cursor-default select-none"
             >
-              {/* Card glossy light reflection */}
-              <div className="card-shine-overlay" />
-
-              {/* Glowing header bar based on active theme color */}
-              <div className={`absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r ${getThemeColor(activeTab)} pointer-events-none`} />
-
-              <div className="space-y-6 depth-layer-mid pointer-events-none">
-                {skillData[activeTab].map((skill, idx) => (
-                  <div key={idx} className="space-y-2 pointer-events-none">
-                    <div className="flex justify-between items-center text-sm font-semibold">
-                      <span className="text-gray-200 group-hover:text-white">{skill.name}</span>
-                      <span className="text-gray-400 font-mono">{skill.level}%</span>
-                    </div>
-
-                    {/* Meter channel */}
-                    <div className="h-2.5 w-full bg-white/5 rounded-full overflow-hidden border border-white/5 relative">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: `${skill.level}%` }}
-                        transition={{ duration: 1.1, ease: 'easeOut' }}
-                        className={`h-full rounded-full ${getMeterColor(activeTab)}`}
-                      />
-                    </div>
-                  </div>
-                ))}
+              {/* Glowing background mesh behind the 3D asset */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-neon-cyan/5 via-neon-violet/10 to-neon-fuchsia/5 opacity-50 blur-2xl group-hover/art:opacity-80 transition-opacity duration-500" />
+              
+              {/* Dynamic rotating 3D Programming Languages Icon */}
+              <motion.img
+                src="https://cdn3d.iconscout.com/3d/premium/thumb/programming-languages-3d-icon-png-download-11281508.png"
+                alt="Programming & Design 3D Icon"
+                className="w-full h-full object-contain relative z-10 drop-shadow-[0_15px_30px_rgba(0,240,255,0.25)] select-none"
+                animate={{
+                  y: [0, -12, 0],
+                  rotate: [0, 5, 0, -5, 0]
+                }}
+                transition={{
+                  duration: 6,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                onError={(e) => { e.target.src = "https://placehold.co/400x400/0b0825/00f0ff?text=3D+Dev+Languages" }}
+              />
+              
+              {/* Inner ambient details card */}
+              <div className="absolute bottom-3 left-3 right-3 p-3 bg-white/2 border border-white/5 rounded-xl text-[10px] text-gray-500 font-mono flex justify-between relative z-20 backdrop-blur-sm select-none">
+                <span>SYSTEM CORE: V2.6</span>
+                <span className="text-neon-cyan">ACTIVE</span>
               </div>
             </motion.div>
-          </AnimatePresence>
+          </div>
+
         </div>
 
       </div>
