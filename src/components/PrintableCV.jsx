@@ -34,9 +34,10 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
     if (!element) return;
     
     setDownloading(true);
+    element.classList.add('downloading-pdf');
     
     const opt = {
-      margin:       [10, 10, 10, 10],
+      margin:       0,
       filename:     'Jezua_Errol_Palma_CV.pdf',
       image:        { type: 'jpeg', quality: 0.98 },
       html2canvas:  { 
@@ -49,8 +50,14 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
 
     const runHtml2Pdf = () => {
       window.html2pdf().from(element).set(opt).save()
-        .then(() => setDownloading(false))
-        .catch(() => setDownloading(false));
+        .then(() => {
+          element.classList.remove('downloading-pdf');
+          setDownloading(false);
+        })
+        .catch(() => {
+          element.classList.remove('downloading-pdf');
+          setDownloading(false);
+        });
     };
 
     if (window.html2pdf) {
@@ -59,7 +66,10 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
       const script = document.createElement('script');
       script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
       script.onload = runHtml2Pdf;
-      script.onerror = () => setDownloading(false);
+      script.onerror = () => {
+        element.classList.remove('downloading-pdf');
+        setDownloading(false);
+      };
       document.body.appendChild(script);
     }
   };
@@ -494,6 +504,50 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
           .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 3px !important; }
           .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 3px !important; }
         }
+
+        /* 📄 PDF Download Layout Engine - Guarantees exact 1-page A4 PDF output */
+        #cv-document-card.downloading-pdf {
+          width: 210mm !important;
+          height: 297mm !important;
+          padding: 12mm 15mm !important;
+          background: white !important;
+          border: none !important;
+          border-radius: 0 !important;
+          box-shadow: none !important;
+          box-sizing: border-box !important;
+          overflow: hidden !important;
+          margin: 0 !important;
+        }
+
+        #cv-document-card.downloading-pdf * {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+          color-adjust: exact !important;
+        }
+
+        #cv-document-card.downloading-pdf img {
+          border-radius: 8px !important;
+        }
+
+        /* Typography PDF scaling */
+        #cv-document-card.downloading-pdf h1 { font-size: 19pt !important; line-height: 1.15 !important; }
+        #cv-document-card.downloading-pdf h2 { font-size: 10pt !important; margin-bottom: 2px !important; }
+        #cv-document-card.downloading-pdf h3 { font-size: 9pt !important; }
+        #cv-document-card.downloading-pdf p, 
+        #cv-document-card.downloading-pdf span, 
+        #cv-document-card.downloading-pdf li, 
+        #cv-document-card.downloading-pdf a { font-size: 7.5pt !important; line-height: 1.3 !important; }
+        
+        /* Spacing PDF scaling to guarantee strict single-page limit */
+        #cv-document-card.downloading-pdf .grid { gap: 14px !important; }
+        #cv-document-card.downloading-pdf .pt-8 { padding-top: 8px !important; }
+        #cv-document-card.downloading-pdf .pb-8 { padding-bottom: 8px !important; }
+        #cv-document-card.downloading-pdf .py-6 { padding-top: 6px !important; padding-bottom: 6px !important; }
+        #cv-document-card.downloading-pdf .space-y-8 > :not([hidden]) ~ :not([hidden]) { margin-top: 8px !important; }
+        #cv-document-card.downloading-pdf .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: 6px !important; }
+        #cv-document-card.downloading-pdf .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 4px !important; }
+        #cv-document-card.downloading-pdf .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 3px !important; }
+        #cv-document-card.downloading-pdf .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 3px !important; }
       `}</style>
     </div>
   );
