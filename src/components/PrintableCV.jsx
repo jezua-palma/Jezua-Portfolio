@@ -71,7 +71,7 @@ const PrintableCV = ({ onBack }) => {
             <img
               src="/assets/profile.jpg"
               alt="Jezua Errol Palma Professional"
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300"
+              className="w-full h-full object-cover transition-all duration-300"
               onError={(e) => { e.target.src = "https://placehold.co/300x300/e4e4e7/09090b?text=Jezua+Palma" }}
             />
           </div>
@@ -143,10 +143,10 @@ const PrintableCV = ({ onBack }) => {
                 <div className="space-y-2">
                   <div className="flex justify-between items-start text-xs sm:text-sm">
                     <div>
-                      <h3 className="font-extrabold text-zinc-900 text-sm sm:text-base">IT Developer Intern</h3>
+                      <h3 className="font-extrabold text-zinc-900 text-sm sm:text-base">Full Stack Developer</h3>
                       <div className="text-zinc-500 font-medium">SP Madrid & Associates Law Firm</div>
                     </div>
-                    <span className="font-mono text-zinc-500 text-right">April 2026 - Present</span>
+                    <span className="font-mono text-zinc-500 text-right">March 10, 2026 - June 5, 2026</span>
                   </div>
                   <p className="text-zinc-600 text-xs sm:text-sm leading-relaxed">
                     Developing and maintaining enterprise CRM modules inside the visual-first Bubble.io platform. Designed secure PostgreSQL query flows and coded responsive JavaScript hooks. Successfully structured bulk automation scripts that dramatically improved bulk email blasting capacity and notification speeds.
@@ -164,6 +164,20 @@ const PrintableCV = ({ onBack }) => {
                   </div>
                   <p className="text-zinc-600 text-xs sm:text-sm leading-relaxed">
                     Architected customized software solutions, high-conversion landing pages, and responsive inventory trackers for small-to-medium clients. Structured relational databases, role-based dashboards, and automated triggers with 100% project completion scores and satisfied client reviews.
+                  </p>
+                </div>
+
+                {/* Independent Projects */}
+                <div className="space-y-2">
+                  <div className="flex justify-between items-start text-xs sm:text-sm">
+                    <div>
+                      <h3 className="font-extrabold text-zinc-900 text-sm sm:text-base">Independent Project Developer</h3>
+                      <div className="text-zinc-500 font-medium">Self-Directed Personal Projects</div>
+                    </div>
+                    <span className="font-mono text-zinc-500 text-right">2024 - Present</span>
+                  </div>
+                  <p className="text-zinc-600 text-xs sm:text-sm leading-relaxed">
+                    Conceptualized and deployed a portfolio of responsive AI utilities and web applications. Developed **ColorSense AI Scanner** (mobile hex contrast code validator) and **DailyMood App** (mood tracking app integrating semantic prompt pipelines with Gemini AI), demonstrating strong design-to-deployment execution.
                   </p>
                 </div>
 
@@ -194,7 +208,8 @@ const PrintableCV = ({ onBack }) => {
                 <div className="flex justify-between items-start text-xs sm:text-sm">
                   <div>
                     <h3 className="font-bold text-zinc-900">Laguna State Polytechnic University</h3>
-                    <p className="text-zinc-500 text-xs">Bachelor of Science in Information Technology (4th Year)</p>
+                    <p className="text-zinc-500 text-xs">Bachelor of Science in Information Technology (4th Year / Present)</p>
+                    <p className="text-indigo-600 text-[10px] sm:text-xs font-bold mt-0.5">General Weighted Average (GWA): 1.73</p>
                   </div>
                   <span className="font-mono text-zinc-500 text-right">2022 - Present</span>
                 </div>
@@ -384,7 +399,7 @@ const PrintableCV = ({ onBack }) => {
             width: 190mm !important;
             height: 277mm !important;
             margin: 10mm auto !important;
-            padding: 24px 32px !important;
+            padding: 16px 24px !important;
             background: white !important;
             border: 1px solid #e4e4e7 !important;
             border-radius: 16px !important;
@@ -398,21 +413,21 @@ const PrintableCV = ({ onBack }) => {
           }
 
           /* Typography print scaling */
-          h1 { font-size: 21pt !important; line-height: 1.15 !important; }
-          h2 { font-size: 11pt !important; margin-bottom: 2px !important; }
-          h3 { font-size: 10pt !important; }
-          p, span, li, a { font-size: 8pt !important; line-height: 1.35 !important; }
+          h1 { font-size: 19pt !important; line-height: 1.15 !important; }
+          h2 { font-size: 10pt !important; margin-bottom: 2px !important; }
+          h3 { font-size: 9pt !important; }
+          p, span, li, a { font-size: 7.5pt !important; line-height: 1.3 !important; }
           
           /* Spacing print scaling to guarantee strict single-page limit */
-          .grid { gap: 16px !important; }
-          .pt-8 { padding-top: 12px !important; }
-          .pb-8 { padding-bottom: 12px !important; }
-          .py-6 { padding-top: 8px !important; padding-bottom: 8px !important; }
-          .space-y-8 > :not([hidden]) ~ :not([hidden]) { margin-top: 12px !important; }
-          .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: 8px !important; }
-          .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 6px !important; }
-          .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 4px !important; }
-          .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 4px !important; }
+          .grid { gap: 14px !important; }
+          .pt-8 { padding-top: 8px !important; }
+          .pb-8 { padding-bottom: 8px !important; }
+          .py-6 { padding-top: 6px !important; padding-bottom: 6px !important; }
+          .space-y-8 > :not([hidden]) ~ :not([hidden]) { margin-top: 8px !important; }
+          .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: 6px !important; }
+          .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 4px !important; }
+          .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 3px !important; }
+          .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 3px !important; }
         }
       `}</style>
     </div>

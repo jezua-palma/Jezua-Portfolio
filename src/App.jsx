@@ -532,21 +532,28 @@ function App() {
                       const translateX = -mouseOffset.x * mouseMultiplier;
                       const translateY = -mouseOffset.y * mouseMultiplier;
                       return (
-                        <motion.div
+                        <div
                           key={idx}
                           style={{
-                            y: scrollTransform,
                             position: 'fixed',
                             top: item.top,
                             left: item.left,
                             transform: `translate3d(${translateX}px, ${translateY}px, 0)`,
                             transition: 'transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                            willChange: 'transform'
+                            willChange: 'transform',
+                            zIndex: -1
                           }}
-                          className={`hidden md:block ${item.size} ${item.color} text-glow-neon select-none font-sans`}
+                          className="hidden md:block pointer-events-none select-none"
                         >
-                          {item.text}
-                        </motion.div>
+                          <motion.div
+                            style={{
+                              y: scrollTransform
+                            }}
+                            className={`${item.size} ${item.color} text-glow-neon select-none font-sans`}
+                          >
+                            {item.text}
+                          </motion.div>
+                        </div>
                       );
                     })}
                   </div>

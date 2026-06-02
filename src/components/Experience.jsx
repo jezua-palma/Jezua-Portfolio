@@ -6,10 +6,10 @@ const Experience = () => {
   const events = [
     {
       type: 'work',
-      date: 'April 2026 - Present',
-      role: 'IT Developer Intern',
+      date: 'March 10, 2026 - June 5, 2026',
+      role: 'Full Stack Developer',
       company: 'SP Madrid & Associates Law Firm',
-      desc: 'Engineered robust visual CRM features and high-volume email blasting logic. Designed relational databases and optimized internal workflows, drastically improving bulk client notification velocity.',
+      desc: 'Developing and maintaining enterprise CRM modules inside the visual-first Bubble.io platform. Designed secure PostgreSQL query flows and coded responsive JavaScript hooks. Successfully structured bulk automation scripts that dramatically improved bulk email blasting capacity and notification speeds.',
       tech: ['Bubble.io', 'PostgreSQL', 'JavaScript', 'Email Automations'],
       highlights: ['Streamlined massive bulk email blast pipelines', 'Structured clean visual CRM modules', 'Integrated low-latency API hooks']
     },
@@ -21,6 +21,15 @@ const Experience = () => {
       desc: 'Translating client ideas into high-performance web products. Designing fluid visual layouts and configuring backend database systems with robust user access permissions.',
       tech: ['Flask', 'Django', 'React', 'Tailwind CSS', 'PostgreSQL'],
       highlights: ['Delivered 100% responsive modern web solutions', 'Configured secure payment & dashboard gates', 'Achieved 100% client satisfaction score']
+    },
+    {
+      type: 'work',
+      date: '2024 - Present',
+      role: 'Independent Project Developer',
+      company: 'Self-Directed Personal Projects',
+      desc: 'Conceptualized, designed, and deployed a suite of web applications, AI utilities, and interactive software. Managed full-cycle product design in Figma and front-to-back engineering on edge-hosted networks.',
+      tech: ['React', 'Next.js', 'Flask', 'Gemini AI API', 'Tailwind CSS'],
+      highlights: ['Developed ColorSense AI Scanner with sub-100ms palette latency', 'Engineered DailyMood App processing journal insights via semantic prompts', 'Deployed Capstone Title Generator serving 200+ active academic outline plays']
     },
     {
       type: 'work',
