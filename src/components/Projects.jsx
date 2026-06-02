@@ -1,62 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ExternalLink, Sparkles, X, Terminal, Award, TrendingUp } from 'lucide-react';
-import { gsap } from 'gsap';
 
 const Projects = () => {
   const [filter, setFilter] = useState('all');
   const [activeModal, setActiveModal] = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
-
-  // GSAP 3D Interactive Card Rotations & Cursor glare reflections
-  useEffect(() => {
-    const cards = document.querySelectorAll('.depth-card-trigger');
-    cards.forEach(card => {
-      const shine = card.querySelector('.shine-element');
-      const inner = card.querySelector('.depth-inner');
-
-      const handleMouseMove = (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-
-        // Angle rotations (max 10deg)
-        const tiltX = -(y / (rect.height / 2)) * 10;
-        const tiltY = (x / (rect.width / 2)) * 10;
-
-        // Glare spot reflection properties
-        const shineX = ((e.clientX - rect.left) / rect.width) * 100;
-        const shineY = ((e.clientY - rect.top) / rect.height) * 100;
-        if (shine) {
-          shine.style.setProperty('--shine-x', `${shineX}%`);
-          shine.style.setProperty('--shine-y', `${shineY}%`);
-        }
-
-        gsap.to(inner, {
-          rotateX: tiltX,
-          rotateY: tiltY,
-          x: x * 0.03,
-          y: y * 0.03,
-          duration: 0.25,
-          ease: 'power2.out'
-        });
-      };
-
-      const handleMouseLeave = () => {
-        gsap.to(inner, {
-          rotateX: 0,
-          rotateY: 0,
-          x: 0,
-          y: 0,
-          duration: 0.6,
-          ease: 'power2.out'
-        });
-      };
-
-      card.addEventListener('mousemove', handleMouseMove);
-      card.addEventListener('mouseleave', handleMouseLeave);
-    });
-  }, [filter]); // Re-run when filter changes to bind new elements
 
   const projects = [
     {
@@ -270,19 +219,16 @@ const Projects = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3 }}
-                className="depth-card-trigger perspective-1000 rounded-2xl flex flex-col h-full cursor-default"
+                className="flex flex-col h-full"
               >
                 <div 
                   onClick={() => { setActiveModal(proj); setActiveTab('overview'); }}
-                  className="depth-inner flex flex-col h-full relative preserve-3d glass-panel border border-white/5 overflow-hidden hover:border-neon-cyan/30 transition-all duration-300 rounded-2xl cursor-pointer"
+                  className="group flex flex-col h-full relative glass-panel border border-white/5 overflow-hidden hover:border-neon-cyan/40 hover:shadow-[0_0_20px_rgba(0,240,255,0.1)] hover:-translate-y-1.5 transition-all duration-300 rounded-2xl cursor-pointer"
                 >
-                  {/* Glare sheen cursor-linked overlay */}
-                  <div className="shine-element card-shine-overlay" />
-
                   {/* Visual Top Bar / Accent */}
-                  <div className="h-1 bg-gradient-to-r from-neon-cyan/40 via-neon-violet/40 to-neon-fuchsia/40" />
+                  <div className="h-1 bg-gradient-to-r from-neon-cyan/40 via-neon-violet/40 to-neon-fuchsia/40 group-hover:from-neon-cyan/60 group-hover:via-neon-violet/60 group-hover:to-neon-fuchsia/60 transition-all duration-300" />
 
-                  <div className="p-6 flex flex-col h-full justify-between space-y-4 depth-layer-mid">
+                  <div className="p-6 flex flex-col h-full justify-between space-y-4">
                     <div>
                       {/* Header */}
                       <div className="flex items-center justify-between mb-2">
