@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { lazy, Suspense, useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -15,7 +15,8 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import PrintableCV from './components/PrintableCV';
 import IntroLoader from './components/IntroLoader';
-import AIAssistant from './components/AIAssistant';
+
+const AIAssistant = lazy(() => import('./components/AIAssistant'));
 
 // Register GSAP ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -48,6 +49,7 @@ function App() {
   const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 }); // Fraction coordinates (-0.5 to 0.5) for smooth 3D tilt
   const [cursorHovered, setCursorHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [aiAssistantActive, setAiAssistantActive] = useState(false);
   const canvasRef = useRef(null);
 
   // Scroll Parallax Hooks (for viewport-fixed glowing spheres)
@@ -439,7 +441,26 @@ function App() {
 
       {/* AI Assistant Widget (Rendered outside filters to avoid position:fixed stacking context bug) */}
       {!isLoading && theme === 'dark-dashboard' && (
-        <AIAssistant />
+        aiAssistantActive ? (
+          <Suspense
+            fallback={
+              <div className="fixed bottom-6 right-6 z-[9999] rounded-2xl border border-neon-cyan/30 bg-black/90 px-4 py-3 text-[10px] font-mono font-bold uppercase tracking-widest text-neon-cyan shadow-[0_0_18px_rgba(0,240,255,0.25)]">
+                Loading AI...
+              </div>
+            }
+          >
+            <AIAssistant initialOpen onClose={() => setAiAssistantActive(false)} />
+          </Suspense>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setAiAssistantActive(true)}
+            className="fixed bottom-6 right-6 z-[9999] flex h-16 w-16 items-center justify-center rounded-2xl border border-neon-cyan/35 bg-black/90 font-mono text-sm font-black tracking-widest text-neon-cyan shadow-[0_0_22px_rgba(0,240,255,0.25)] transition-transform duration-200 hover:scale-105 hover:border-neon-fuchsia/50 hover:text-neon-fuchsia"
+            aria-label="Open AI assistant"
+          >
+            AI
+          </button>
+        )
       )}
 
       {/* Entry Loading Animation */}

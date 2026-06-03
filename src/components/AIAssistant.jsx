@@ -121,8 +121,8 @@ const analyzeSearchQuery = (text) => {
 
 const USE_TYPECAST_TTS = import.meta.env.VITE_USE_TYPECAST_TTS !== 'false';
 
-const AIAssistant = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const AIAssistant = ({ initialOpen = false, onClose }) => {
+  const [isOpen, setIsOpen] = useState(initialOpen);
   const [isMuted, setIsMuted] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [chatInput, setChatInput] = useState('');
@@ -150,7 +150,7 @@ const AIAssistant = () => {
 
   const stopSpeaking = () => {
     speechTxRef.current++;
-    window.speechSynthesis.cancel();
+    window.speechSynthesis?.cancel();
     if (speechRef.current && typeof speechRef.current.pause === 'function') {
       speechRef.current.pause();
       speechRef.current = null;
@@ -158,10 +158,17 @@ const AIAssistant = () => {
     setIsSpeaking(false);
   };
 
-  // Auto-scroll chat to bottom on new messages
+  const handleCloseAssistant = () => {
+    stopSpeaking();
+    setIsOpen(false);
+    onClose?.();
+  };
+
+  // Auto-scroll chat to bottom on new messages only while the panel is open
   useEffect(() => {
+    if (!isOpen) return;
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [isOpen, messages]);
 
   // Clean speech synthesis on unmount
   useEffect(() => {
@@ -170,17 +177,25 @@ const AIAssistant = () => {
     };
   }, []);
 
-  // Fetch voices asynchronously and monitor voice updates
+  // Fetch browser voices only while the assistant is active.
   useEffect(() => {
+    if (!isOpen || !window.speechSynthesis) return;
+
     const loadVoices = () => {
       const allVoices = window.speechSynthesis.getVoices();
       setVoices(allVoices);
     };
+
     loadVoices();
     if (window.speechSynthesis.onvoiceschanged !== undefined) {
       window.speechSynthesis.onvoiceschanged = loadVoices;
     }
-  }, []);
+    return () => {
+      if (window.speechSynthesis.onvoiceschanged === loadVoices) {
+        window.speechSynthesis.onvoiceschanged = null;
+      }
+    };
+  }, [isOpen]);
 
   const speakTextWebSpeech = (cleanText, emotion) => {
     const utterance = new SpeechSynthesisUtterance(cleanText);
@@ -943,7 +958,13 @@ const AIAssistant = () => {
 
         {/* The 3D Avatar Portrait Pod */}
         <div 
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => {
+            if (isOpen) {
+              handleCloseAssistant();
+            } else {
+              setIsOpen(true);
+            }
+          }}
           className={`relative rounded-[2rem] border bg-black/85 overflow-hidden cursor-pointer flex flex-col items-center group transition-all duration-500 ease-in-out ${
             isOpen 
               ? 'w-20 h-32 md:w-28 md:h-44' 
@@ -1149,7 +1170,7 @@ const AIAssistant = () => {
                 
                 {/* Close button */}
                 <button
-                  onClick={() => setIsOpen(false)}
+                  onClick={handleCloseAssistant}
                   className="p-1.5 rounded-lg border border-white/10 bg-white/5 hover:border-neon-fuchsia/40 hover:bg-neon-fuchsia/5 text-gray-400 hover:text-neon-fuchsia transition-all"
                 >
                   <X className="w-3.5 h-3.5" />
