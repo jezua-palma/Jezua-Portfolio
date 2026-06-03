@@ -15,6 +15,7 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import PrintableCV from './components/PrintableCV';
 import IntroLoader from './components/IntroLoader';
+import AIAssistant from './components/AIAssistant';
 
 // Register GSAP ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -434,6 +435,11 @@ function App() {
             }}
           />
         </>
+      )}
+
+      {/* AI Assistant Widget (Rendered outside filters to avoid position:fixed stacking context bug) */}
+      {!isLoading && theme === 'dark-dashboard' && (
+        <AIAssistant />
       )}
 
       {/* Entry Loading Animation */}
