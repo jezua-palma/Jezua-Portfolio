@@ -51,6 +51,7 @@ function App() {
   const [isMobile, setIsMobile] = useState(false);
   const [aiAssistantActive, setAiAssistantActive] = useState(false);
   const canvasRef = useRef(null);
+  const outsideAnimationsPaused = aiAssistantActive;
 
   // Scroll Parallax Hooks (for viewport-fixed glowing spheres)
   const { scrollYProgress } = useScroll();
@@ -115,7 +116,12 @@ function App() {
 
   // Global HTML5 Cybernetic Particle Canvas Engine
   useEffect(() => {
-    if (isLoading || theme !== 'dark-dashboard') return;
+    if (isLoading || theme !== 'dark-dashboard' || outsideAnimationsPaused) {
+      const canvas = canvasRef.current;
+      const ctx = canvas?.getContext('2d');
+      ctx?.clearRect(0, 0, canvas.width, canvas.height);
+      return;
+    }
     
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -297,11 +303,11 @@ function App() {
       window.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseleave', handleMouseLeave);
     };
-  }, [isLoading, theme]);
+  }, [isLoading, theme, outsideAnimationsPaused]);
 
   // GSAP ScrollTrigger dynamic scroll circuit path wire & node pulse triggers
   useEffect(() => {
-    if (isLoading || theme !== 'dark-dashboard') return;
+    if (isLoading || theme !== 'dark-dashboard' || outsideAnimationsPaused) return;
 
     const ctx = gsap.context(() => {
       // 1. Draw circuit line based on page scroll progress
@@ -340,10 +346,22 @@ function App() {
     });
 
     return () => ctx.revert();
-  }, [isLoading, theme]);
+  }, [isLoading, theme, outsideAnimationsPaused]);
 
   useEffect(() => {
     // 1. Loader is managed by IntroLoader component, no auto-dismiss timer.
+    const mediaCheck = window.matchMedia('(max-width: 1024px)');
+    setIsMobile(mediaCheck.matches);
+    const handleMediaChange = (e) => setIsMobile(e.matches);
+    mediaCheck.addEventListener('change', handleMediaChange);
+
+    if (outsideAnimationsPaused) {
+      setCursorHovered(false);
+      setMouseOffset({ x: 0, y: 0 });
+      return () => {
+        mediaCheck.removeEventListener('change', handleMediaChange);
+      };
+    }
 
     // 2. Cursor position tracking
     const handleMouseMove = (e) => {
@@ -355,13 +373,7 @@ function App() {
       });
     };
 
-    // 3. Mobile screen match check
-    const mediaCheck = window.matchMedia('(max-width: 1024px)');
-    setIsMobile(mediaCheck.matches);
-    const handleMediaChange = (e) => setIsMobile(e.matches);
-
     window.addEventListener('mousemove', handleMouseMove);
-    mediaCheck.addEventListener('change', handleMediaChange);
 
     // 4. Global Hover & Magnetic listeners
     const addHoverListeners = () => {
@@ -409,12 +421,12 @@ function App() {
       window.removeEventListener('mousemove', handleMouseMove);
       mediaCheck.removeEventListener('change', handleMediaChange);
     };
-  }, [isLoading, theme]);
+  }, [isLoading, theme, outsideAnimationsPaused]);
 
   return (
     <>
       {/* Dynamic Custom Liquid Cursor (Desktop only, Dashboard only) */}
-      {!isMobile && !isLoading && theme === 'dark-dashboard' && (
+      {!isMobile && !isLoading && theme === 'dark-dashboard' && !outsideAnimationsPaused && (
         <>
           <div 
             className="custom-cursor" 
@@ -485,9 +497,12 @@ function App() {
               className="relative min-h-screen"
             >
               {/* Global Cybernetic Particle Canvas Background */}
-              <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none opacity-45 mix-blend-screen" />
+              {!outsideAnimationsPaused && (
+                <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none opacity-45 mix-blend-screen" />
+              )}
 
               {/* Viewport-constrained Background Mesh Elements */}
+              {!outsideAnimationsPaused && (
               <div className="fixed inset-0 overflow-hidden pointer-events-none z-[-1]">
                 <motion.div 
                   style={{ y: floatY1, scale: scale1, rotate: rotateGlow, opacity: opacityGlow }}
@@ -506,9 +521,11 @@ function App() {
                   className="absolute w-[600px] h-[600px] rounded-full bg-neon-rose/8 blur-[140px] bottom-[-100px] right-[10%] pointer-events-none" 
                 />
               </div>
+              )}
 
               <div className="dashboard-content w-full relative">
                 {/* Scroll-Drawing Neon Circuit Path Wire & Junction Nodes using native GSAP ScrollTrigger */}
+                {!outsideAnimationsPaused && (
                 <div className="absolute inset-0 pointer-events-none overflow-hidden z-[-1]">
                   <div className="absolute left-[4%] sm:left-[6%] top-0 bottom-0 w-[2px] bg-white/[0.03]" />
                   <div 
@@ -528,9 +545,10 @@ function App() {
                     </div>
                   ))}
                 </div>
+                )}
 
                 {/* 3D Holographic Parallax Tech Stack Symbols (Viewport-Fixed Field) */}
-                {!isMobile && (
+                {!isMobile && !outsideAnimationsPaused && (
                   <div className="fixed inset-0 pointer-events-none overflow-hidden z-[-1] select-none">
                     {techItems.map((item, idx) => {
                       const scrollTransform = getScrollTransform(item.depthLayer);
