@@ -265,3 +265,14 @@
 body.ai-active *:not(.ai-assistant-container):not(.ai-assistant-container *) {
   animation-play-state: paused !important;
 }
+
+@keyframes launcher-bounce {
+  0% { height: 25%; }
+  100% { height: 100%; }
+}
+
+@keyframes scan-sweep {
+  0% { top: 0%; }
+  50% { opacity: 0.8; }
+  100% { top: 100%; }
+}

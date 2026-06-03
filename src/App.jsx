@@ -481,10 +481,38 @@ function App() {
           <button
             type="button"
             onClick={() => setAiAssistantActive(true)}
-            className="fixed bottom-6 right-6 z-[9999] flex h-16 w-16 items-center justify-center rounded-2xl border border-neon-cyan/35 bg-black/90 font-mono text-sm font-black tracking-widest text-neon-cyan shadow-[0_0_22px_rgba(0,240,255,0.25)] transition-transform duration-200 hover:scale-105 hover:border-neon-fuchsia/50 hover:text-neon-fuchsia"
+            className="fixed bottom-6 right-6 z-[9999] group flex h-16 w-16 items-center justify-center rounded-full bg-black/85 border border-neon-cyan/30 shadow-[0_0_25px_rgba(0,240,255,0.2)] transition-all duration-300 hover:scale-110 hover:border-neon-fuchsia/60 hover:shadow-[0_0_35px_rgba(217,70,239,0.45)] focus:outline-none cursor-pointer"
             aria-label="Open AI assistant"
           >
-            AI
+            {/* Ambient Background Aura */}
+            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-neon-cyan/10 via-transparent to-neon-violet/20 opacity-80 group-hover:from-neon-fuchsia/20 group-hover:to-neon-violet/30 transition-all duration-300 pointer-events-none" />
+            
+            {/* Spinning Outer Orbit Ring */}
+            <div className="absolute inset-1 rounded-full border border-dashed border-neon-cyan/30 animate-[spin_10s_linear_infinite] group-hover:border-neon-fuchsia/50 group-hover:animate-[spin_6s_linear_infinite] transition-all duration-300 pointer-events-none" />
+            
+            {/* Counter-rotating Inner Orbit Ring */}
+            <div className="absolute inset-2 rounded-full border border-dotted border-neon-violet/20 animate-[spin_6s_linear_infinite] [animation-direction:reverse] group-hover:border-neon-violet/40 transition-all duration-300 pointer-events-none" />
+            
+            {/* Glowing Core Sphere */}
+            <div className="absolute w-8 h-8 rounded-full bg-neon-cyan/10 border border-neon-cyan/40 flex items-center justify-center shadow-[0_0_12px_rgba(0,240,255,0.3)] group-hover:border-neon-fuchsia/50 group-hover:bg-neon-fuchsia/10 group-hover:shadow-[0_0_15px_rgba(217,70,239,0.4)] transition-all duration-300 pointer-events-none">
+              {/* Dynamic Soundwaves / Equalizer inside core */}
+              <div className="flex items-end justify-center space-x-[1.5px] h-3">
+                <div className="w-[1.5px] h-1 bg-neon-cyan group-hover:bg-neon-fuchsia rounded-full animate-[launcher-bounce_0.6s_infinite_alternate]" style={{ animationDelay: '0.1s' }} />
+                <div className="w-[1.5px] h-2 bg-neon-cyan group-hover:bg-neon-fuchsia rounded-full animate-[launcher-bounce_0.4s_infinite_alternate]" style={{ animationDelay: '0.3s' }} />
+                <div className="w-[1.5px] h-1.5 bg-neon-cyan group-hover:bg-neon-fuchsia rounded-full animate-[launcher-bounce_0.5s_infinite_alternate]" style={{ animationDelay: '0.2s' }} />
+              </div>
+            </div>
+            
+            {/* Futuristic Projector Bottom Plate */}
+            <div className="absolute bottom-[2px] w-5 h-[1.5px] bg-neon-cyan/60 group-hover:bg-neon-fuchsia/80 blur-[0.5px] transition-colors duration-300 pointer-events-none" />
+
+            {/* Glowing scanner sweep line */}
+            <div className="absolute left-0 w-full h-[1.5px] bg-neon-cyan/40 group-hover:bg-neon-fuchsia/60 z-10 pointer-events-none animate-[scan-sweep_3.5s_linear_infinite] opacity-40 group-hover:opacity-80" />
+            
+            {/* Hover Tooltip/Tag */}
+            <span className="absolute -top-8 bg-black/95 border border-neon-cyan/30 text-neon-cyan text-[7px] font-mono font-bold tracking-widest uppercase px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 group-hover:border-neon-fuchsia/40 group-hover:text-neon-fuchsia transition-all duration-300 pointer-events-none whitespace-nowrap shadow-[0_0_12px_rgba(0,0,0,0.8)]">
+              ACTIVATE POLENG
+            </span>
           </button>
         )
       )}
