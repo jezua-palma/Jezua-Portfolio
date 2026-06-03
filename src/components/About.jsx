@@ -2,7 +2,7 @@ import React, { useMemo, useEffect } from 'react';
 import { Terminal, Award, Code2, Users, Calendar } from 'lucide-react';
 import { gsap } from 'gsap';
 
-const About = () => {
+const About = ({ isPaused }) => {
   // Dynamic Age Calculator increments on October 11
   const age = useMemo(() => {
     const birthDate = new Date('2003-10-11');
@@ -65,8 +65,28 @@ const About = () => {
       }
     );
 
-    // 3. Interactive 3D card tilt & shiny glare triggers
+  }, []);
+
+  // 3. Interactive 3D card tilt & shiny glare triggers
+  useEffect(() => {
     const cards = document.querySelectorAll('.about-stat-card');
+    
+    if (isPaused) {
+      cards.forEach(card => {
+        gsap.to(card, {
+          rotateX: 0,
+          rotateY: 0,
+          x: 0,
+          y: 0,
+          duration: 0.3,
+          ease: 'power2.out'
+        });
+      });
+      return;
+    }
+
+    const listeners = [];
+
     cards.forEach(card => {
       const handleMouseMove = (e) => {
         const rect = card.getBoundingClientRect();
@@ -106,8 +126,18 @@ const About = () => {
 
       card.addEventListener('mousemove', handleMouseMove);
       card.addEventListener('mouseleave', handleMouseLeave);
+      listeners.push({ card, handleMouseMove, handleMouseLeave });
     });
-  }, []);
+
+    return () => {
+      listeners.forEach(({ card, handleMouseMove, handleMouseLeave }) => {
+        if (card) {
+          card.removeEventListener('mousemove', handleMouseMove);
+          card.removeEventListener('mouseleave', handleMouseLeave);
+        }
+      });
+    };
+  }, [isPaused]);
 
   return (
     <section id="about" className="relative py-24 overflow-hidden border-t border-white/5">

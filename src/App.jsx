@@ -423,6 +423,18 @@ function App() {
     };
   }, [isLoading, theme, outsideAnimationsPaused]);
 
+  // Toggle body class when AI assistant is active to pause animations
+  useEffect(() => {
+    if (aiAssistantActive) {
+      document.body.classList.add('ai-active');
+    } else {
+      document.body.classList.remove('ai-active');
+    }
+    return () => {
+      document.body.classList.remove('ai-active');
+    };
+  }, [aiAssistantActive]);
+
   return (
     <>
       {/* Dynamic Custom Liquid Cursor (Desktop only, Dashboard only) */}
@@ -454,15 +466,17 @@ function App() {
       {/* AI Assistant Widget (Rendered outside filters to avoid position:fixed stacking context bug) */}
       {!isLoading && theme === 'dark-dashboard' && (
         aiAssistantActive ? (
-          <Suspense
-            fallback={
-              <div className="fixed bottom-6 right-6 z-[9999] rounded-2xl border border-neon-cyan/30 bg-black/90 px-4 py-3 text-[10px] font-mono font-bold uppercase tracking-widest text-neon-cyan shadow-[0_0_18px_rgba(0,240,255,0.25)]">
-                Loading AI...
-              </div>
-            }
-          >
-            <AIAssistant initialOpen onClose={() => setAiAssistantActive(false)} />
-          </Suspense>
+          <div className="ai-assistant-container">
+            <Suspense
+              fallback={
+                <div className="fixed bottom-6 right-6 z-[9999] rounded-2xl border border-neon-cyan/30 bg-black/90 px-4 py-3 text-[10px] font-mono font-bold uppercase tracking-widest text-neon-cyan shadow-[0_0_18px_rgba(0,240,255,0.25)]">
+                  Loading AI...
+                </div>
+              }
+            >
+              <AIAssistant initialOpen onClose={() => setAiAssistantActive(false)} />
+            </Suspense>
+          </div>
         ) : (
           <button
             type="button"
@@ -588,9 +602,9 @@ function App() {
 
                 {/* Interactive Dashboard stack */}
                 <main>
-                  <Hero setTheme={setTheme} setAutoDownloadCV={setAutoDownloadCV} />
-                  <About />
-                  <Skills />
+                  <Hero setTheme={setTheme} setAutoDownloadCV={setAutoDownloadCV} isPaused={outsideAnimationsPaused} />
+                  <About isPaused={outsideAnimationsPaused} />
+                  <Skills isPaused={outsideAnimationsPaused} />
                   <Projects />
                   <Experience />
                   <Certificates />

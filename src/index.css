@@ -260,3 +260,8 @@
   0% { transform: translateY(0px) rotate(0deg); }
   100% { transform: translateY(12px) rotate(-1.5deg); }
 }
+
+/* Pause all CSS keyframe animations outside the AI Assistant to maximize performance/smoothness */
+body.ai-active *:not(.ai-assistant-container):not(.ai-assistant-container *) {
+  animation-play-state: paused !important;
+}

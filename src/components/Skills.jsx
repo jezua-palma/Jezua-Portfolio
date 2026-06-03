@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Laptop, Database, Cpu, Wrench, Palette } from 'lucide-react';
 import { gsap } from 'gsap';
 
-const Skills = () => {
+const Skills = ({ isPaused }) => {
   const [activeTab, setActiveTab] = useState('frontend');
 
   // GSAP Entrance reveals and active panel tilt effects
@@ -29,6 +29,19 @@ const Skills = () => {
   useEffect(() => {
     const panel = document.querySelector('.skills-panel');
     if (!panel) return;
+
+    if (isPaused) {
+      // Revert panel to initial state
+      gsap.to(panel, {
+        rotateX: 0,
+        rotateY: 0,
+        x: 0,
+        y: 0,
+        duration: 0.35,
+        ease: 'power2.out'
+      });
+      return;
+    }
 
     const handleMouseMove = (e) => {
       const rect = panel.getBoundingClientRect();
@@ -73,7 +86,7 @@ const Skills = () => {
       panel.removeEventListener('mousemove', handleMouseMove);
       panel.removeEventListener('mouseleave', handleMouseLeave);
     };
-  }, [activeTab]);
+  }, [activeTab, isPaused]);
 
   const categories = [
     { id: 'frontend', name: 'Frontend Dev', icon: <Laptop className="w-4 h-4" /> },

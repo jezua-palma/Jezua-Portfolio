@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { FileText, ArrowRight, Mail } from 'lucide-react';
 import { gsap } from 'gsap';
 
-const Hero = ({ setTheme, setAutoDownloadCV }) => {
+const Hero = ({ setTheme, setAutoDownloadCV, isPaused }) => {
   const [typedTitle, setTypedTitle] = useState('');
   const titles = [
     "Developer & Designer",
@@ -15,6 +15,8 @@ const Hero = ({ setTheme, setAutoDownloadCV }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   
   useEffect(() => {
+    if (isPaused) return;
+
     let timer;
     const currentFullTitle = titles[titleIdx];
     
@@ -43,7 +45,7 @@ const Hero = ({ setTheme, setAutoDownloadCV }) => {
     }
 
     return () => clearTimeout(timer);
-  }, [typedTitle, isDeleting, titleIdx]);
+  }, [typedTitle, isDeleting, titleIdx, isPaused]);
 
   // GSAP 3D Hover & Parallax Mouse Tracking Effect
   useEffect(() => {
@@ -55,6 +57,19 @@ const Hero = ({ setTheme, setAutoDownloadCV }) => {
     const tag1 = document.querySelector('.telemetry-tag-1');
     const tag2 = document.querySelector('.telemetry-tag-2');
     const tag3 = document.querySelector('.telemetry-tag-3');
+
+    if (isPaused) {
+      // Revert all tilt elements to zero tilt/rotation/offset
+      gsap.to([stack, portrait, terminal, scanner, tag1, tag2, tag3], {
+        rotateX: 0,
+        rotateY: 0,
+        x: 0,
+        y: 0,
+        duration: 0.35,
+        ease: 'power2.out',
+      });
+      return;
+    }
 
     const handleMouseMove = (e) => {
       if (!deck) return;
@@ -172,7 +187,7 @@ const Hero = ({ setTheme, setAutoDownloadCV }) => {
         }
       });
     };
-  }, []);
+  }, [isPaused]);
 
   const socials = [
     { 
