@@ -119,7 +119,6 @@ const analyzeSearchQuery = (text) => {
   return queries;
 };
 
-const TYPECAST_VOICE_ID = import.meta.env.VITE_TYPECAST_VOICE_ID || 'tc_60e5426de8b95f1d3000d7b5';
 const USE_TYPECAST_TTS = import.meta.env.VITE_USE_TYPECAST_TTS !== 'false';
 
 const AIAssistant = () => {
@@ -273,7 +272,6 @@ const AIAssistant = () => {
       }
 
       const requestBody = {
-        voice_id: TYPECAST_VOICE_ID,
         text: cleanText,
         model: 'ssfm-v30',
         language: 'eng',
@@ -284,8 +282,8 @@ const AIAssistant = () => {
         },
         output: {
           volume: 100,
-          audio_pitch: 0,
-          audio_tempo: 1,
+          audio_pitch: 3,
+          audio_tempo: 0.92,
           audio_format: 'wav'
         }
       };

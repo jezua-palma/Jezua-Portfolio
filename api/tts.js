@@ -12,11 +12,16 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Typecast API key not configured on server' });
   }
 
+  const defaultVoiceId =
+    process.env.TYPECAST_VOICE_ID ||
+    process.env.VITE_TYPECAST_VOICE_ID ||
+    'tc_66bc60339ab2db047154b94e';
+
   try {
     const { voice_id, text, model, language, prompt, output } = req.body;
 
-    if (!text || !voice_id) {
-      return res.status(400).json({ error: 'Missing required fields: text, voice_id' });
+    if (!text) {
+      return res.status(400).json({ error: 'Missing required field: text' });
     }
 
     const typecastResponse = await fetch('https://api.typecast.ai/v1/text-to-speech', {
@@ -26,12 +31,12 @@ export default async function handler(req, res) {
         'X-API-KEY': apiKey,
       },
       body: JSON.stringify({
-        voice_id,
+        voice_id: voice_id || defaultVoiceId,
         text,
         model: model || 'ssfm-v30',
         language: language || 'eng',
         prompt: prompt || { emotion_type: 'preset', emotion_preset: 'normal', emotion_intensity: 1.0 },
-        output: output || { volume: 100, audio_pitch: 0, audio_tempo: 1, audio_format: 'wav' },
+        output: output || { volume: 100, audio_pitch: 3, audio_tempo: 0.92, audio_format: 'wav' },
       }),
     });
 
