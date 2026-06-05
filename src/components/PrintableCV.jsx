@@ -498,7 +498,7 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
             width: 100vw !important;
             height: 100vh !important;
             margin: 0 !important;
-            padding: 5mm 8mm !important;
+            padding: 8mm 10mm !important;
             background: white !important;
             border: none !important;
             border-radius: 0 !important;
@@ -511,7 +511,7 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
           .cv-grid {
             display: grid !important;
             grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
-            gap: 12px !important;
+            gap: 16px !important;
           }
           .cv-col-8 {
             grid-column: span 8 / span 8 !important;
@@ -521,58 +521,58 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
             border-top: none !important;
             border-left: 1px solid #e4e4e7 !important;
             padding-top: 0 !important;
-            padding-left: 12px !important;
+            padding-left: 16px !important;
           }
           .cv-header {
             display: flex !important;
             flex-direction: row !important;
             justify-content: space-between !important;
             align-items: center !important;
-            padding-bottom: 2px !important;
+            padding-bottom: 8px !important;
           }
           .cv-contact {
             display: grid !important;
             grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-            gap: 8px !important;
-            padding-top: 2px !important;
-            padding-bottom: 2px !important;
+            gap: 10px !important;
+            padding-top: 8px !important;
+            padding-bottom: 8px !important;
           }
           .cv-profile-pic {
-            width: 20mm !important;
-            height: 20mm !important;
+            width: 22mm !important;
+            height: 22mm !important;
             border-radius: 8px !important;
           }
           .cv-cert-card {
-            padding: 4px 6px !important;
+            padding: 6px 8px !important;
             border-radius: 8px !important;
           }
           .cv-cert-card h4 {
-            font-size: 7.5pt !important;
+            font-size: 8pt !important;
           }
           .cv-project-list {
-            margin-top: 2px !important;
+            margin-top: 4px !important;
             padding-left: 12px !important;
           }
           .cv-project-list li {
-            margin-top: 1px !important;
-            line-height: 1.15 !important;
+            margin-top: 2px !important;
+            line-height: 1.3 !important;
           }
 
           /* Typography print scaling */
-          h1 { font-size: 15pt !important; line-height: 1.05 !important; }
-          h2 { font-size: 9pt !important; margin-bottom: 1px !important; }
-          h3 { font-size: 8pt !important; }
-          p, span, li, a { font-size: 6.5pt !important; line-height: 1.2 !important; }
+          h1 { font-size: 18pt !important; line-height: 1.1 !important; }
+          h2 { font-size: 10.5pt !important; margin-bottom: 3px !important; }
+          h3 { font-size: 9pt !important; }
+          p, span, li, a { font-size: 7.2pt !important; line-height: 1.35 !important; }
           
-          /* Spacing print scaling to guarantee strict single-page limit */
-          .pt-8 { padding-top: 6px !important; }
-          .pb-8 { padding-bottom: 2px !important; }
-          .py-6 { padding-top: 2px !important; padding-bottom: 2px !important; }
-          .space-y-8 > :not([hidden]) ~ :not([hidden]) { margin-top: 4px !important; }
-          .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: 3px !important; }
-          .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 2px !important; }
-          .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 1.5px !important; }
-          .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 1.5px !important; }
+          /* Spacing print scaling to fill the page beautifully */
+          .pt-8 { padding-top: 14px !important; }
+          .pb-8 { padding-bottom: 8px !important; }
+          .py-6 { padding-top: 8px !important; padding-bottom: 8px !important; }
+          .space-y-8 > :not([hidden]) ~ :not([hidden]) { margin-top: 16px !important; }
+          .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: 12px !important; }
+          .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 8px !important; }
+          .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 6px !important; }
+          .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 5px !important; }
         }
 
         /* 📄 PDF Download Layout Engine - Guarantees exact 1-page A4 PDF output */
@@ -580,7 +580,7 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
           display: block !important;
           width: 210mm !important;
           height: 295mm !important;
-          padding: 5mm 8mm !important;
+          padding: 8mm 10mm !important;
           background: white !important;
           border: none !important;
           border-radius: 0 !important;
@@ -599,7 +599,7 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
         #cv-document-card.downloading-pdf .cv-grid {
           display: grid !important;
           grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
-          gap: 12px !important;
+          gap: 16px !important;
         }
         #cv-document-card.downloading-pdf .cv-col-8 {
           grid-column: span 8 / span 8 !important;
@@ -609,61 +609,61 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
           border-top: none !important;
           border-left: 1px solid #e4e4e7 !important;
           padding-top: 0 !important;
-          padding-left: 12px !important;
+          padding-left: 16px !important;
         }
         #cv-document-card.downloading-pdf .cv-header {
           display: flex !important;
           flex-direction: row !important;
           justify-content: space-between !important;
           align-items: center !important;
-          padding-bottom: 2px !important;
+          padding-bottom: 8px !important;
         }
         #cv-document-card.downloading-pdf .cv-contact {
           display: grid !important;
           grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-          gap: 8px !important;
-          padding-top: 2px !important;
-          padding-bottom: 2px !important;
+          gap: 10px !important;
+          padding-top: 8px !important;
+          padding-bottom: 8px !important;
         }
         #cv-document-card.downloading-pdf .cv-profile-pic {
-          width: 20mm !important;
-          height: 20mm !important;
+          width: 22mm !important;
+          height: 22mm !important;
           border-radius: 8px !important;
         }
         #cv-document-card.downloading-pdf .cv-cert-card {
-          padding: 4px 6px !important;
+          padding: 6px 8px !important;
           border-radius: 8px !important;
         }
         #cv-document-card.downloading-pdf .cv-cert-card h4 {
-          font-size: 7.5pt !important;
+          font-size: 8pt !important;
         }
         #cv-document-card.downloading-pdf .cv-project-list {
-          margin-top: 2px !important;
+          margin-top: 4px !important;
           padding-left: 12px !important;
         }
         #cv-document-card.downloading-pdf .cv-project-list li {
-          margin-top: 1px !important;
-          line-height: 1.15 !important;
+          margin-top: 2px !important;
+          line-height: 1.3 !important;
         }
 
         /* Typography PDF scaling */
-        #cv-document-card.downloading-pdf h1 { font-size: 15pt !important; line-height: 1.05 !important; }
-        #cv-document-card.downloading-pdf h2 { font-size: 9pt !important; margin-bottom: 1px !important; }
-        #cv-document-card.downloading-pdf h3 { font-size: 8pt !important; }
+        #cv-document-card.downloading-pdf h1 { font-size: 18pt !important; line-height: 1.1 !important; }
+        #cv-document-card.downloading-pdf h2 { font-size: 10.5pt !important; margin-bottom: 3px !important; }
+        #cv-document-card.downloading-pdf h3 { font-size: 9pt !important; }
         #cv-document-card.downloading-pdf p, 
         #cv-document-card.downloading-pdf span, 
         #cv-document-card.downloading-pdf li, 
-        #cv-document-card.downloading-pdf a { font-size: 6.5pt !important; line-height: 1.2 !important; }
+        #cv-document-card.downloading-pdf a { font-size: 7.2pt !important; line-height: 1.35 !important; }
         
         /* Spacing PDF scaling to guarantee strict single-page limit */
-        #cv-document-card.downloading-pdf .pt-8 { padding-top: 6px !important; }
-        #cv-document-card.downloading-pdf .pb-8 { padding-bottom: 2px !important; }
-        #cv-document-card.downloading-pdf .py-6 { padding-top: 2px !important; padding-bottom: 2px !important; }
-        #cv-document-card.downloading-pdf .space-y-8 > :not([hidden]) ~ :not([hidden]) { margin-top: 4px !important; }
-        #cv-document-card.downloading-pdf .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: 3px !important; }
-        #cv-document-card.downloading-pdf .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 2px !important; }
-        #cv-document-card.downloading-pdf .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 1.5px !important; }
-        #cv-document-card.downloading-pdf .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 1.5px !important; }
+        #cv-document-card.downloading-pdf .pt-8 { padding-top: 14px !important; }
+        #cv-document-card.downloading-pdf .pb-8 { padding-bottom: 8px !important; }
+        #cv-document-card.downloading-pdf .py-6 { padding-top: 8px !important; padding-bottom: 8px !important; }
+        #cv-document-card.downloading-pdf .space-y-8 > :not([hidden]) ~ :not([hidden]) { margin-top: 16px !important; }
+        #cv-document-card.downloading-pdf .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: 12px !important; }
+        #cv-document-card.downloading-pdf .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 8px !important; }
+        #cv-document-card.downloading-pdf .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 6px !important; }
+        #cv-document-card.downloading-pdf .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 5px !important; }
       `}</style>
     </div>
   );
