@@ -478,8 +478,8 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
             display: none !important;
           }
           
-          html, body {
-            background: #f4f4f5 !important;
+          html, body, #root, main, .min-h-screen {
+            background: white !important;
             margin: 0 !important;
             padding: 0 !important;
             width: 100% !important;

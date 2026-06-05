@@ -81,7 +81,7 @@ const Navbar = ({ theme, setTheme }) => {
   };
 
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+    <nav className={`no-print fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
       isScrolled || theme === 'white-cv' ? 'glass-nav py-3' : 'bg-transparent py-5'
     }`}>
       {/* Scroll Progress Bar (Only visible in Dashboard theme) */}
