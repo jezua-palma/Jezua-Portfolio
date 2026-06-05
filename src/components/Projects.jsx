@@ -13,17 +13,17 @@ const Projects = () => {
       id: 'odysseus',
       title: 'Odysseus AI Workspace',
       category: 'ai',
-      desc: 'A self-hosted, privacy-first AI workspace and agent platform featuring multi-model chat, automated RAG, deep research capabilities, email/calendar integration, and sandbox terminal execution.',
+      desc: 'A self-hosted, privacy-first AI workspace and agent platform showcasing mastery over AI-assisted programming, featuring multi-model chat, automated RAG, deep research, and sandbox terminal execution.',
       tech: ['FastAPI', 'Python', 'SQLite', 'ChromaDB', 'Vanilla JS', 'Docker'],
       liveUrl: '',
       githubUrl: 'https://github.com/jezua-palma/odysseus',
       details: {
         problem: 'Commercial AI platforms lock users into proprietary clouds, compromise privacy, and lack deep native integration with personal workflows like local files, emails, and custom APIs.',
-        solution: 'Developed Odysseus, a secure, local-first AI workspace that empowers users to chat with open-source LLMs, run autonomous agents with terminal/MCP tool permissions, and automate RAG over personal documents and services.',
+        solution: 'Developed Odysseus, a secure, local-first AI workspace demonstrating mastery over AI-assisted programming by empowering users to interface with local LLMs, deploy autonomous MCP agents with terminal permissions, and automate RAG.',
         designFocus: 'Futuristic, distraction-free SPA dashboard with a cohesive dark aesthetic, interactive tool overlays, real-time streaming components, and a fully fluid mobile-responsive layout.',
         devFocus: 'Engineered a robust FastAPI backend coordinating async task pipelines for deep research, local vector DB retrieval via ChromaDB, IMAP/SMTP mail triage, and secure loopback authentication gates.',
         features: ['Privacy-first chat with local LLMs (Ollama, llama.cpp) and APIs', 'Autonomous agents utilizing Model Context Protocol (MCP) and terminal tools', 'Async Deep Research system compiling web-synthesized reports', 'Integrated CalDAV calendar, notes/tasks, and AI-triaged email client'],
-        outcome: 'Successfully deployed a privacy-respecting AI environment operating entirely on local hardware, processing vector queries in under 50ms and automating multi-step agent tasks.'
+        outcome: 'Demonstrated mastery over AI-assisted programming by successfully deploying a privacy-respecting local agent environment processing vector queries in under 50ms and automating multi-step tasks.'
       }
     },
     {

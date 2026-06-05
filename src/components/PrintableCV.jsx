@@ -272,7 +272,7 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
                         <strong>Shadow Depths Game:</strong> Performant 2D Canvas roguelike with procedural maps, Google OAuth leaderboard, and WebSocket multiplayer. <em>(Tech: Canvas, CSS, JS, Google GSI, WebSockets)</em>
                       </li>
                       <li>
-                        <strong>Odysseus AI Workspace:</strong> Privacy-first workspace featuring multi-model chat, autonomous agents, ChromaDB RAG, and mail/cal sync. <em>(Tech: FastAPI, Python, SQLite, ChromaDB, JS, Docker)</em>
+                        <strong>Odysseus AI Workspace:</strong> Privacy-first workspace demonstrating mastery over AI-assisted programming, featuring multi-model chat, autonomous agents, ChromaDB RAG, and mail/cal sync. <em>(Tech: FastAPI, Python, SQLite, ChromaDB, JS, Docker)</em>
                       </li>
                       <li>
                         <strong>ColorSense AI Scanner:</strong> Mobile camera tool scanning real-world colors, analyzing WCAG contrast, and recommending AI palettes. <em>(Tech: React, Tailwind, Camera API, Vercel)</em>
