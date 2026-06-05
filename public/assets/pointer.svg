@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <!-- Cyan to Fuchsia Cyberpunk Gradient -->
+    <linearGradient id="neonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f0ff" />
+      <stop offset="50%" stop-color="#8b5cf6" />
+      <stop offset="100%" stop-color="#d946ef" />
+    </linearGradient>
+    
+    <!-- Neon Glow Filter -->
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="1.5" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Glowing Outline -->
+  <path d="M2 2 L2 22 L7 17 L12 27 L15 25 L10 15 L16 15 Z" 
+        fill="url(#neonGrad)" 
+        filter="url(#glow)" />
+
+  <!-- Contrast Core -->
+  <path d="M3.5 4.5 L3.5 19.5 L7.5 15.5 L12.5 25.5 L14 24.5 L9 14.5 L13.5 14.5 Z" 
+        fill="#030014" />
+</svg>
