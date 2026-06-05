@@ -135,7 +135,7 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
       <div id="cv-document-card" className="max-w-4xl mx-auto bg-white p-10 sm:p-14 border border-zinc-200 shadow-lg rounded-2xl relative overflow-hidden">
         
         {/* Document Header Section */}
-        <div className="flex flex-col md:flex-row print:flex-row justify-between items-start md:items-center print:items-center border-b-2 border-zinc-900 pb-8 print:pb-4 gap-6 print:gap-4">
+        <div className="cv-header flex flex-col md:flex-row print:flex-row justify-between items-start md:items-center print:items-center border-b-2 border-zinc-900 pb-8 print:pb-4 gap-6 print:gap-4">
           <div className="space-y-2">
             <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-zinc-950">
               Jezua Errol C. Palma
@@ -149,18 +149,23 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
           </div>
 
           {/* Minimalist Professional Profile Picture */}
-          <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden border border-zinc-300 bg-zinc-50 flex-shrink-0">
-            <img
-              src="/assets/profile.jpg?v=20260605"
+          <div className="cv-profile-pic w-24 h-24 sm:w-28 sm:h-28 rounded-xl border border-zinc-300 bg-zinc-50 flex-shrink-0 overflow-hidden relative" aria-label="Jezua Errol Palma Professional">
+            <img 
+              src="/assets/profile.jpg?v=20260605" 
               alt="Jezua Errol Palma Professional"
-              className="w-full h-full object-cover transition-all duration-300"
-              onError={(e) => { e.target.src = "https://placehold.co/300x300/e4e4e7/09090b?text=Jezua+Palma" }}
+              style={{
+                position: 'absolute',
+                width: '100%',
+                height: 'auto',
+                top: '-25%',
+                left: '0'
+              }}
             />
           </div>
         </div>
 
         {/* Contact Links & Meta bar */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 print:grid-cols-3 gap-4 print:gap-3 py-6 print:py-3 border-b border-zinc-200 text-xs sm:text-sm text-zinc-600 print:text-[8pt]">
+        <div className="cv-contact grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 print:grid-cols-3 gap-4 print:gap-3 py-6 print:py-3 border-b border-zinc-200 text-xs sm:text-sm text-zinc-600 print:text-[8pt]">
           <div className="flex items-center space-x-2">
             <Mail className="w-4 h-4 text-zinc-400 flex-shrink-0" />
             <a href="mailto:jezuapalma@gmail.com" className="hover:underline">jezuapalma@gmail.com</a>
@@ -198,10 +203,10 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
         </div>
 
         {/* Core Layout Split */}
-        <div className="grid grid-cols-1 md:grid-cols-12 print:grid-cols-12 gap-8 print:gap-6 pt-8 print:pt-4">
+        <div className="cv-grid grid grid-cols-1 md:grid-cols-12 print:grid-cols-12 gap-8 print:gap-6 pt-8 print:pt-4">
           
           {/* Main Professional Experience (Left) */}
-          <div className="md:col-span-8 print:col-span-8 space-y-8 print:space-y-4">
+          <div className="cv-col-8 md:col-span-8 print:col-span-8 space-y-8 print:space-y-4">
             
             {/* Career Summary */}
             <div className="space-y-2">
@@ -258,25 +263,25 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
                     </div>
                     <span className="font-mono text-zinc-500 text-right">2024 - Present</span>
                   </div>
-                  <div className="text-zinc-655 text-xs sm:text-sm space-y-2 leading-relaxed">
+                  <div className="text-zinc-600 text-[11px] sm:text-xs space-y-1 leading-relaxed">
                     <p>
                       Conceptualized, designed, and deployed multiple web applications, games, and AI utilities:
                     </p>
-                    <ul className="list-disc pl-4 space-y-1">
+                    <ul className="cv-project-list list-disc pl-4 space-y-1">
                       <li>
-                        <strong>Shadow Depths Game:</strong> Performant 2D roguelike forest adventure game built using HTML5 Canvas, featuring procedural wildlands, Google OAuth leaderboards, and real-time multiplayer parties. <em>(Tech: HTML5 Canvas, Vanilla CSS, JS, Google GSI, WebSockets)</em>
+                        <strong>Shadow Depths Game:</strong> Performant 2D Canvas roguelike with procedural maps, Google OAuth leaderboard, and WebSocket multiplayer. <em>(Tech: Canvas, CSS, JS, Google GSI, WebSockets)</em>
                       </li>
                       <li>
-                        <strong>Odysseus AI Workspace:</strong> Self-hosted, privacy-first AI dashboard featuring multi-model chat, autonomous agents, vector-retrieved RAG, and cal/mail integration. <em>(Tech: FastAPI, Python, SQLite, ChromaDB, Vanilla JS, Docker)</em>
+                        <strong>Odysseus AI Workspace:</strong> Privacy-first workspace featuring multi-model chat, autonomous agents, ChromaDB RAG, and mail/cal sync. <em>(Tech: FastAPI, Python, SQLite, ChromaDB, JS, Docker)</em>
                       </li>
                       <li>
-                        <strong>ColorSense AI Scanner:</strong> Mobile-first camera scanner to capture hex colors, validate contrast standards (WCAG), and recommend AI-matched schemes. <em>(Tech: React, Tailwind CSS, Web Camera API, Vercel)</em>
+                        <strong>ColorSense AI Scanner:</strong> Mobile camera tool scanning real-world colors, analyzing WCAG contrast, and recommending AI palettes. <em>(Tech: React, Tailwind, Camera API, Vercel)</em>
                       </li>
                       <li>
-                        <strong>DailyMood App:</strong> Calming wellness tracker charting logs, mood metrics, and journal entries processed via semantic Generative AI prompts. <em>(Tech: Flask, Python, MySQL, Bootstrap, Gemini AI)</em>
+                        <strong>DailyMood App:</strong> Calming wellness tracker analyzing mood metrics and journal entries via Generative Gemini AI prompts. <em>(Tech: Flask, Python, MySQL, Bootstrap, Gemini API)</em>
                       </li>
                       <li>
-                        <strong>Capstone Title Generator:</strong> Academic outline assistant aiding 200+ IT/CS students in brainstorm-blocking. <em>(Tech: React, Tailwind CSS, Gemini API, Vercel)</em>
+                        <strong>Capstone Title Generator:</strong> Outline generator helping 200+ students bypass brainstorm blocks. <em>(Tech: React, Tailwind, Gemini API, Vercel)</em>
                       </li>
                     </ul>
                   </div>
@@ -320,7 +325,7 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
           </div>
 
           {/* Technical Skills & Certs Sidebar (Right) */}
-          <div className="md:col-span-4 print:col-span-4 space-y-8 print:space-y-4 border-t md:border-t-0 print:border-t-0 md:border-l print:border-l border-zinc-200 pt-8 md:pt-0 print:pt-0 md:pl-6 print:pl-5">
+          <div className="cv-col-4 md:col-span-4 print:col-span-4 space-y-8 print:space-y-4 border-t md:border-t-0 print:border-t-0 md:border-l print:border-l border-zinc-200 pt-8 md:pt-0 print:pt-0 md:pl-6 print:pl-5">
             
             {/* Tech Stack List */}
             <div className="space-y-3">
@@ -360,7 +365,7 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
                   <div 
                     key={i} 
                     onClick={() => setCvLightbox(c)} 
-                    className="cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-zinc-50/40 hover:bg-indigo-50/30 hover:border-indigo-300 transition-all duration-300 group/cert text-left relative flex items-center justify-between hover:shadow-md hover:shadow-indigo-500/5 print:bg-zinc-50/40 print:border-zinc-200"
+                    className="cv-cert-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-zinc-50/40 hover:bg-indigo-50/30 hover:border-indigo-300 transition-all duration-300 group/cert text-left relative flex items-center justify-between hover:shadow-md hover:shadow-indigo-500/5 print:bg-zinc-50/40 print:border-zinc-200"
                     title="Click to view certificate"
                   >
                     <div className="space-y-0.5 pr-4">
@@ -477,58 +482,105 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
             background: #f4f4f5 !important;
             margin: 0 !important;
             padding: 0 !important;
-            width: 210mm !important;
-            height: 297mm !important;
+            width: 100% !important;
+            height: 100% !important;
             overflow: hidden !important;
           }
 
           @page {
-            size: A4;
-            margin: 0;
+            size: portrait;
+            margin: 0 !important;
           }
 
           /* The actual CV paper container card (matching the screen layout in print) */
           .max-w-4xl {
             max-width: 100% !important;
-            width: 190mm !important;
-            height: 277mm !important;
-            margin: 10mm auto !important;
-            padding: 16px 24px !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            margin: 0 !important;
+            padding: 5mm 8mm !important;
             background: white !important;
-            border: 1px solid #e4e4e7 !important;
-            border-radius: 16px !important;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05) !important;
+            border: none !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
             box-sizing: border-box !important;
             overflow: hidden !important;
           }
 
-          img {
+          /* Force Desktop Grid for Print */
+          .cv-grid {
+            display: grid !important;
+            grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+            gap: 12px !important;
+          }
+          .cv-col-8 {
+            grid-column: span 8 / span 8 !important;
+          }
+          .cv-col-4 {
+            grid-column: span 4 / span 4 !important;
+            border-top: none !important;
+            border-left: 1px solid #e4e4e7 !important;
+            padding-top: 0 !important;
+            padding-left: 12px !important;
+          }
+          .cv-header {
+            display: flex !important;
+            flex-direction: row !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            padding-bottom: 2px !important;
+          }
+          .cv-contact {
+            display: grid !important;
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            gap: 8px !important;
+            padding-top: 2px !important;
+            padding-bottom: 2px !important;
+          }
+          .cv-profile-pic {
+            width: 20mm !important;
+            height: 20mm !important;
             border-radius: 8px !important;
+          }
+          .cv-cert-card {
+            padding: 4px 6px !important;
+            border-radius: 8px !important;
+          }
+          .cv-cert-card h4 {
+            font-size: 7.5pt !important;
+          }
+          .cv-project-list {
+            margin-top: 2px !important;
+            padding-left: 12px !important;
+          }
+          .cv-project-list li {
+            margin-top: 1px !important;
+            line-height: 1.15 !important;
           }
 
           /* Typography print scaling */
-          h1 { font-size: 19pt !important; line-height: 1.15 !important; }
-          h2 { font-size: 10pt !important; margin-bottom: 2px !important; }
-          h3 { font-size: 9pt !important; }
-          p, span, li, a { font-size: 7.5pt !important; line-height: 1.3 !important; }
+          h1 { font-size: 15pt !important; line-height: 1.05 !important; }
+          h2 { font-size: 9pt !important; margin-bottom: 1px !important; }
+          h3 { font-size: 8pt !important; }
+          p, span, li, a { font-size: 6.5pt !important; line-height: 1.2 !important; }
           
           /* Spacing print scaling to guarantee strict single-page limit */
-          .grid { gap: 14px !important; }
-          .pt-8 { padding-top: 8px !important; }
-          .pb-8 { padding-bottom: 8px !important; }
-          .py-6 { padding-top: 6px !important; padding-bottom: 6px !important; }
-          .space-y-8 > :not([hidden]) ~ :not([hidden]) { margin-top: 8px !important; }
-          .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: 6px !important; }
-          .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 4px !important; }
-          .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 3px !important; }
-          .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 3px !important; }
+          .pt-8 { padding-top: 6px !important; }
+          .pb-8 { padding-bottom: 2px !important; }
+          .py-6 { padding-top: 2px !important; padding-bottom: 2px !important; }
+          .space-y-8 > :not([hidden]) ~ :not([hidden]) { margin-top: 4px !important; }
+          .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: 3px !important; }
+          .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 2px !important; }
+          .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 1.5px !important; }
+          .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 1.5px !important; }
         }
 
         /* 📄 PDF Download Layout Engine - Guarantees exact 1-page A4 PDF output */
         #cv-document-card.downloading-pdf {
+          display: block !important;
           width: 210mm !important;
-          height: 297mm !important;
-          padding: 12mm 15mm !important;
+          height: 295mm !important;
+          padding: 5mm 8mm !important;
           background: white !important;
           border: none !important;
           border-radius: 0 !important;
@@ -544,29 +596,74 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
           color-adjust: exact !important;
         }
 
-        #cv-document-card.downloading-pdf img {
+        #cv-document-card.downloading-pdf .cv-grid {
+          display: grid !important;
+          grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+          gap: 12px !important;
+        }
+        #cv-document-card.downloading-pdf .cv-col-8 {
+          grid-column: span 8 / span 8 !important;
+        }
+        #cv-document-card.downloading-pdf .cv-col-4 {
+          grid-column: span 4 / span 4 !important;
+          border-top: none !important;
+          border-left: 1px solid #e4e4e7 !important;
+          padding-top: 0 !important;
+          padding-left: 12px !important;
+        }
+        #cv-document-card.downloading-pdf .cv-header {
+          display: flex !important;
+          flex-direction: row !important;
+          justify-content: space-between !important;
+          align-items: center !important;
+          padding-bottom: 2px !important;
+        }
+        #cv-document-card.downloading-pdf .cv-contact {
+          display: grid !important;
+          grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+          gap: 8px !important;
+          padding-top: 2px !important;
+          padding-bottom: 2px !important;
+        }
+        #cv-document-card.downloading-pdf .cv-profile-pic {
+          width: 20mm !important;
+          height: 20mm !important;
           border-radius: 8px !important;
+        }
+        #cv-document-card.downloading-pdf .cv-cert-card {
+          padding: 4px 6px !important;
+          border-radius: 8px !important;
+        }
+        #cv-document-card.downloading-pdf .cv-cert-card h4 {
+          font-size: 7.5pt !important;
+        }
+        #cv-document-card.downloading-pdf .cv-project-list {
+          margin-top: 2px !important;
+          padding-left: 12px !important;
+        }
+        #cv-document-card.downloading-pdf .cv-project-list li {
+          margin-top: 1px !important;
+          line-height: 1.15 !important;
         }
 
         /* Typography PDF scaling */
-        #cv-document-card.downloading-pdf h1 { font-size: 19pt !important; line-height: 1.15 !important; }
-        #cv-document-card.downloading-pdf h2 { font-size: 10pt !important; margin-bottom: 2px !important; }
-        #cv-document-card.downloading-pdf h3 { font-size: 9pt !important; }
+        #cv-document-card.downloading-pdf h1 { font-size: 15pt !important; line-height: 1.05 !important; }
+        #cv-document-card.downloading-pdf h2 { font-size: 9pt !important; margin-bottom: 1px !important; }
+        #cv-document-card.downloading-pdf h3 { font-size: 8pt !important; }
         #cv-document-card.downloading-pdf p, 
         #cv-document-card.downloading-pdf span, 
         #cv-document-card.downloading-pdf li, 
-        #cv-document-card.downloading-pdf a { font-size: 7.5pt !important; line-height: 1.3 !important; }
+        #cv-document-card.downloading-pdf a { font-size: 6.5pt !important; line-height: 1.2 !important; }
         
         /* Spacing PDF scaling to guarantee strict single-page limit */
-        #cv-document-card.downloading-pdf .grid { gap: 14px !important; }
-        #cv-document-card.downloading-pdf .pt-8 { padding-top: 8px !important; }
-        #cv-document-card.downloading-pdf .pb-8 { padding-bottom: 8px !important; }
-        #cv-document-card.downloading-pdf .py-6 { padding-top: 6px !important; padding-bottom: 6px !important; }
-        #cv-document-card.downloading-pdf .space-y-8 > :not([hidden]) ~ :not([hidden]) { margin-top: 8px !important; }
-        #cv-document-card.downloading-pdf .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: 6px !important; }
-        #cv-document-card.downloading-pdf .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 4px !important; }
-        #cv-document-card.downloading-pdf .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 3px !important; }
-        #cv-document-card.downloading-pdf .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 3px !important; }
+        #cv-document-card.downloading-pdf .pt-8 { padding-top: 6px !important; }
+        #cv-document-card.downloading-pdf .pb-8 { padding-bottom: 2px !important; }
+        #cv-document-card.downloading-pdf .py-6 { padding-top: 2px !important; padding-bottom: 2px !important; }
+        #cv-document-card.downloading-pdf .space-y-8 > :not([hidden]) ~ :not([hidden]) { margin-top: 4px !important; }
+        #cv-document-card.downloading-pdf .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: 3px !important; }
+        #cv-document-card.downloading-pdf .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 2px !important; }
+        #cv-document-card.downloading-pdf .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 1.5px !important; }
+        #cv-document-card.downloading-pdf .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 1.5px !important; }
       `}</style>
     </div>
   );
