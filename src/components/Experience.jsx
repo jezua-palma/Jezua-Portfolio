@@ -45,9 +45,9 @@ const Experience = () => {
       date: '2022 - Present',
       role: 'Bachelor\'s Degree in Information Technology',
       company: 'Laguna State Polytechnic University',
-      desc: '4th year IT student maintaining a stellar General Weighted Average (GWA) of 1.73. Successfully completed academic Capstone Research developing **StreetSmart**, a web-based educational safety game designed to teach children navigation and street caution.',
+      desc: '4th year IT student maintaining a stellar General Weighted Average (GWA) of 1.73 and recognized as a recurring Dean\'s Lister. Successfully completed academic Capstone Research developing **StreetSmart**, a web-based educational safety game designed to teach children navigation and street caution.',
       tech: ['Capstone Research', 'Relational DBs', 'Algorithms', 'Game Development'],
-      highlights: ['Maintained an outstanding GWA academic score of 1.73', 'Researched road safety matrices for children', 'Developed interactive path decision vectors', 'Lead system designer & developer']
+      highlights: ['Maintained an outstanding GWA academic score of 1.73 (Recurring Dean\'s Lister)', 'Researched road safety matrices for children', 'Developed interactive path decision vectors', 'Lead system designer & developer']
     }
   ];
 

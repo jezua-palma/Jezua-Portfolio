@@ -184,7 +184,7 @@ const About = ({ isPaused }) => {
                 </div>
                 <div className="flex items-center space-x-2.5">
                   <Award className="w-4 h-4 text-neon-fuchsia" />
-                  <span><strong>Education:</strong> LSPU (4th Year IT, GWA 1.73)</span>
+                  <span><strong>Education:</strong> LSPU (4th Year IT, GWA 1.73, Recurring Dean's Lister)</span>
                 </div>
                 <div className="flex items-center space-x-2.5">
                   <Users className="w-4 h-4 text-neon-rose" />

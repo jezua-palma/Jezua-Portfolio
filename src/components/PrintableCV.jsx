@@ -258,9 +258,25 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
                     </div>
                     <span className="font-mono text-zinc-500 text-right">2024 - Present</span>
                   </div>
-                  <p className="text-zinc-600 text-xs sm:text-sm leading-relaxed">
-                    Conceptualized and deployed a portfolio of responsive AI utilities and web applications. Developed **ColorSense AI Scanner** (mobile hex contrast code validator) and **DailyMood App** (mood tracking app integrating semantic prompt pipelines with Gemini AI), demonstrating strong design-to-deployment execution.
-                  </p>
+                  <div className="text-zinc-600 text-xs sm:text-sm space-y-2 leading-relaxed">
+                    <p>
+                      Conceptualized, designed, and deployed multiple web applications and AI utilities:
+                    </p>
+                    <ul className="list-disc pl-4 space-y-1">
+                      <li>
+                        <strong>Odysseus AI Workspace:</strong> Self-hosted, privacy-first AI dashboard featuring multi-model chat, autonomous agents, vector-retrieved RAG, and cal/mail integration. <em>(Tech: FastAPI, Python, SQLite, ChromaDB, Vanilla JS, Docker)</em>
+                      </li>
+                      <li>
+                        <strong>ColorSense AI Scanner:</strong> Mobile-first camera scanner to capture hex colors, validate contrast standards (WCAG), and recommend AI-matched schemes. <em>(Tech: React, Tailwind CSS, Web Camera API, Vercel)</em>
+                      </li>
+                      <li>
+                        <strong>DailyMood App:</strong> Calming wellness tracker charting logs, mood metrics, and journal entries processed via semantic Generative AI prompts. <em>(Tech: Flask, Python, MySQL, Bootstrap, Gemini AI)</em>
+                      </li>
+                      <li>
+                        <strong>Capstone Title Generator:</strong> Academic outline assistant aiding 200+ IT/CS students in brainstorm-blocking. <em>(Tech: React, Tailwind CSS, Gemini API, Vercel)</em>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
 
                 {/* Capstone StreetSmart */}
@@ -273,7 +289,7 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
                     <span className="font-mono text-zinc-500 text-right">2024 - 2026</span>
                   </div>
                   <p className="text-zinc-600 text-xs sm:text-sm leading-relaxed">
-                    Researched early-childhood navigation safety and led the complete software implementation of **StreetSmart**, a web-based interactive safety game designed for children. Coded responsive canvas boards, branch-story paths, and safety matrices to educate young students about road caution.
+                    Researched early-childhood navigation safety and directed software implementation for <strong>StreetSmart</strong>, a web-based educational safety game using gamified road decision matrices. <em>(Tech: Flask, Python, MySQL, Tailwind CSS, Leaflet/Canvas APIs)</em>
                   </p>
                 </div>
 
@@ -291,7 +307,7 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
                   <div>
                     <h3 className="font-bold text-zinc-900">Laguna State Polytechnic University</h3>
                     <p className="text-zinc-500 text-xs">Bachelor of Science in Information Technology (4th Year / Present)</p>
-                    <p className="text-indigo-600 text-[10px] sm:text-xs font-bold mt-0.5">General Weighted Average (GWA): 1.73</p>
+                    <p className="text-indigo-600 text-[10px] sm:text-xs font-bold mt-0.5">General Weighted Average (GWA): 1.73 (Recurring Dean's Lister)</p>
                   </div>
                   <span className="font-mono text-zinc-500 text-right">2022 - Present</span>
                 </div>
@@ -316,7 +332,7 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
                 </div>
                 <div>
                   <h4 className="font-bold text-zinc-800">Backend & Database</h4>
-                  <p className="text-zinc-500 mt-0.5">Python (Flask, Django), PostgreSQL, MySQL, Node.js</p>
+                  <p className="text-zinc-500 mt-0.5">Python (Flask, Django), PostgreSQL, MySQL, ChromaDB, Node.js</p>
                 </div>
                 <div>
                   <h4 className="font-bold text-zinc-800">No-Code / Low-Code</h4>
@@ -324,7 +340,7 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
                 </div>
                 <div>
                   <h4 className="font-bold text-zinc-800">Version & Tools</h4>
-                  <p className="text-zinc-500 mt-0.5">Git, GitHub, Figma, VS Code, XAMPP, CLI Scripts</p>
+                  <p className="text-zinc-500 mt-0.5">Git, GitHub, Figma, VS Code, Docker, XAMPP, CLI Scripts</p>
                 </div>
               </div>
             </div>
