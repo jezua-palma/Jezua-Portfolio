@@ -151,7 +151,7 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
           {/* Minimalist Professional Profile Picture */}
           <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden border border-zinc-300 bg-zinc-50 flex-shrink-0">
             <img
-              src="/assets/profile.jpg"
+              src="/assets/profile.jpg?v=20260605"
               alt="Jezua Errol Palma Professional"
               className="w-full h-full object-cover transition-all duration-300"
               onError={(e) => { e.target.src = "https://placehold.co/300x300/e4e4e7/09090b?text=Jezua+Palma" }}

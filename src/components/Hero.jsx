@@ -491,7 +491,7 @@ const Hero = ({ setTheme, setAutoDownloadCV, isPaused }) => {
                   {/* Portrait Mask */}
                   <div className="depth-layer-mid w-[220px] h-[220px] rounded-full overflow-hidden border-[4px] border-[#030014] z-10 bg-dark-card flex items-center justify-center">
                     <img 
-                      src="/assets/profile.jpg" 
+                      src="/assets/profile.jpg?v=20260605" 
                       alt="Jezua Palma Portrait" 
                       className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                       onError={(e) => { e.target.src = "https://placehold.co/400x400/1e1e2f/ffffff?text=Jezua+Palma" }}
