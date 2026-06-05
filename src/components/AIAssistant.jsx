@@ -556,7 +556,7 @@ const AIAssistant = ({ initialOpen = false, onClose }) => {
     // 5. Profile Bio
     if (hasAnyWord(['who', 'profile', 'jezua', 'about', 'palma'])) {
       return {
-        text: "Jezua Palma is an active Freelance Developer & Designer and Capstone Research & Development Lead based in the Philippines. Born in 2003, he's a full-stack builder who merges technical engineering with premium visual aesthetics. He has a General Weighted Average of 1.73 at LSPU and is recognized as a recurring Dean's Lister!",
+        text: "Jezua Palma is an active Freelance Developer & Designer and Capstone Research & Development Lead based in the Philippines. Born in 2003, he graduated from LSPU (Batch 2026, specialized in Animation & Motion Graphics) with a General Weighted Average of 1.73 and is recognized as a recurring Dean's Lister!",
         emotion: 'SWEET'
       };
     }
@@ -588,7 +588,7 @@ const AIAssistant = ({ initialOpen = false, onClose }) => {
     // 9. GWA / GPA / College
     if (hasAnyWord(['gwa', 'school', 'college', 'lspu', 'education', 'grade'])) {
       return {
-        text: "Jezua studied at Laguna State Polytechnic University, achieving a stellar General Weighted Average of 1.73 and being recognized as a recurring Dean's Lister. He's omitted his high school logs to keep the timeline focused on his collegiate technology journey.",
+        text: "Jezua graduated from Laguna State Polytechnic University (Batch 2026, specialized in Animation & Motion Graphics), achieving a stellar overall General Weighted Average of 1.73 and being recognized as a recurring Dean's Lister. He's omitted his high school logs to keep the timeline focused on his collegiate technology journey.",
         emotion: 'HAPPY'
       };
     }

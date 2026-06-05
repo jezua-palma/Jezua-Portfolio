@@ -42,12 +42,12 @@ const Experience = () => {
     },
     {
       type: 'education',
-      date: '2022 - Present',
-      role: 'Bachelor\'s Degree in Information Technology',
+      date: '2022 - 2026',
+      role: 'Bachelor\'s Degree in Information Technology (Graduated - Specialized in Animation & Motion Graphics)',
       company: 'Laguna State Polytechnic University',
-      desc: '4th year IT student maintaining a stellar General Weighted Average (GWA) of 1.73 and recognized as a recurring Dean\'s Lister. Successfully completed academic Capstone Research developing **StreetSmart**, a web-based educational safety game designed to teach children navigation and street caution.',
+      desc: 'Graduated IT professional (Batch 2026) maintaining a stellar overall General Weighted Average (GWA) of 1.73 and recognized as a recurring Dean\'s Lister. Successfully completed academic Capstone Research developing **StreetSmart**, a web-based educational safety game designed to teach children navigation and street caution.',
       tech: ['Capstone Research', 'Relational DBs', 'Algorithms', 'Game Development'],
-      highlights: ['Maintained an outstanding GWA academic score of 1.73 (Recurring Dean\'s Lister)', 'Researched road safety matrices for children', 'Developed interactive path decision vectors', 'Lead system designer & developer']
+      highlights: ['Graduated with an outstanding GWA academic score of 1.73 (Recurring Dean\'s Lister)', 'Researched road safety matrices for children', 'Developed interactive path decision vectors', 'Lead system designer & developer']
     }
   ];
 

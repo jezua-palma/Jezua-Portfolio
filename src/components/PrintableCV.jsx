@@ -258,11 +258,14 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
                     </div>
                     <span className="font-mono text-zinc-500 text-right">2024 - Present</span>
                   </div>
-                  <div className="text-zinc-600 text-xs sm:text-sm space-y-2 leading-relaxed">
+                  <div className="text-zinc-655 text-xs sm:text-sm space-y-2 leading-relaxed">
                     <p>
-                      Conceptualized, designed, and deployed multiple web applications and AI utilities:
+                      Conceptualized, designed, and deployed multiple web applications, games, and AI utilities:
                     </p>
                     <ul className="list-disc pl-4 space-y-1">
+                      <li>
+                        <strong>Shadow Depths Game:</strong> Performant 2D roguelike forest adventure game built using HTML5 Canvas, featuring procedural wildlands, Google OAuth leaderboards, and real-time multiplayer parties. <em>(Tech: HTML5 Canvas, Vanilla CSS, JS, Google GSI, WebSockets)</em>
+                      </li>
                       <li>
                         <strong>Odysseus AI Workspace:</strong> Self-hosted, privacy-first AI dashboard featuring multi-model chat, autonomous agents, vector-retrieved RAG, and cal/mail integration. <em>(Tech: FastAPI, Python, SQLite, ChromaDB, Vanilla JS, Docker)</em>
                       </li>
@@ -306,10 +309,10 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
                 <div className="flex justify-between items-start text-xs sm:text-sm">
                   <div>
                     <h3 className="font-bold text-zinc-900">Laguna State Polytechnic University</h3>
-                    <p className="text-zinc-500 text-xs">Bachelor of Science in Information Technology (4th Year / Present)</p>
-                    <p className="text-indigo-600 text-[10px] sm:text-xs font-bold mt-0.5">General Weighted Average (GWA): 1.73 (Recurring Dean's Lister)</p>
+                    <p className="text-zinc-500 text-xs">Bachelor of Science in Information Technology (Graduated - Batch 2026, Specialized in Animation & Motion Graphics)</p>
+                    <p className="text-indigo-600 text-[10px] sm:text-xs font-bold mt-0.5">Overall General Weighted Average (GWA): 1.73 (Recurring Dean's Lister)</p>
                   </div>
-                  <span className="font-mono text-zinc-500 text-right">2022 - Present</span>
+                  <span className="font-mono text-zinc-500 text-right">2022 - 2026</span>
                 </div>
               </div>
             </div>

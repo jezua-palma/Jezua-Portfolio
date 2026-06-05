@@ -167,7 +167,7 @@ const About = ({ isPaused }) => {
               Hey, I'm <strong className="text-white">Jezua Palma</strong> (Jezua Errol C. Palma). I am a <span className="text-neon-cyan font-medium">{age}-year-old</span> Developer and Designer. I focus heavily on writing clean, highly optimized code while integrating automation and AI systems to simplify workflows.
             </p>
             <p className="text-sm sm:text-base leading-relaxed about-reveal-text">
-              Currently in my fourth year of pursuing a Bachelor's Degree in Information Technology at <strong className="text-white">Laguna State Polytechnic University</strong>, I have worked across a variety of technologies. From custom software solutions built with Flask and React, to enterprise-ready CRM logic built visual-first using Bubble.io, I love translating abstract business ideas into working production code.
+              Having graduated with a Bachelor's Degree in Information Technology from <strong className="text-white">Laguna State Polytechnic University</strong> (Batch 2026), I have worked across a variety of technologies. From custom software solutions built with Flask and React, to enterprise-ready CRM logic built visual-first using Bubble.io, I love translating abstract business ideas into working production code.
             </p>
 
             {/* Quick Profile Meta glass card */}
@@ -184,7 +184,7 @@ const About = ({ isPaused }) => {
                 </div>
                 <div className="flex items-center space-x-2.5">
                   <Award className="w-4 h-4 text-neon-fuchsia" />
-                  <span><strong>Education:</strong> LSPU (4th Year IT, GWA 1.73, Recurring Dean's Lister)</span>
+                  <span><strong>Education:</strong> LSPU (IT Graduate, Batch 2026, GWA 1.73, Recurring Dean's Lister)</span>
                 </div>
                 <div className="flex items-center space-x-2.5">
                   <Users className="w-4 h-4 text-neon-rose" />

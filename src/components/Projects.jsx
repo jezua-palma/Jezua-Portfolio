@@ -27,6 +27,23 @@ const Projects = () => {
       }
     },
     {
+      id: 'shadow-depths',
+      title: 'Shadow Depths',
+      category: 'fullstack',
+      desc: 'A 2D roguelike forest adventure game built with HTML5 Canvas featuring procedurally generated wilds, real-time multiplayer parties, and secure Google auth leaderboards.',
+      tech: ['HTML5 Canvas', 'Vanilla CSS', 'JavaScript', 'Google GSI API', 'WebSockets', 'Vercel'],
+      liveUrl: 'https://gameweb-smoky.vercel.app',
+      githubUrl: 'https://github.com/jezua-palma/GAMEweb',
+      details: {
+        problem: 'Traditional web-based games struggle with performant 2D canvas rendering, real-time cooperative state sync, and secure, lightweight cheat-resistant leaderboard persistence.',
+        solution: 'Engineered Shadow Depths, a performant 2D roguelike utilizing a modular state engine, optimized Canvas rendering loops, WebSocket-based lobby sync, and Google GSI OAuth for secure score tracking.',
+        designFocus: 'Retro 8-bit aesthetic utilizing retro typography, screen shake, threat HUD meters, custom class relics, and responsive mobile virtual joystick overlays.',
+        devFocus: 'High-performance requestAnimationFrame game loops, procedural dungeon generation matrices, real-time party sync APIs, and Google OAuth security validation.',
+        features: ['Procedural forest generation and enemy AI behaviors', 'Four playable classes (Warrior, Rogue, Mage, Paladin) with distinct passive stats', 'Real-time WebSocket multiplayer party system and lobby chat', 'Secure Google Sign-In hall of legends leaderboard'],
+        outcome: 'Maintained a stable 60 FPS on both mobile and desktop browsers, securing score records for 100+ simulated concurrent dungeon runs.'
+      }
+    },
+    {
       id: 'colorsense',
       title: 'ColorSense AI Scanner',
       category: 'ai',
