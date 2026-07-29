@@ -84,26 +84,19 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
   }, [autoDownload]);
 
   return (
-    <div className="min-h-screen bg-zinc-100 text-zinc-900 py-12 px-4 sm:px-6 lg:px-8 font-sans antialiased selection:bg-zinc-200">
+    <div className="harvard-cv-page min-h-screen bg-zinc-100 text-zinc-900 py-12 px-4 sm:px-6 lg:px-8 antialiased selection:bg-zinc-200" style={{ fontFamily: "'Georgia', 'Times New Roman', 'Times', serif" }}>
       
       {/* Control Navigation Header (Hidden on Print) */}
-      <div className="max-w-4xl mx-auto mb-8 flex flex-col sm:flex-row gap-4 justify-between items-center no-print bg-white p-4 rounded-xl shadow-sm border border-zinc-200">
-        <div className="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-start">
-          <button
-            onClick={onBack}
-            className="p-2.5 rounded-full border border-zinc-200 bg-zinc-50 text-zinc-500 hover:text-zinc-950 hover:border-zinc-300 hover:bg-zinc-100 transition-all hover:scale-105 active:scale-95 shadow-sm"
-            title="Switch to Dark Mode (Cyberpunk Dashboard)"
-          >
-            <Moon className="w-5 h-5 text-zinc-800" />
-          </button>
-          <span className="text-sm font-semibold text-zinc-500 hidden sm:inline">Jezua Palma CV</span>
+      <div className="max-w-3xl mx-auto mb-8 flex flex-col sm:flex-row gap-4 justify-between items-center no-print bg-white p-4 rounded-xl shadow-sm border border-zinc-200">
+        <div className="flex items-center w-full sm:w-auto">
+          <span className="text-sm font-semibold text-zinc-500" style={{ fontFamily: "'Inter', 'Helvetica', sans-serif" }}>Jezua Palma CV</span>
         </div>
         
-        <div className="flex space-x-3 w-full sm:w-auto">
+        <div className="flex space-x-3 w-full sm:w-auto" style={{ fontFamily: "'Inter', 'Helvetica', sans-serif" }}>
           <button
             onClick={handleDownloadPDF}
             disabled={downloading}
-            className="flex-1 sm:flex-initial flex items-center justify-center space-x-2 px-5 py-2.5 text-sm font-bold rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 disabled:bg-indigo-400 shadow-md shadow-indigo-600/10 transition-all"
+            className="flex-1 sm:flex-initial flex items-center justify-center space-x-2 px-5 py-2.5 text-sm font-bold rounded-lg bg-zinc-900 text-white hover:bg-zinc-800 disabled:bg-zinc-400 shadow-md transition-all"
           >
             {downloading ? (
               <>
@@ -131,269 +124,224 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
         </div>
       </div>
 
-      {/* Main Printable Document Page Box (Retains border, rounded corners, shadow in print) */}
-      <div id="cv-document-card" className="max-w-4xl mx-auto bg-white p-10 sm:p-14 border border-zinc-200 shadow-lg rounded-2xl relative overflow-hidden">
+      {/* ═══════════════════════════════════════════════════════════════
+          HARVARD CV DOCUMENT — Single Column, No Picture, Serif
+      ═══════════════════════════════════════════════════════════════ */}
+      <div id="cv-document-card" className="harvard-cv-card max-w-3xl mx-auto bg-white py-10 px-10 sm:px-14 border border-zinc-200 shadow-lg rounded-2xl relative overflow-hidden">
         
-        {/* Document Header Section */}
-        <div className="cv-header flex flex-col md:flex-row print:flex-row justify-between items-start md:items-center print:items-center border-b-2 border-zinc-900 pb-8 print:pb-4 gap-6 print:gap-4">
-          <div className="space-y-2">
-            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-zinc-950">
-              Jezua Errol C. Palma
-            </h1>
-            <p className="text-lg font-bold text-indigo-600 tracking-wide">
-              Developer & Designer
-            </p>
-            <p className="text-xs sm:text-sm text-zinc-500 leading-normal max-w-lg">
-              IT professional specializing in web development and design, rapid low-code CRM systems (Bubble.io), dynamic prompt engineering, and visual automation workflows.
-            </p>
-          </div>
+        {/* ── NAME (Centered, Large) ── */}
+        <div className="harvard-header text-center border-b-2 border-black pb-4">
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-black" style={{ fontFamily: "'Georgia', 'Times New Roman', serif", fontWeight: 700 }}>
+            JEZUA ERROL C. PALMA
+          </h1>
 
-          {/* Minimalist Professional Profile Picture */}
-          <div className="cv-profile-pic w-24 h-24 sm:w-28 sm:h-28 rounded-xl border border-zinc-300 bg-zinc-50 flex-shrink-0 overflow-hidden relative" aria-label="Jezua Errol Palma Professional">
-            <img 
-              src="/assets/profile.jpg?v=20260605" 
-              alt="Jezua Errol Palma Professional"
-              style={{
-                position: 'absolute',
-                width: '100%',
-                height: 'auto',
-                top: '-25%',
-                left: '0'
-              }}
-            />
+          {/* ── CONTACT ROW ── */}
+          <div className="harvard-contact mt-3 flex flex-wrap justify-center items-center gap-x-4 gap-y-1 text-xs sm:text-sm text-zinc-700">
+            <a href="mailto:jezuapalma@gmail.com" className="hover:underline flex items-center gap-1">
+              <Mail className="w-3.5 h-3.5 text-zinc-400" />
+              jezuapalma@gmail.com
+            </a>
+            <span className="text-zinc-300 hidden sm:inline">|</span>
+            <a href="tel:+639397832375" className="hover:underline flex items-center gap-1">
+              <Phone className="w-3.5 h-3.5 text-zinc-400" />
+              +63 939 783 2375
+            </a>
+            <span className="text-zinc-300 hidden sm:inline">|</span>
+            <a href="tel:+639566723696" className="hover:underline flex items-center gap-1">
+              <Phone className="w-3.5 h-3.5 text-zinc-400" />
+              +63 956 672 3696
+            </a>
           </div>
-        </div>
-
-        {/* Contact Links & Meta bar */}
-        <div className="cv-contact grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 print:grid-cols-3 gap-4 print:gap-3 py-6 print:py-3 border-b border-zinc-200 text-xs sm:text-sm text-zinc-600 print:text-[8pt]">
-          <div className="flex items-center space-x-2">
-            <Mail className="w-4 h-4 text-zinc-400 flex-shrink-0" />
-            <a href="mailto:jezuapalma@gmail.com" className="hover:underline">jezuapalma@gmail.com</a>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Phone className="w-4 h-4 text-zinc-400 flex-shrink-0" />
-            <div className="leading-tight">
-              <a href="tel:+639397832375" className="hover:underline block">+63 939 783 2375</a>
-              <a href="tel:+639566723696" className="hover:underline block">+63 956 672 3696</a>
-            </div>
-          </div>
-          <div className="flex items-center space-x-2">
-            <MapPin className="w-4 h-4 text-zinc-400 flex-shrink-0" />
-            <span>Siniloan, Laguna, Philippines</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <svg className="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
-              <path d="M9 18c-4.51 2-5-2-7-2" />
-            </svg>
-            <a href="https://github.com/jezua-palma" target="_blank" rel="noreferrer" className="hover:underline">github.com/jezua-palma</a>
-          </div>
-          <div className="flex items-center space-x-2">
-            <svg className="w-4 h-4 text-zinc-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-              <rect x="2" y="9" width="4" height="12" />
-              <circle cx="4" cy="4" r="2" />
-            </svg>
-            <a href="https://www.linkedin.com/in/jezua-errol-palma-30b1561bb/" target="_blank" rel="noreferrer" className="hover:underline">linkedin.com/in/jezua-errol-palma</a>
-          </div>
-          <div className="flex items-center space-x-2">
-            <span className="font-bold text-zinc-400 font-mono text-[10px] w-4 flex-shrink-0">AGE</span>
-            <span>{currentAge} Years Old (Oct 11, 2003)</span>
+          <div className="harvard-contact-row2 mt-1.5 flex flex-wrap justify-center items-center gap-x-4 gap-y-1 text-xs sm:text-sm text-zinc-700">
+            <span className="flex items-center gap-1">
+              <MapPin className="w-3.5 h-3.5 text-zinc-400" />
+              Siniloan, Laguna, Philippines
+            </span>
+            <span className="text-zinc-300 hidden sm:inline">|</span>
+            <a href="https://github.com/jezua-palma" target="_blank" rel="noreferrer" className="hover:underline">
+              github.com/jezua-palma
+            </a>
+            <span className="text-zinc-300 hidden sm:inline">|</span>
+            <a href="https://www.linkedin.com/in/jezua-errol-palma-30b1561bb/" target="_blank" rel="noreferrer" className="hover:underline">
+              linkedin.com/in/jezua-errol-palma
+            </a>
           </div>
         </div>
 
-        {/* Core Layout Split */}
-        <div className="cv-grid grid grid-cols-1 md:grid-cols-12 print:grid-cols-12 gap-8 print:gap-6 pt-8 print:pt-4">
-          
-          {/* Main Professional Experience (Left) */}
-          <div className="cv-col-8 md:col-span-8 print:col-span-8 space-y-8 print:space-y-4">
-            
-            {/* Career Summary */}
-            <div className="space-y-2">
-              <h2 className="text-base sm:text-lg font-extrabold text-zinc-950 uppercase tracking-wider border-b border-zinc-300 pb-1">
-                Executive Profile
-              </h2>
-              <p className="text-zinc-600 text-xs sm:text-sm leading-relaxed">
-                Motivated developer & designer and prompt engineer with dynamic experience scaffolding custom CRM architectures and event-triggered pipelines. Capable of bridge-building between classic code (React, Next.js, Python Flask) and low-code productivity engines (Bubble.io). Strongly committed to workflow velocity, data-driven security, and visual UI/UX excellence.
-              </p>
+        {/* ── SUMMARY ── */}
+        <div className="harvard-section mt-6">
+          <h2 className="harvard-heading text-sm sm:text-base font-bold uppercase tracking-widest text-black border-b-2 border-black pb-1 mb-3">
+            Summary
+          </h2>
+          <p className="text-zinc-700 text-xs sm:text-sm leading-relaxed">
+            Motivated developer &amp; designer and prompt engineer with dynamic experience scaffolding custom CRM architectures and event-triggered pipelines. Capable of bridge-building between classic code (React, Next.js, Python Flask) and low-code productivity engines (Bubble.io). Strongly committed to workflow velocity, data-driven security, and visual UI/UX excellence.
+          </p>
+        </div>
+
+        {/* ── EDUCATION ── */}
+        <div className="harvard-section mt-6">
+          <h2 className="harvard-heading text-sm sm:text-base font-bold uppercase tracking-widest text-black border-b-2 border-black pb-1 mb-3">
+            Education
+          </h2>
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline">
+            <div>
+              <h3 className="font-bold text-zinc-950 text-sm sm:text-base">Laguna State Polytechnic University</h3>
+              <p className="text-zinc-600 text-xs sm:text-sm italic">Bachelor of Science in Information Technology — Specialized in Animation &amp; Motion Graphics</p>
             </div>
+            <span className="text-zinc-500 text-xs sm:text-sm whitespace-nowrap mt-1 sm:mt-0">2022 – 2026</span>
+          </div>
+          <ul className="harvard-bullets mt-1.5 list-disc pl-5 text-zinc-700 text-xs sm:text-sm space-y-0.5">
+            <li>Graduated Batch 2026 with an Overall General Weighted Average (GWA) of <strong>1.73</strong></li>
+            <li>Recurring <strong>Dean's Lister</strong> throughout academic tenure</li>
+          </ul>
+        </div>
 
-            {/* Experience Section */}
-            <div className="space-y-6">
-              <h2 className="text-base sm:text-lg font-extrabold text-zinc-950 uppercase tracking-wider border-b border-zinc-300 pb-1">
-                Professional Experience
-              </h2>
+        {/* ── EXPERIENCE ── */}
+        <div className="harvard-section mt-6">
+          <h2 className="harvard-heading text-sm sm:text-base font-bold uppercase tracking-widest text-black border-b-2 border-black pb-1 mb-3">
+            Experience
+          </h2>
 
-              <div className="space-y-6">
-                
-                {/* SP Madrid */}
-                <div className="space-y-2">
-                  <div className="flex justify-between items-start text-xs sm:text-sm">
-                    <div>
-                      <h3 className="font-extrabold text-zinc-900 text-sm sm:text-base">Full Stack Developer</h3>
-                      <div className="text-zinc-500 font-medium">SP Madrid & Associates Law Firm</div>
-                    </div>
-                    <span className="font-mono text-zinc-500 text-right">March 10, 2026 - June 5, 2026</span>
-                  </div>
-                  <p className="text-zinc-600 text-xs sm:text-sm leading-relaxed">
-                    Developing and maintaining enterprise CRM modules inside the visual-first Bubble.io platform. Designed secure PostgreSQL query flows and coded responsive JavaScript hooks. Successfully structured bulk automation scripts that dramatically improved bulk email blasting capacity and notification speeds.
-                  </p>
-                </div>
-
-                {/* Freelance */}
-                <div className="space-y-2">
-                  <div className="flex justify-between items-start text-xs sm:text-sm">
-                    <div>
-                      <h3 className="font-extrabold text-zinc-900 text-sm sm:text-base">Freelance Developer & Designer</h3>
-                      <div className="text-zinc-500 font-medium">Bespoke Software Services</div>
-                    </div>
-                    <span className="font-mono text-zinc-500 text-right">March 2023 - Present</span>
-                  </div>
-                  <p className="text-zinc-600 text-xs sm:text-sm leading-relaxed">
-                    Architected customized software solutions, high-conversion landing pages, and responsive inventory trackers for small-to-medium clients. Structured relational databases, role-based dashboards, and automated triggers with 100% project completion scores and satisfied client reviews.
-                  </p>
-                </div>
-
-                {/* Independent Projects */}
-                <div className="space-y-2">
-                  <div className="flex justify-between items-start text-xs sm:text-sm">
-                    <div>
-                      <h3 className="font-extrabold text-zinc-900 text-sm sm:text-base">Independent Project Developer</h3>
-                      <div className="text-zinc-500 font-medium">Self-Directed Personal Projects</div>
-                    </div>
-                    <span className="font-mono text-zinc-500 text-right">2024 - Present</span>
-                  </div>
-                  <div className="text-zinc-600 text-[11px] sm:text-xs space-y-1 leading-relaxed">
-                    <p>
-                      Conceptualized, designed, and deployed multiple web applications, games, and AI utilities:
-                    </p>
-                    <ul className="cv-project-list list-disc pl-4 space-y-1">
-                      <li>
-                        <strong>Shadow Depths Game:</strong> Performant 2D Canvas roguelike with procedural maps, Google OAuth leaderboard, and WebSocket multiplayer. <em>(Tech: Canvas, CSS, JS, Google GSI, WebSockets)</em>
-                      </li>
-                      <li>
-                        <strong>Odysseus AI Workspace:</strong> Privacy-first workspace demonstrating mastery over AI-assisted programming, featuring multi-model chat, autonomous agents, ChromaDB RAG, and mail/cal sync. <em>(Tech: FastAPI, Python, SQLite, ChromaDB, JS, Docker)</em>
-                      </li>
-                      <li>
-                        <strong>ColorSense AI Scanner:</strong> Mobile camera tool scanning real-world colors, analyzing WCAG contrast, and recommending AI palettes. <em>(Tech: React, Tailwind, Camera API, Vercel)</em>
-                      </li>
-                      <li>
-                        <strong>DailyMood App:</strong> Calming wellness tracker analyzing mood metrics and journal entries via Generative Gemini AI prompts. <em>(Tech: Flask, Python, MySQL, Bootstrap, Gemini API)</em>
-                      </li>
-                      <li>
-                        <strong>Capstone Title Generator:</strong> Outline generator helping 200+ students bypass brainstorm blocks. <em>(Tech: React, Tailwind, Gemini API, Vercel)</em>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-
-                {/* Capstone StreetSmart */}
-                <div className="space-y-2">
-                  <div className="flex justify-between items-start text-xs sm:text-sm">
-                    <div>
-                      <h3 className="font-extrabold text-zinc-900 text-sm sm:text-base">Capstone Research & Development Lead</h3>
-                      <div className="text-zinc-500 font-medium">LSPU Academic Innovation Projects</div>
-                    </div>
-                    <span className="font-mono text-zinc-500 text-right">2024 - 2026</span>
-                  </div>
-                  <p className="text-zinc-600 text-xs sm:text-sm leading-relaxed">
-                    Researched early-childhood navigation safety and directed software implementation for <strong>StreetSmart</strong>, a web-based educational safety game using gamified road decision matrices. <em>(Tech: Flask, Python, MySQL, Tailwind CSS, Leaflet/Canvas APIs)</em>
-                  </p>
-                </div>
-
+          {/* SP Madrid */}
+          <div className="mb-4">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline">
+              <div>
+                <h3 className="font-bold text-zinc-950 text-sm sm:text-base">Full Stack Developer</h3>
+                <p className="text-zinc-600 text-xs sm:text-sm italic">SP Madrid &amp; Associates Law Firm</p>
               </div>
+              <span className="text-zinc-500 text-xs sm:text-sm whitespace-nowrap mt-1 sm:mt-0">March 2026 – June 2026</span>
             </div>
-
-            {/* Education History */}
-            <div className="space-y-4">
-              <h2 className="text-base sm:text-lg font-extrabold text-zinc-950 uppercase tracking-wider border-b border-zinc-300 pb-1">
-                Education
-              </h2>
-
-              <div className="space-y-3">
-                <div className="flex justify-between items-start text-xs sm:text-sm">
-                  <div>
-                    <h3 className="font-bold text-zinc-900">Laguna State Polytechnic University</h3>
-                    <p className="text-zinc-500 text-xs">Bachelor of Science in Information Technology (Graduated - Batch 2026, Specialized in Animation & Motion Graphics)</p>
-                    <p className="text-indigo-600 text-[10px] sm:text-xs font-bold mt-0.5">Overall General Weighted Average (GWA): 1.73 (Recurring Dean's Lister)</p>
-                  </div>
-                  <span className="font-mono text-zinc-500 text-right">2022 - 2026</span>
-                </div>
-              </div>
-            </div>
-
+            <ul className="harvard-bullets mt-1.5 list-disc pl-5 text-zinc-700 text-xs sm:text-sm space-y-0.5">
+              <li>Developed and maintained enterprise CRM modules inside the Bubble.io visual-first platform</li>
+              <li>Designed secure PostgreSQL query flows and coded responsive JavaScript hooks</li>
+              <li>Structured bulk automation scripts that dramatically improved email blasting capacity and notification speeds</li>
+            </ul>
           </div>
 
-          {/* Technical Skills & Certs Sidebar (Right) */}
-          <div className="cv-col-4 md:col-span-4 print:col-span-4 space-y-8 print:space-y-4 border-t md:border-t-0 print:border-t-0 md:border-l print:border-l border-zinc-200 pt-8 md:pt-0 print:pt-0 md:pl-6 print:pl-5">
-            
-            {/* Tech Stack List */}
-            <div className="space-y-3">
-              <h2 className="text-sm font-extrabold text-zinc-950 uppercase tracking-wider border-b border-zinc-300 pb-1">
-                Technical Stack
-              </h2>
-              
-              <div className="space-y-4 text-xs">
-                <div>
-                  <h4 className="font-bold text-zinc-800">Frontend</h4>
-                  <p className="text-zinc-500 mt-0.5">React, Next.js, HTML5, CSS3, JavaScript, TypeScript, Tailwind CSS, Bootstrap</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-zinc-800">Backend & Database</h4>
-                  <p className="text-zinc-500 mt-0.5">Python (Flask, Django), PostgreSQL, MySQL, ChromaDB, Node.js</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-zinc-800">No-Code / Low-Code</h4>
-                  <p className="text-zinc-500 mt-0.5">Bubble.io CRM, Visual Automations, Zapier API syncs</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-zinc-800">Version & Tools</h4>
-                  <p className="text-zinc-500 mt-0.5">Git, GitHub, Figma, VS Code, Docker, XAMPP, CLI Scripts</p>
-                </div>
+          {/* Freelance */}
+          <div className="mb-4">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline">
+              <div>
+                <h3 className="font-bold text-zinc-950 text-sm sm:text-base">Freelance Developer &amp; Designer</h3>
+                <p className="text-zinc-600 text-xs sm:text-sm italic">Bespoke Software Services</p>
               </div>
+              <span className="text-zinc-500 text-xs sm:text-sm whitespace-nowrap mt-1 sm:mt-0">March 2023 – Present</span>
             </div>
-
-            {/* Certifications list */}
-            <div className="space-y-3">
-              <h2 className="text-sm font-extrabold text-zinc-950 uppercase tracking-wider border-b border-zinc-300 pb-1">
-                Certifications
-              </h2>
-              
-              {/* Clickable Card Certification Items (Preserved for both screen and print exactly like the uploaded image) */}
-              <div className="space-y-2 text-xs">
-                {certifications.map((c, i) => (
-                  <div 
-                    key={i} 
-                    onClick={() => setCvLightbox(c)} 
-                    className="cv-cert-card cursor-pointer p-2.5 rounded-xl border border-zinc-200 bg-zinc-50/40 hover:bg-indigo-50/30 hover:border-indigo-300 transition-all duration-300 group/cert text-left relative flex items-center justify-between hover:shadow-md hover:shadow-indigo-500/5 print:bg-zinc-50/40 print:border-zinc-200"
-                    title="Click to view certificate"
-                  >
-                    <div className="space-y-0.5 pr-4">
-                      <h4 className="font-bold text-zinc-900 group-hover/cert:text-indigo-600 transition-colors text-[10px] sm:text-xs">
-                        {c.title}
-                      </h4>
-                      <p className="text-zinc-500 text-[9px] sm:text-[10px]">{c.issuer} — {c.date}</p>
-                    </div>
-                    <div className="flex-shrink-0 w-7 h-7 rounded-full bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-400 group-hover/cert:bg-indigo-100 group-hover/cert:border-indigo-200 group-hover/cert:text-indigo-600 transition-all duration-300 shadow-sm print:bg-zinc-100 print:border-zinc-200">
-                      <Eye className="w-3.5 h-3.5" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Referees summary */}
-            <div className="space-y-2">
-              <h2 className="text-sm font-extrabold text-zinc-950 uppercase tracking-wider border-b border-zinc-300 pb-1">
-                References
-              </h2>
-              <p className="text-zinc-500 text-xs leading-normal">
-                Academic leads, classmate references, and SP Madrid internship mentors are available immediately upon formal request.
-              </p>
-            </div>
-
+            <ul className="harvard-bullets mt-1.5 list-disc pl-5 text-zinc-700 text-xs sm:text-sm space-y-0.5">
+              <li>Architected customized software solutions, high-conversion landing pages, and responsive inventory trackers for small-to-medium clients</li>
+              <li>Structured relational databases, role-based dashboards, and automated triggers</li>
+              <li>Achieved 100% project completion scores and satisfied client reviews</li>
+            </ul>
           </div>
 
+          {/* Capstone */}
+          <div>
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline">
+              <div>
+                <h3 className="font-bold text-zinc-950 text-sm sm:text-base">Capstone Research &amp; Development Lead</h3>
+                <p className="text-zinc-600 text-xs sm:text-sm italic">LSPU Academic Innovation Projects</p>
+              </div>
+              <span className="text-zinc-500 text-xs sm:text-sm whitespace-nowrap mt-1 sm:mt-0">2024 – 2026</span>
+            </div>
+            <ul className="harvard-bullets mt-1.5 list-disc pl-5 text-zinc-700 text-xs sm:text-sm space-y-0.5">
+              <li>Researched early-childhood navigation safety and directed software implementation for <strong>StreetSmart</strong></li>
+              <li>Built a web-based educational safety game using gamified road decision matrices (Flask, Python, MySQL, Tailwind CSS, Leaflet/Canvas APIs)</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* ── PROJECTS ── */}
+        <div className="harvard-section mt-6">
+          <h2 className="harvard-heading text-sm sm:text-base font-bold uppercase tracking-widest text-black border-b-2 border-black pb-1 mb-3">
+            Projects
+          </h2>
+
+          <div className="space-y-3 text-xs sm:text-sm text-zinc-700">
+            <div>
+              <h3 className="font-bold text-zinc-950 inline">Shadow Depths Game</h3>
+              <span className="text-zinc-500 italic"> — Canvas, CSS, JS, Google GSI, WebSockets</span>
+              <ul className="harvard-bullets mt-1 list-disc pl-5 space-y-0.5">
+                <li>Engineered a performant 2D Canvas roguelike featuring procedural maps, Google OAuth leaderboard, and WebSocket multiplayer</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-bold text-zinc-950 inline">Odysseus AI Workspace</h3>
+              <span className="text-zinc-500 italic"> — FastAPI, Python, SQLite, ChromaDB, JS, Docker</span>
+              <ul className="harvard-bullets mt-1 list-disc pl-5 space-y-0.5">
+                <li>Created a privacy-first workspace with multi-model chat, autonomous agents, ChromaDB RAG, and mail/calendar sync</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-bold text-zinc-950 inline">ColorSense AI Scanner</h3>
+              <span className="text-zinc-500 italic"> — React, Tailwind, Camera API, Vercel</span>
+              <ul className="harvard-bullets mt-1 list-disc pl-5 space-y-0.5">
+                <li>Developed a mobile camera tool that scans real-world colors, analyzes WCAG contrast, and recommends AI-generated palettes</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-bold text-zinc-950 inline">DailyMood App</h3>
+              <span className="text-zinc-500 italic"> — Flask, Python, MySQL, Bootstrap, Gemini API</span>
+              <ul className="harvard-bullets mt-1 list-disc pl-5 space-y-0.5">
+                <li>Built a calming wellness tracker analyzing mood metrics and journal entries via Generative Gemini AI prompts</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-bold text-zinc-950 inline">Capstone Title Generator</h3>
+              <span className="text-zinc-500 italic"> — React, Tailwind, Gemini API, Vercel</span>
+              <ul className="harvard-bullets mt-1 list-disc pl-5 space-y-0.5">
+                <li>Launched an outline generator that helped 200+ students bypass brainstorm blocks</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* ── TECHNICAL SKILLS ── */}
+        <div className="harvard-section mt-6">
+          <h2 className="harvard-heading text-sm sm:text-base font-bold uppercase tracking-widest text-black border-b-2 border-black pb-1 mb-3">
+            Technical Skills
+          </h2>
+          <div className="text-xs sm:text-sm text-zinc-700 space-y-1.5">
+            <p><strong>Frontend:</strong> React, Next.js, HTML5, CSS3, JavaScript, TypeScript, Tailwind CSS, Bootstrap</p>
+            <p><strong>Backend &amp; Database:</strong> Python (Flask, Django), PostgreSQL, MySQL, ChromaDB, Node.js</p>
+            <p><strong>No-Code / Low-Code:</strong> Bubble.io CRM, Visual Automations, Zapier API Syncs</p>
+            <p><strong>Tools &amp; Version Control:</strong> Git, GitHub, Figma, VS Code, Docker, XAMPP, CLI Scripts</p>
+          </div>
+        </div>
+
+        {/* ── CERTIFICATIONS ── */}
+        <div className="harvard-section mt-6">
+          <h2 className="harvard-heading text-sm sm:text-base font-bold uppercase tracking-widest text-black border-b-2 border-black pb-1 mb-3">
+            Certifications
+          </h2>
+          <div className="space-y-1.5 text-xs sm:text-sm">
+            {certifications.map((c, i) => (
+              <div 
+                key={i} 
+                onClick={() => setCvLightbox(c)} 
+                className="harvard-cert-item cursor-pointer flex justify-between items-center py-1.5 px-2 -mx-2 rounded-lg hover:bg-zinc-50 transition-colors group"
+                title="Click to view certificate"
+              >
+                <div>
+                  <span className="font-bold text-zinc-900 group-hover:text-zinc-950 transition-colors">{c.title}</span>
+                  <span className="text-zinc-500"> — {c.issuer}</span>
+                </div>
+                <div className="flex items-center gap-2 text-zinc-400">
+                  <span className="text-xs">{c.date}</span>
+                  <Eye className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── REFERENCES ── */}
+        <div className="harvard-section mt-6">
+          <h2 className="harvard-heading text-sm sm:text-base font-bold uppercase tracking-widest text-black border-b-2 border-black pb-1 mb-3">
+            References
+          </h2>
+          <p className="text-zinc-600 text-xs sm:text-sm italic">
+            Academic leads, classmate references, and SP Madrid internship mentors are available immediately upon formal request.
+          </p>
         </div>
 
       </div>
@@ -436,7 +384,7 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
                 />
               </div>
               
-              <div className="w-full text-center mt-5 pt-4 border-t border-zinc-100">
+              <div className="w-full text-center mt-5 pt-4 border-t border-zinc-100" style={{ fontFamily: "'Inter', 'Helvetica', sans-serif" }}>
                 <h4 className="font-extrabold text-zinc-950 text-base">{cvLightbox.title}</h4>
                 <p className="text-zinc-500 text-xs mt-1">{cvLightbox.issuer} — Verified Academic Credential</p>
                 <div className="mt-4 flex justify-center space-x-3">
@@ -449,7 +397,7 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
                   <a
                     href={cvLightbox.img}
                     download={`${cvLightbox.title.replace(/\s+/g, '_')}_Certificate.jpg`}
-                    className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-md shadow-indigo-600/10 transition-all flex items-center space-x-1.5"
+                    className="px-5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-bold shadow-md transition-all flex items-center space-x-1.5"
                   >
                     <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -464,10 +412,11 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
         )}
       </AnimatePresence>
 
-      {/* Embedded High-Fidelity Print stylesheet maintaining standard card formatting on a single page */}
+      {/* ═══════════════════════════════════════════════════════════════
+          PRINT & PDF STYLES — Harvard Single-Column Layout
+      ═══════════════════════════════════════════════════════════════ */}
       <style>{`
         @media print {
-          /* Force browser print engine to enable all background graphics automatically */
           * {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
@@ -478,7 +427,7 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
             display: none !important;
           }
           
-          html, body, #root, main, .min-h-screen {
+          html, body, #root, main, .min-h-screen, .harvard-cv-page {
             background: white !important;
             margin: 0 !important;
             padding: 0 !important;
@@ -492,13 +441,12 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
             margin: 0 !important;
           }
 
-          /* The actual CV paper container card (matching the screen layout in print) */
-          .max-w-4xl {
+          .harvard-cv-card {
             max-width: 100% !important;
             width: 100vw !important;
             height: 100vh !important;
             margin: 0 !important;
-            padding: 6mm 10mm !important;
+            padding: 8mm 12mm !important;
             background: white !important;
             border: none !important;
             border-radius: 0 !important;
@@ -507,80 +455,51 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
             overflow: hidden !important;
           }
 
-          /* Force Desktop Grid for Print */
-          .cv-grid {
-            display: grid !important;
-            grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
-            gap: 14px !important;
-          }
-          .cv-col-8 {
-            grid-column: span 8 / span 8 !important;
-          }
-          .cv-col-4 {
-            grid-column: span 4 / span 4 !important;
-            border-top: none !important;
-            border-left: 1px solid #e4e4e7 !important;
-            padding-top: 0 !important;
-            padding-left: 14px !important;
-          }
-          .cv-header {
-            display: flex !important;
-            flex-direction: row !important;
-            justify-content: space-between !important;
-            align-items: center !important;
-            padding-bottom: 3px !important;
-          }
-          .cv-contact {
-            display: grid !important;
-            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-            gap: 8px !important;
-            padding-top: 3px !important;
-            padding-bottom: 3px !important;
-          }
-          .cv-profile-pic {
-            width: 21mm !important;
-            height: 21mm !important;
-            border-radius: 8px !important;
-          }
-          .cv-cert-card {
-            padding: 5px 6px !important;
-            border-radius: 8px !important;
-          }
-          .cv-cert-card h4 {
-            font-size: 7.8pt !important;
-          }
-          .cv-project-list {
-            margin-top: 3px !important;
-            padding-left: 12px !important;
-          }
-          .cv-project-list li {
-            margin-top: 1.5px !important;
-            line-height: 1.25 !important;
+          .harvard-header {
+            padding-bottom: 4px !important;
           }
 
-          /* Typography print scaling */
-          h1 { font-size: 16pt !important; line-height: 1.05 !important; }
-          h2 { font-size: 9.5pt !important; margin-bottom: 2px !important; }
+          .harvard-section {
+            margin-top: 10px !important;
+          }
+
+          .harvard-heading {
+            font-size: 9pt !important;
+            padding-bottom: 2px !important;
+            margin-bottom: 4px !important;
+          }
+
+          .harvard-contact, .harvard-contact-row2 {
+            margin-top: 2px !important;
+            gap: 8px !important;
+          }
+
+          .harvard-bullets {
+            margin-top: 2px !important;
+          }
+
+          .harvard-cert-item {
+            padding: 2px 0 !important;
+            margin: 0 !important;
+            border-radius: 0 !important;
+          }
+
+          h1 { font-size: 16pt !important; line-height: 1.1 !important; }
+          h2 { font-size: 9pt !important; }
           h3 { font-size: 8.5pt !important; }
-          p, span, li, a { font-size: 7pt !important; line-height: 1.25 !important; }
-          
-          /* Spacing print scaling to fill the page beautifully */
-          .pt-8 { padding-top: 8px !important; }
-          .pb-8 { padding-bottom: 3px !important; }
-          .py-6 { padding-top: 3px !important; padding-bottom: 3px !important; }
-          .space-y-8 > :not([hidden]) ~ :not([hidden]) { margin-top: 10px !important; }
-          .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: 8px !important; }
-          .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 6px !important; }
+          p, span, li, a { font-size: 7pt !important; line-height: 1.3 !important; }
+
           .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 4px !important; }
-          .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 3.5px !important; }
+          .space-y-1\\.5 > :not([hidden]) ~ :not([hidden]) { margin-top: 3px !important; }
+          .mb-4 { margin-bottom: 8px !important; }
         }
 
-        /* 📄 PDF Download Layout Engine - Guarantees exact 1-page A4 PDF output */
+        /* 📄 PDF Download Layout — Exact 1-page A4 */
         #cv-document-card.downloading-pdf {
           display: block !important;
           width: 210mm !important;
           height: 295mm !important;
-          padding: 6mm 10mm !important;
+          padding: 8mm 12mm !important;
           background: white !important;
           border: none !important;
           border-radius: 0 !important;
@@ -596,74 +515,47 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
           color-adjust: exact !important;
         }
 
-        #cv-document-card.downloading-pdf .cv-grid {
-          display: grid !important;
-          grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
-          gap: 14px !important;
-        }
-        #cv-document-card.downloading-pdf .cv-col-8 {
-          grid-column: span 8 / span 8 !important;
-        }
-        #cv-document-card.downloading-pdf .cv-col-4 {
-          grid-column: span 4 / span 4 !important;
-          border-top: none !important;
-          border-left: 1px solid #e4e4e7 !important;
-          padding-top: 0 !important;
-          padding-left: 14px !important;
-        }
-        #cv-document-card.downloading-pdf .cv-header {
-          display: flex !important;
-          flex-direction: row !important;
-          justify-content: space-between !important;
-          align-items: center !important;
-          padding-bottom: 3px !important;
-        }
-        #cv-document-card.downloading-pdf .cv-contact {
-          display: grid !important;
-          grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-          gap: 8px !important;
-          padding-top: 3px !important;
-          padding-bottom: 3px !important;
-        }
-        #cv-document-card.downloading-pdf .cv-profile-pic {
-          width: 21mm !important;
-          height: 21mm !important;
-          border-radius: 8px !important;
-        }
-        #cv-document-card.downloading-pdf .cv-cert-card {
-          padding: 5px 6px !important;
-          border-radius: 8px !important;
-        }
-        #cv-document-card.downloading-pdf .cv-cert-card h4 {
-          font-size: 7.8pt !important;
-        }
-        #cv-document-card.downloading-pdf .cv-project-list {
-          margin-top: 3px !important;
-          padding-left: 12px !important;
-        }
-        #cv-document-card.downloading-pdf .cv-project-list li {
-          margin-top: 1.5px !important;
-          line-height: 1.25 !important;
+        #cv-document-card.downloading-pdf .harvard-header {
+          padding-bottom: 4px !important;
         }
 
-        /* Typography PDF scaling */
-        #cv-document-card.downloading-pdf h1 { font-size: 16pt !important; line-height: 1.05 !important; }
-        #cv-document-card.downloading-pdf h2 { font-size: 9.5pt !important; margin-bottom: 2px !important; }
+        #cv-document-card.downloading-pdf .harvard-section {
+          margin-top: 10px !important;
+        }
+
+        #cv-document-card.downloading-pdf .harvard-heading {
+          font-size: 9pt !important;
+          padding-bottom: 2px !important;
+          margin-bottom: 4px !important;
+        }
+
+        #cv-document-card.downloading-pdf .harvard-contact,
+        #cv-document-card.downloading-pdf .harvard-contact-row2 {
+          margin-top: 2px !important;
+          gap: 8px !important;
+        }
+
+        #cv-document-card.downloading-pdf .harvard-bullets {
+          margin-top: 2px !important;
+        }
+
+        #cv-document-card.downloading-pdf .harvard-cert-item {
+          padding: 2px 0 !important;
+          margin: 0 !important;
+          border-radius: 0 !important;
+        }
+
+        #cv-document-card.downloading-pdf h1 { font-size: 16pt !important; line-height: 1.1 !important; }
+        #cv-document-card.downloading-pdf h2 { font-size: 9pt !important; }
         #cv-document-card.downloading-pdf h3 { font-size: 8.5pt !important; }
         #cv-document-card.downloading-pdf p, 
         #cv-document-card.downloading-pdf span, 
         #cv-document-card.downloading-pdf li, 
-        #cv-document-card.downloading-pdf a { font-size: 7pt !important; line-height: 1.25 !important; }
-        
-        /* Spacing PDF scaling to guarantee strict single-page limit */
-        #cv-document-card.downloading-pdf .pt-8 { padding-top: 8px !important; }
-        #cv-document-card.downloading-pdf .pb-8 { padding-bottom: 3px !important; }
-        #cv-document-card.downloading-pdf .py-6 { padding-top: 3px !important; padding-bottom: 3px !important; }
-        #cv-document-card.downloading-pdf .space-y-8 > :not([hidden]) ~ :not([hidden]) { margin-top: 10px !important; }
-        #cv-document-card.downloading-pdf .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: 8px !important; }
-        #cv-document-card.downloading-pdf .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 6px !important; }
+        #cv-document-card.downloading-pdf a { font-size: 7pt !important; line-height: 1.3 !important; }
+
         #cv-document-card.downloading-pdf .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 4px !important; }
-        #cv-document-card.downloading-pdf .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 3.5px !important; }
+        #cv-document-card.downloading-pdf .space-y-1\\.5 > :not([hidden]) ~ :not([hidden]) { margin-top: 3px !important; }
+        #cv-document-card.downloading-pdf .mb-4 { margin-bottom: 8px !important; }
       `}</style>
     </div>
   );
