@@ -142,14 +142,9 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
               jezuapalma@gmail.com
             </a>
             <span className="text-zinc-300 hidden sm:inline">|</span>
-            <a href="tel:+639397832375" className="hover:underline flex items-center gap-1">
+            <a href="tel:+639773516472" className="hover:underline flex items-center gap-1">
               <Phone className="w-3.5 h-3.5 text-zinc-400" />
-              +63 939 783 2375
-            </a>
-            <span className="text-zinc-300 hidden sm:inline">|</span>
-            <a href="tel:+639566723696" className="hover:underline flex items-center gap-1">
-              <Phone className="w-3.5 h-3.5 text-zinc-400" />
-              +63 956 672 3696
+              +63 977 351 6472
             </a>
           </div>
           <div className="harvard-contact-row2 mt-1.5 flex flex-wrap justify-center items-center gap-x-4 gap-y-1 text-xs sm:text-sm text-zinc-700">

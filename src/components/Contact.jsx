@@ -179,11 +179,8 @@ const Contact = () => {
                 <div>
                   <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest font-mono">Direct Phone Call</span>
                   <div className="space-y-1 mt-0.5 text-sm sm:text-base font-bold text-white">
-                    <a href="tel:+639397832375" className="block hover:text-neon-violet transition-colors">
-                      +63 939 783 2375
-                    </a>
-                    <a href="tel:+639566723696" className="block hover:text-neon-violet transition-colors">
-                      +63 956 672 3696
+                    <a href="tel:+639773516472" className="block hover:text-neon-violet transition-colors">
+                      +63 977 351 6472
                     </a>
                   </div>
                 </div>
