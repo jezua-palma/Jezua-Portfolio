@@ -2,9 +2,9 @@
 
 ## Contact form
 
-The contact form sends inquiries through Web3Forms. Generate an access key for
-`jezua.palma1011@gmail.com`, add it as `VITE_WEB3FORMS_ACCESS_KEY` in `.env.local`,
-and configure the same variable in your deployment environment.
+The contact form sends inquiries through Web3Forms using the public access key
+configured for `jezua.palma1011@gmail.com`. To use another key, set
+`VITE_WEB3FORMS_ACCESS_KEY` in `.env.local` and in your deployment environment.
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

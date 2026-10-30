@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Phone, Mail, MapPin, CheckCircle, AlertCircle, Loader } from 'lucide-react';
-import { CONTACT_EMAIL } from '../contact';
-
-const WEB3FORMS_ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
+import { CONTACT_EMAIL, WEB3FORMS_ACCESS_KEY } from '../contact';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -95,6 +93,8 @@ const Contact = () => {
             initial={{ opacity: 0, y: -50, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -50, scale: 0.9 }}
+            role={status.success ? 'status' : 'alert'}
+            aria-live={status.success ? 'polite' : 'assertive'}
             className={`fixed top-24 right-4 sm:right-10 z-50 p-4 rounded-xl border shadow-2xl flex items-center space-x-3 w-full max-w-sm font-sans ${
               status.success 
                 ? 'bg-emerald-950/90 border-emerald-500/30 text-emerald-300' 
