@@ -25,13 +25,13 @@ const Testimonials = () => {
   ];
 
   return (
-    <section id="testimonials" className="relative py-24 border-t border-white/5 overflow-hidden bg-[#030014]/30">
+    <section id="testimonials" className="relative py-16 sm:py-20 lg:py-24 border-t border-white/5 overflow-hidden bg-[#030014]/30">
       <div className="glow-sphere w-[300px] h-[300px] bg-neon-fuchsia/5 top-1/4 left-1/3" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Title */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
             Recommendations & <span className="gradient-text">Testimonials</span>
           </h2>

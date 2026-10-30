@@ -154,6 +154,8 @@ const Navbar = ({ theme, setTheme }) => {
                   onClick={() => setIsOpen(!isOpen)}
                   className="p-2 text-gray-400 hover:text-white transition-colors"
                   aria-label="Toggle menu"
+                  aria-expanded={isOpen}
+                  aria-controls="mobile-navigation"
                 >
                   {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                 </button>
@@ -168,8 +170,9 @@ const Navbar = ({ theme, setTheme }) => {
       {/* Mobile Drawer Menu (Dashboard only) */}
       {theme === 'dark-dashboard' && (
         <div 
-          className={`lg:hidden fixed top-[60px] left-0 w-full h-[calc(100vh-60px)] bg-[#030014]/95 backdrop-blur-2xl transition-all duration-300 transform z-40 ${
-            isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+          id="mobile-navigation"
+          className={`lg:hidden fixed top-[60px] left-0 w-full h-[calc(100dvh-60px)] overflow-y-auto overscroll-contain bg-[#030014]/95 backdrop-blur-2xl transition-all duration-300 transform z-40 ${
+            isOpen ? 'translate-x-0 opacity-100 visible pointer-events-auto' : 'translate-x-full opacity-0 invisible pointer-events-none'
           }`}
         >
           <div className="flex flex-col px-4 py-6 space-y-4">

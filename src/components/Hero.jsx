@@ -340,10 +340,10 @@ const Hero = ({ setTheme, setAutoDownloadCV, isPaused }) => {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full border border-neon-cyan/20 bg-neon-cyan/5 text-neon-cyan text-xs font-semibold uppercase tracking-wider mb-6 cursor-default"
+              className="inline-flex max-w-full items-center space-x-2 px-3 py-1.5 rounded-full border border-neon-cyan/20 bg-neon-cyan/5 text-neon-cyan text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-6 cursor-default"
             >
               <span className="w-2 h-2 rounded-full bg-neon-cyan animate-ping" />
-              <span>Available for Freelance & Full-time Hire</span>
+              <span className="min-w-0">Available for Freelance & Full-time Hire</span>
             </motion.div>
 
             {/* Name Header */}
@@ -351,7 +351,7 @@ const Hero = ({ setTheme, setAutoDownloadCV, isPaused }) => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight"
+              className="text-[clamp(2rem,8vw,3rem)] sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight"
             >
               I'm <span className="gradient-text text-glow-cyan">Jezua Palma</span>
             </motion.h1>
@@ -435,7 +435,7 @@ const Hero = ({ setTheme, setAutoDownloadCV, isPaused }) => {
           </div>
 
           {/* Interactive Code Terminal & Portrait (Right Column redesigned as overlapping 3D Parallax Deck) */}
-          <div className="hero-right-deck lg:col-span-5 relative flex justify-center items-center perspective-1000 w-full min-h-[520px] py-12 select-none">
+          <div className="hero-right-deck lg:col-span-5 relative flex justify-center items-center perspective-1000 w-full min-h-[420px] sm:min-h-[520px] py-8 sm:py-12 select-none">
             
             {/* Cybernetic 3D perspective background grid */}
             <div className="cyber-grid-3d absolute inset-0 z-0 pointer-events-none" />
@@ -457,7 +457,7 @@ const Hero = ({ setTheme, setAutoDownloadCV, isPaused }) => {
             </div>
 
             {/* Main 3D Parallax Stack Container */}
-            <div className="preserve-3d-stack relative z-20 w-full max-w-[420px] h-[480px] flex items-center justify-center preserve-3d">
+            <div className="preserve-3d-stack relative z-20 w-full max-w-[420px] h-[400px] sm:h-[480px] flex items-center justify-center preserve-3d">
               
               {/* Holographic scanner laser sweep wrapped in a drift coordinate helper */}
               <div className="scanner-container absolute w-[320px] h-[320px] flex items-center justify-center z-0 preserve-3d pointer-events-none -translate-y-12">

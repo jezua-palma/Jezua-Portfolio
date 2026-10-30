@@ -115,13 +115,13 @@ const Certificates = () => {
   }, [isPaused, lightboxImg]);
 
   return (
-    <section id="certificates" className="relative py-24 border-t border-white/5 overflow-hidden">
+    <section id="certificates" className="relative py-16 sm:py-20 lg:py-24 border-t border-white/5 overflow-hidden">
       <div className="glow-sphere w-[350px] h-[350px] bg-neon-cyan/5 top-10 right-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Title */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
             Credentials & <span className="gradient-text">Certificates</span>
           </h2>

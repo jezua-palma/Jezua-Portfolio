@@ -141,13 +141,13 @@ const About = ({ isPaused }) => {
   }, [isPaused]);
 
   return (
-    <section id="about" className="relative py-24 overflow-hidden border-t border-white/5">
+    <section id="about" className="relative py-16 sm:py-20 lg:py-24 overflow-hidden border-t border-white/5">
       <div className="glow-sphere w-[300px] h-[300px] bg-neon-violet/10 top-1/3 left-1/4" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Title */}
-        <div className="text-center mb-16 about-reveal-text">
+        <div className="text-center mb-12 sm:mb-16 about-reveal-text">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
             About <span className="gradient-text">Me</span>
           </h2>
@@ -175,21 +175,21 @@ const About = ({ isPaused }) => {
             <div className="glass-panel p-6 rounded-xl space-y-4 border border-white/10 select-none about-reveal-text">
               <h4 className="text-sm font-semibold text-white uppercase tracking-wider font-mono">Profile Details</h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm">
-                <div className="flex items-center space-x-2.5">
+                <div className="flex min-w-0 items-start space-x-2.5">
                   <Calendar className="w-4 h-4 text-neon-cyan" />
-                  <span><strong>Birthday:</strong> October 11, 2003 (Age {age})</span>
+                  <span className="min-w-0 break-words"><strong>Birthday:</strong> October 11, 2003 (Age {age})</span>
                 </div>
-                <div className="flex items-center space-x-2.5">
+                <div className="flex min-w-0 items-start space-x-2.5">
                   <Terminal className="w-4 h-4 text-neon-violet" />
-                  <span><strong>Email:</strong> {CONTACT_EMAIL}</span>
+                  <span className="min-w-0 break-all"><strong>Email:</strong> {CONTACT_EMAIL}</span>
                 </div>
-                <div className="flex items-center space-x-2.5">
+                <div className="flex min-w-0 items-start space-x-2.5">
                   <Award className="w-4 h-4 text-neon-fuchsia" />
-                  <span><strong>Education:</strong> LSPU (IT Graduate, Batch 2026, GWA 1.73, Recurring Dean's Lister)</span>
+                  <span className="min-w-0 break-words"><strong>Education:</strong> LSPU (IT Graduate, Batch 2026, GWA 1.73, Recurring Dean's Lister)</span>
                 </div>
-                <div className="flex items-center space-x-2.5">
+                <div className="flex min-w-0 items-start space-x-2.5">
                   <Users className="w-4 h-4 text-neon-rose" />
-                  <span><strong>Location:</strong> Siniloan, Laguna, PH</span>
+                  <span className="min-w-0 break-words"><strong>Location:</strong> Siniloan, Laguna, PH</span>
                 </div>
               </div>
             </div>

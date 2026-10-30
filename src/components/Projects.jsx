@@ -210,13 +210,13 @@ const Projects = () => {
   );
 
   return (
-    <section id="projects" className={`relative py-24 border-t border-white/5 overflow-hidden ${activeModal ? 'z-50' : 'z-10'}`}>
+    <section id="projects" className={`relative py-16 sm:py-20 lg:py-24 border-t border-white/5 overflow-hidden ${activeModal ? 'z-50' : 'z-10'}`}>
       <div className="glow-sphere w-[500px] h-[500px] bg-neon-cyan/5 -bottom-20 -left-20" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Title */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
             Featured <span className="gradient-text">Projects</span>
           </h2>
@@ -347,7 +347,7 @@ const Projects = () => {
         {createPortal(
           <AnimatePresence>
             {activeModal && (
-              <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+              <div className="fixed inset-0 z-[9999] flex items-start sm:items-center justify-center overflow-y-auto overscroll-contain p-4">
               {/* Blur backdrop overlay */}
               <motion.div
                 initial={{ opacity: 0 }}
@@ -362,7 +362,7 @@ const Projects = () => {
                 initial={{ scale: 0.95, y: 20, opacity: 0 }}
                 animate={{ scale: 1, y: 0, opacity: 1 }}
                 exit={{ scale: 0.95, y: 20, opacity: 0 }}
-                className="relative z-10 w-full max-w-2xl bg-[#0b0825] border border-white/10 rounded-2xl overflow-hidden shadow-2xl p-6 sm:p-8"
+                className="relative z-10 my-auto max-h-[calc(100dvh-2rem)] w-full max-w-2xl overflow-y-auto rounded-2xl border border-white/10 bg-[#0b0825] p-5 shadow-2xl sm:p-8"
               >
                 {/* Close Button */}
                 <button

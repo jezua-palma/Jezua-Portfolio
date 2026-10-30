@@ -153,13 +153,13 @@ const Skills = ({ isPaused }) => {
   };
 
   return (
-    <section id="skills" className="relative py-24 border-t border-white/5 overflow-hidden">
+    <section id="skills" className="relative py-16 sm:py-20 lg:py-24 border-t border-white/5 overflow-hidden">
       <div className="glow-sphere w-[400px] h-[400px] bg-neon-fuchsia/10 bottom-0 right-1/4" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* Title */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
             Technical <span className="gradient-text">Skills</span>
           </h2>
@@ -198,7 +198,7 @@ const Skills = ({ isPaused }) => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
                 transition={{ duration: 0.3 }}
-                className="skills-panel glass-panel p-8 rounded-2xl border border-white/10 shadow-2xl relative group preserve-3d overflow-hidden"
+                className="skills-panel glass-panel p-5 sm:p-8 rounded-2xl border border-white/10 shadow-2xl relative group preserve-3d overflow-hidden"
               >
                 {/* Card glossy light reflection */}
                 <div className="card-shine-overlay" />

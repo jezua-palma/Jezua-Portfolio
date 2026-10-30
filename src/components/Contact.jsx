@@ -95,7 +95,7 @@ const Contact = () => {
             exit={{ opacity: 0, y: -50, scale: 0.9 }}
             role={status.success ? 'status' : 'alert'}
             aria-live={status.success ? 'polite' : 'assertive'}
-            className={`fixed top-24 right-4 sm:right-10 z-50 p-4 rounded-xl border shadow-2xl flex items-center space-x-3 w-full max-w-sm font-sans ${
+            className={`fixed top-20 left-4 right-4 sm:left-auto sm:right-10 z-50 p-4 rounded-xl border shadow-2xl flex items-center space-x-3 w-auto sm:w-full max-w-sm font-sans ${
               status.success 
                 ? 'bg-emerald-950/90 border-emerald-500/30 text-emerald-300' 
                 : 'bg-rose-950/90 border-rose-500/30 text-rose-300'
@@ -154,7 +154,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest font-mono">Direct Email</span>
-                  <a href={`mailto:${CONTACT_EMAIL}`} className="block text-sm sm:text-base font-bold text-white hover:text-neon-cyan transition-colors mt-0.5">
+                  <a href={`mailto:${CONTACT_EMAIL}`} className="block min-w-0 break-all text-sm sm:text-base font-bold text-white hover:text-neon-cyan transition-colors mt-0.5">
                     {CONTACT_EMAIL}
                   </a>
                 </div>
@@ -196,7 +196,7 @@ const Contact = () => {
           {/* Interactive Form Panel (Right) */}
           <div className="lg:col-span-7">
             <div className="glass-panel p-8 rounded-2xl border border-white/5 shadow-xl relative">
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="min-w-0 space-y-6">
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   
