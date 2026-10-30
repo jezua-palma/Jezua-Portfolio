@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Mail, Phone, MapPin, Printer, Moon, Eye, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { CONTACT_EMAIL } from '../contact';
 
 const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
   const [cvLightbox, setCvLightbox] = useState(null);
@@ -137,9 +138,9 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
 
           {/* ── CONTACT ROW ── */}
           <div className="harvard-contact mt-3 flex flex-wrap justify-center items-center gap-x-4 gap-y-1 text-xs sm:text-sm text-zinc-700">
-            <a href="mailto:jezuapalma@gmail.com" className="hover:underline flex items-center gap-1">
+            <a href={`mailto:${CONTACT_EMAIL}`} className="hover:underline flex items-center gap-1">
               <Mail className="w-3.5 h-3.5 text-zinc-400" />
-              jezuapalma@gmail.com
+              {CONTACT_EMAIL}
             </a>
             <span className="text-zinc-300 hidden sm:inline">|</span>
             <a href="tel:+639773516472" className="hover:underline flex items-center gap-1">

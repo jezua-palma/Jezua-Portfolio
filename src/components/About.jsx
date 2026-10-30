@@ -1,6 +1,7 @@
 import React, { useMemo, useEffect } from 'react';
 import { Terminal, Award, Code2, Users, Calendar } from 'lucide-react';
 import { gsap } from 'gsap';
+import { CONTACT_EMAIL } from '../contact';
 
 const About = ({ isPaused }) => {
   // Dynamic Age Calculator increments on October 11
@@ -180,7 +181,7 @@ const About = ({ isPaused }) => {
                 </div>
                 <div className="flex items-center space-x-2.5">
                   <Terminal className="w-4 h-4 text-neon-violet" />
-                  <span><strong>Email:</strong> jezuapalma@gmail.com</span>
+                  <span><strong>Email:</strong> {CONTACT_EMAIL}</span>
                 </div>
                 <div className="flex items-center space-x-2.5">
                   <Award className="w-4 h-4 text-neon-fuchsia" />

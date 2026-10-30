@@ -1,5 +1,6 @@
 import React from 'react';
 import { Mail, Heart } from 'lucide-react';
+import { CONTACT_EMAIL } from '../contact';
 
 const Footer = () => {
   const socials = [
@@ -48,7 +49,7 @@ const Footer = () => {
       label: 'Instagram', 
       color: 'hover:text-neon-rose hover:border-neon-rose' 
     },
-    { icon: <Mail className="w-5 h-5" />, href: 'mailto:jezuapalma@gmail.com', label: 'Email', color: 'hover:text-neon-violet hover:border-neon-violet' }
+    { icon: <Mail className="w-5 h-5" />, href: `mailto:${CONTACT_EMAIL}`, label: 'Email', color: 'hover:text-neon-violet hover:border-neon-violet' }
   ];
 
   const currentYear = new Date().getFullYear();

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FileText, ArrowRight, Mail } from 'lucide-react';
 import { gsap } from 'gsap';
+import { CONTACT_EMAIL } from '../contact';
 
 const Hero = ({ setTheme, setAutoDownloadCV, isPaused }) => {
   const [typedTitle, setTypedTitle] = useState('');
@@ -235,7 +236,7 @@ const Hero = ({ setTheme, setAutoDownloadCV, isPaused }) => {
       label: 'Instagram', 
       color: 'hover:text-neon-rose hover:border-neon-rose shadow-[0_0_15px_rgba(244,63,94,0.15)]' 
     },
-    { icon: <Mail className="w-5 h-5" />, href: 'mailto:jezuapalma@gmail.com', label: 'Email', color: 'hover:text-neon-violet hover:border-neon-violet shadow-[0_0_15px_rgba(139,92,246,0.15)]' }
+    { icon: <Mail className="w-5 h-5" />, href: `mailto:${CONTACT_EMAIL}`, label: 'Email', color: 'hover:text-neon-violet hover:border-neon-violet shadow-[0_0_15px_rgba(139,92,246,0.15)]' }
   ];
 
   const techIcons = [

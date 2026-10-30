@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, X, Volume2, VolumeX, Send, Bot, Sparkles, Smile, Gamepad2, Info, Laptop, RefreshCw, Heart } from 'lucide-react';
+import { CONTACT_EMAIL } from '../contact';
 
 const REDDIT_BANTER_MAP = {
   "meaning of life": {
@@ -572,7 +573,7 @@ const AIAssistant = ({ initialOpen = false, onClose }) => {
     // 7. Contact
     if (hasAnyWord(['contact', 'email', 'message', 'reach'])) {
       return {
-        text: "To contact Jezua, scroll to the Contact section at the bottom of this page, fill out the form, or email him directly at jezuapalma@gmail.com. I'll make sure he sees it! \u2764",
+        text: `To contact Jezua, scroll to the Contact section at the bottom of this page, fill out the form, or email him directly at ${CONTACT_EMAIL}. I'll make sure he sees it! \u2764`,
         emotion: 'SWEET'
       };
     }

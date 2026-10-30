@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Phone, Mail, MapPin, CheckCircle, AlertCircle, Loader } from 'lucide-react';
+import { CONTACT_EMAIL } from '../contact';
+
+const WEB3FORMS_ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -16,9 +19,6 @@ const Contact = () => {
     message: ''
   });
 
-  // 📝 Web3Forms Access Key: Kumuha ng access key sa https://web3forms.com/ gamit ang iyong email (jezuapalma@gmail.com)
-  const WEB3FORMS_ACCESS_KEY = 'ca6e8497-a5a9-4bbd-90cf-710c06896b1f';
-
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -26,60 +26,49 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Validations
     if (!formData.name || !formData.email || !formData.message) {
       showFeedback(false, 'Please fill out all required fields.');
       return;
     }
 
-    setStatus({ submitting: true, success: null, message: '' });
-
-    if (!WEB3FORMS_ACCESS_KEY || WEB3FORMS_ACCESS_KEY === 'YOUR_ACCESS_KEY_HERE') {
-      // Fallback to mailto link directly if the key is not set
-      const mailtoUrl = `mailto:jezuapalma@gmail.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`From: ${formData.name} <${formData.email}>\n\n${formData.message}`)}`;
-      window.location.href = mailtoUrl;
-      showFeedback(true, 'Opening your local email client to complete submission (Access Key not set).');
-      setStatus({ submitting: false, success: true, message: 'Redirected to local email application.' });
+    if (!WEB3FORMS_ACCESS_KEY) {
+      showFeedback(false, `The contact form is not configured yet. Please email ${CONTACT_EMAIL} directly.`);
       return;
     }
 
-    // Send email using Web3Forms API
-    fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({
-        access_key: WEB3FORMS_ACCESS_KEY,
-        name: formData.name,
-        email: formData.email,
-        subject: `New Portfolio Inquiry: ${formData.subject} from ${formData.name}`,
-        message: formData.message,
-        from_name: 'Jezua dev Portfolio'
-      })
-    })
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.success) {
-        showFeedback(true, 'Message sent successfully! I will reach back to you shortly.');
-        setFormData({ name: '', email: '', subject: 'Hire Me', message: '' });
-      } else {
+    setStatus({ submitting: true, success: null, message: '' });
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          name: formData.name,
+          email: formData.email,
+          subject: `New Portfolio Inquiry: ${formData.subject} from ${formData.name}`,
+          message: formData.message,
+          from_name: 'Jezua dev Portfolio'
+        })
+      });
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
         throw new Error(data.message || 'Submission failed');
       }
-    })
-    .catch((error) => {
+
+      showFeedback(true, 'Message sent successfully! I will reach back to you shortly.');
+      setFormData({ name: '', email: '', subject: 'Hire Me', message: '' });
+    } catch (error) {
       console.error('Web3Forms error:', error);
-      
-      // Fallback to mailto link
-      const mailtoUrl = `mailto:jezuapalma@gmail.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`From: ${formData.name} <${formData.email}>\n\n${formData.message}`)}`;
-      window.location.href = mailtoUrl;
-      showFeedback(true, 'Opening your local email client to complete submission.');
-      setStatus({ submitting: false, success: true, message: 'Redirected to local email application.' });
-    });
+      showFeedback(false, `Unable to send your message. Please email ${CONTACT_EMAIL} directly.`);
+    }
   };
 
   const showFeedback = (isSuccess, text) => {
@@ -165,8 +154,8 @@ const Contact = () => {
                 </div>
                 <div>
                   <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest font-mono">Direct Email</span>
-                  <a href="mailto:jezuapalma@gmail.com" className="block text-sm sm:text-base font-bold text-white hover:text-neon-cyan transition-colors mt-0.5">
-                    jezuapalma@gmail.com
+                  <a href={`mailto:${CONTACT_EMAIL}`} className="block text-sm sm:text-base font-bold text-white hover:text-neon-cyan transition-colors mt-0.5">
+                    {CONTACT_EMAIL}
                   </a>
                 </div>
               </div>

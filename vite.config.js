@@ -6,6 +6,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   
   return {
+    cacheDir: process.env.PORTFOLIO_VITE_CACHE_DIR || undefined,
     plugins: [react()],
     build: {
       // Production optimizations
