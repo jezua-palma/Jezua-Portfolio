@@ -458,7 +458,7 @@ const PrintableCV = () => {
           }
 
           @page {
-            size: portrait;
+            size: A4 portrait;
             margin: 0 !important;
           }
 
@@ -466,9 +466,9 @@ const PrintableCV = () => {
             max-width: 100% !important;
             width: 100vw !important;
             height: auto !important;
-            min-height: 0 !important;
+            min-height: 296mm !important;
             margin: 0 !important;
-            padding: 8mm 12mm !important;
+            padding: 5mm 9mm !important;
             background: white !important;
             border: none !important;
             border-radius: 0 !important;
@@ -479,58 +479,60 @@ const PrintableCV = () => {
           }
 
           .harvard-header {
-            padding-bottom: 4px !important;
+            padding-bottom: 2px !important;
           }
 
           .harvard-profile-photo {
-            width: 22mm !important;
-            height: 28mm !important;
+            width: 20mm !important;
+            height: 24mm !important;
             margin: 0 0 0 4mm !important;
             border-radius: 2mm !important;
           }
 
           .harvard-section {
-            margin-top: 10px !important;
+            margin-top: 6px !important;
+            break-inside: avoid !important;
+            page-break-inside: avoid !important;
           }
 
           .harvard-heading {
-            font-size: 9pt !important;
-            padding-bottom: 2px !important;
-            margin-bottom: 4px !important;
+            font-size: 8.5pt !important;
+            padding-bottom: 1px !important;
+            margin-bottom: 2px !important;
           }
 
           .harvard-contact, .harvard-contact-row2 {
-            margin-top: 2px !important;
-            gap: 8px !important;
+            margin-top: 1px !important;
+            gap: 6px !important;
           }
 
           .harvard-bullets {
-            margin-top: 2px !important;
+            margin-top: 1px !important;
           }
 
           .harvard-cert-item {
-            padding: 2px 0 !important;
+            padding: 1px 0 !important;
             margin: 0 !important;
             border-radius: 0 !important;
           }
 
           h1 { font-size: 16pt !important; line-height: 1.1 !important; }
-          h2 { font-size: 9pt !important; }
+          h2 { font-size: 8.5pt !important; }
           h3 { font-size: 8.5pt !important; }
-          p, span, li, a { font-size: 7pt !important; line-height: 1.3 !important; }
+          p, span, li, a { font-size: 7pt !important; line-height: 1.18 !important; }
 
-          .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 4px !important; }
-          .space-y-1\\.5 > :not([hidden]) ~ :not([hidden]) { margin-top: 3px !important; }
-          .mb-4 { margin-bottom: 8px !important; }
+          .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 2px !important; }
+          .space-y-1\\.5 > :not([hidden]) ~ :not([hidden]) { margin-top: 1px !important; }
+          .mb-4 { margin-bottom: 4px !important; }
         }
 
-        /* PDF download uses the same paginated A4 layout as printing. */
+        /* PDF download uses the same compact A4 layout as printing. */
         #cv-document-card.downloading-pdf {
           display: block !important;
           width: 210mm !important;
           height: auto !important;
-          min-height: 295mm !important;
-          padding: 8mm 12mm !important;
+          min-height: 296mm !important;
+          padding: 5mm 9mm !important;
           background: white !important;
           border: none !important;
           border-radius: 0 !important;
@@ -548,53 +550,55 @@ const PrintableCV = () => {
         }
 
         #cv-document-card.downloading-pdf .harvard-header {
-          padding-bottom: 4px !important;
+          padding-bottom: 2px !important;
         }
 
         #cv-document-card.downloading-pdf .harvard-profile-photo {
-          width: 22mm !important;
-          height: 28mm !important;
+          width: 20mm !important;
+          height: 24mm !important;
           margin: 0 0 0 4mm !important;
           border-radius: 2mm !important;
         }
 
         #cv-document-card.downloading-pdf .harvard-section {
-          margin-top: 10px !important;
+          margin-top: 6px !important;
+          break-inside: avoid !important;
+          page-break-inside: avoid !important;
         }
 
         #cv-document-card.downloading-pdf .harvard-heading {
-          font-size: 9pt !important;
-          padding-bottom: 2px !important;
-          margin-bottom: 4px !important;
+          font-size: 8.5pt !important;
+          padding-bottom: 1px !important;
+          margin-bottom: 2px !important;
         }
 
         #cv-document-card.downloading-pdf .harvard-contact,
         #cv-document-card.downloading-pdf .harvard-contact-row2 {
-          margin-top: 2px !important;
-          gap: 8px !important;
+          margin-top: 1px !important;
+          gap: 6px !important;
         }
 
         #cv-document-card.downloading-pdf .harvard-bullets {
-          margin-top: 2px !important;
+          margin-top: 1px !important;
         }
 
         #cv-document-card.downloading-pdf .harvard-cert-item {
-          padding: 2px 0 !important;
+          padding: 1px 0 !important;
           margin: 0 !important;
           border-radius: 0 !important;
         }
 
         #cv-document-card.downloading-pdf h1 { font-size: 16pt !important; line-height: 1.1 !important; }
-        #cv-document-card.downloading-pdf h2 { font-size: 9pt !important; }
+        #cv-document-card.downloading-pdf h2 { font-size: 8.5pt !important; }
         #cv-document-card.downloading-pdf h3 { font-size: 8.5pt !important; }
         #cv-document-card.downloading-pdf p, 
         #cv-document-card.downloading-pdf span, 
         #cv-document-card.downloading-pdf li, 
-        #cv-document-card.downloading-pdf a { font-size: 7pt !important; line-height: 1.3 !important; }
+        #cv-document-card.downloading-pdf a { font-size: 7pt !important; line-height: 1.18 !important; }
 
-        #cv-document-card.downloading-pdf .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 4px !important; }
-        #cv-document-card.downloading-pdf .space-y-1\\.5 > :not([hidden]) ~ :not([hidden]) { margin-top: 3px !important; }
-        #cv-document-card.downloading-pdf .mb-4 { margin-bottom: 8px !important; }
+        #cv-document-card.downloading-pdf .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 2px !important; }
+        #cv-document-card.downloading-pdf .space-y-1\\.5 > :not([hidden]) ~ :not([hidden]) { margin-top: 1px !important; }
+        #cv-document-card.downloading-pdf .mb-4 { margin-bottom: 4px !important; }
       `}</style>
     </div>
   );
