@@ -4,7 +4,7 @@ import { FileText, ArrowRight, Mail } from 'lucide-react';
 import { gsap } from 'gsap';
 import { CONTACT_EMAIL } from '../contact';
 
-const Hero = ({ setTheme, setAutoDownloadCV, isPaused }) => {
+const Hero = ({ setTheme, isPaused }) => {
   const [typedTitle, setTypedTitle] = useState('');
   const titles = [
     "Developer & Designer",
@@ -390,17 +390,16 @@ const Hero = ({ setTheme, setAutoDownloadCV, isPaused }) => {
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
               </a>
               <button 
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (setTheme && setAutoDownloadCV) {
-                    setTheme('white-cv');
-                    setAutoDownloadCV(true);
-                  }
-                }}
+              onClick={(e) => {
+                e.preventDefault();
+                if (setTheme) {
+                  setTheme('white-cv');
+                }
+              }}
                 className="magnetic-target px-6 py-3 rounded-lg border border-white/10 bg-white/5 text-gray-300 hover:text-white hover:bg-white/10 hover:border-white/20 flex items-center justify-center space-x-2 transition-all duration-300 text-sm sm:text-base cursor-pointer"
               >
                 <FileText className="w-4 h-4 text-neon-violet" />
-                <span>Download Resume</span>
+                <span>Choose Resume Format</span>
               </button>
               <a 
                 href="#contact" 

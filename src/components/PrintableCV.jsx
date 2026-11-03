@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Printer, Moon, Eye, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CONTACT_EMAIL } from '../contact';
 
-const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
+const PrintableCV = () => {
   const [cvLightbox, setCvLightbox] = useState(null);
+  const [includePhoto, setIncludePhoto] = useState(false);
 
   const certifications = [
     { title: 'Prompt Engineering', issuer: 'Sololearn Academy', date: 'March 2026', img: '/assets/cert_prompt_engineering.jpg' },
@@ -39,7 +40,8 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
     
     const opt = {
       margin:       0,
-      filename:     'Jezua_Errol_Palma_CV.pdf',
+      filename:     `Jezua_Errol_Palma_CV${includePhoto ? '_With_Photo' : ''}.pdf`,
+      pagebreak:    { mode: ['css', 'legacy'] },
       image:        { type: 'jpeg', quality: 0.98 },
       html2canvas:  { 
         scale: 2, 
@@ -75,22 +77,35 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
     }
   };
 
-  useEffect(() => {
-    if (autoDownload) {
-      handleDownloadPDF();
-      if (clearAutoDownload) {
-        clearAutoDownload();
-      }
-    }
-  }, [autoDownload]);
-
   return (
     <div className="harvard-cv-page min-h-screen bg-zinc-100 text-zinc-900 py-12 px-4 sm:px-6 lg:px-8 antialiased selection:bg-zinc-200" style={{ fontFamily: "'Georgia', 'Times New Roman', 'Times', serif" }}>
       
       {/* Control Navigation Header (Hidden on Print) */}
-      <div className="max-w-3xl mx-auto mb-8 flex flex-col sm:flex-row gap-4 justify-between items-center no-print bg-white p-4 rounded-xl shadow-sm border border-zinc-200">
-        <div className="flex items-center w-full sm:w-auto">
+      <div className="max-w-3xl mx-auto mb-8 flex flex-col gap-4 no-print bg-white p-4 rounded-xl shadow-sm border border-zinc-200 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-5">
           <span className="text-sm font-semibold text-zinc-500" style={{ fontFamily: "'Inter', 'Helvetica', sans-serif" }}>Jezua Palma CV</span>
+          <div className="flex rounded-lg border border-zinc-200 p-1" role="group" aria-label="Resume photo option">
+            <button
+              type="button"
+              onClick={() => setIncludePhoto(false)}
+              aria-pressed={!includePhoto}
+              className={`flex-1 rounded-md px-3 py-2 text-xs font-semibold transition-colors sm:flex-initial ${
+                !includePhoto ? 'bg-zinc-900 text-white' : 'text-zinc-600 hover:bg-zinc-100'
+              }`}
+            >
+              Without photo
+            </button>
+            <button
+              type="button"
+              onClick={() => setIncludePhoto(true)}
+              aria-pressed={includePhoto}
+              className={`flex-1 rounded-md px-3 py-2 text-xs font-semibold transition-colors sm:flex-initial ${
+                includePhoto ? 'bg-zinc-900 text-white' : 'text-zinc-600 hover:bg-zinc-100'
+              }`}
+            >
+              With photo
+            </button>
+          </div>
         </div>
         
         <div className="flex space-x-3 w-full sm:w-auto" style={{ fontFamily: "'Inter', 'Helvetica', sans-serif" }}>
@@ -126,42 +141,51 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
       </div>
 
       {/* ═══════════════════════════════════════════════════════════════
-          HARVARD CV DOCUMENT — Single Column, No Picture, Serif
+          HARVARD CV DOCUMENT — Optional Photo, Single Column, Serif
       ═══════════════════════════════════════════════════════════════ */}
-      <div id="cv-document-card" className="harvard-cv-card max-w-3xl mx-auto bg-white py-10 px-10 sm:px-14 border border-zinc-200 shadow-lg rounded-2xl relative overflow-hidden">
+      <div id="cv-document-card" className={`harvard-cv-card max-w-3xl mx-auto bg-white py-10 px-10 sm:px-14 border border-zinc-200 shadow-lg rounded-2xl relative overflow-hidden ${includePhoto ? 'harvard-cv-card-with-photo' : ''}`}>
         
-        {/* ── NAME (Centered, Large) ── */}
-        <div className="harvard-header text-center border-b-2 border-black pb-4">
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-black" style={{ fontFamily: "'Georgia', 'Times New Roman', serif", fontWeight: 700 }}>
-            JEZUA ERROL C. PALMA
-          </h1>
+        {/* ── NAME AND OPTIONAL PHOTO ── */}
+        <div className={`harvard-header border-b-2 border-black pb-4 ${includePhoto ? 'flex flex-col-reverse items-center text-center sm:flex-row sm:items-start sm:gap-4 sm:text-left' : 'text-center'}`}>
+          <div className={includePhoto ? 'w-full min-w-0 sm:flex-1' : 'w-full'}>
+            <h1 className={`text-3xl sm:text-4xl font-bold tracking-tight text-black ${includePhoto ? 'sm:text-left' : ''}`} style={{ fontFamily: "'Georgia', 'Times New Roman', serif", fontWeight: 700 }}>
+              JEZUA ERROL C. PALMA
+            </h1>
 
-          {/* ── CONTACT ROW ── */}
-          <div className="harvard-contact mt-3 flex flex-wrap justify-center items-center gap-x-4 gap-y-1 text-xs sm:text-sm text-zinc-700">
-            <a href={`mailto:${CONTACT_EMAIL}`} className="hover:underline flex items-center gap-1">
-              <Mail className="w-3.5 h-3.5 text-zinc-400" />
-              {CONTACT_EMAIL}
-            </a>
-            <span className="text-zinc-300 hidden sm:inline">|</span>
-            <a href="tel:+639773516472" className="hover:underline flex items-center gap-1">
-              <Phone className="w-3.5 h-3.5 text-zinc-400" />
-              +63 977 351 6472
-            </a>
+            {/* ── CONTACT ROW ── */}
+            <div className={`harvard-contact mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs sm:text-sm text-zinc-700 ${includePhoto ? 'sm:justify-start' : ''}`}>
+              <a href={`mailto:${CONTACT_EMAIL}`} className="hover:underline flex items-center gap-1">
+                <Mail className="w-3.5 h-3.5 text-zinc-400" />
+                {CONTACT_EMAIL}
+              </a>
+              <span className="text-zinc-300 hidden sm:inline">|</span>
+              <a href="tel:+639773516472" className="hover:underline flex items-center gap-1">
+                <Phone className="w-3.5 h-3.5 text-zinc-400" />
+                +63 977 351 6472
+              </a>
+            </div>
+            <div className={`harvard-contact-row2 mt-1.5 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs sm:text-sm text-zinc-700 ${includePhoto ? 'sm:justify-start' : ''}`}>
+              <span className="flex items-center gap-1">
+                <MapPin className="w-3.5 h-3.5 text-zinc-400" />
+                Siniloan, Laguna, Philippines
+              </span>
+              <span className="text-zinc-300 hidden sm:inline">|</span>
+              <a href="https://github.com/jezua-palma" target="_blank" rel="noreferrer" className="hover:underline">
+                github.com/jezua-palma
+              </a>
+              <span className="text-zinc-300 hidden sm:inline">|</span>
+              <a href="https://www.linkedin.com/in/jezua-errol-palma-30b1561bb/" target="_blank" rel="noreferrer" className="hover:underline">
+                linkedin.com/in/jezua-errol-palma
+              </a>
+            </div>
           </div>
-          <div className="harvard-contact-row2 mt-1.5 flex flex-wrap justify-center items-center gap-x-4 gap-y-1 text-xs sm:text-sm text-zinc-700">
-            <span className="flex items-center gap-1">
-              <MapPin className="w-3.5 h-3.5 text-zinc-400" />
-              Siniloan, Laguna, Philippines
-            </span>
-            <span className="text-zinc-300 hidden sm:inline">|</span>
-            <a href="https://github.com/jezua-palma" target="_blank" rel="noreferrer" className="hover:underline">
-              github.com/jezua-palma
-            </a>
-            <span className="text-zinc-300 hidden sm:inline">|</span>
-            <a href="https://www.linkedin.com/in/jezua-errol-palma-30b1561bb/" target="_blank" rel="noreferrer" className="hover:underline">
-              linkedin.com/in/jezua-errol-palma
-            </a>
-          </div>
+          {includePhoto && (
+            <img
+              src="/assets/profile.jpg"
+              alt="Jezua Errol C. Palma"
+              className="harvard-profile-photo mb-3 h-20 w-16 shrink-0 rounded-md border border-zinc-200 object-cover object-top sm:mb-0 sm:h-28 sm:w-24"
+            />
+          )}
         </div>
 
         {/* ── SUMMARY ── */}
@@ -409,7 +433,7 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
       </AnimatePresence>
 
       {/* ═══════════════════════════════════════════════════════════════
-          PRINT & PDF STYLES — Harvard Single-Column Layout
+          PRINT & PDF STYLES — Paginated A4 Layout
       ═══════════════════════════════════════════════════════════════ */}
       <style>{`
         @media print {
@@ -428,8 +452,9 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
             margin: 0 !important;
             padding: 0 !important;
             width: 100% !important;
-            height: 100% !important;
-            overflow: hidden !important;
+            min-height: 0 !important;
+            height: auto !important;
+            overflow: visible !important;
           }
 
           @page {
@@ -440,7 +465,8 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
           .harvard-cv-card {
             max-width: 100% !important;
             width: 100vw !important;
-            height: 100vh !important;
+            height: auto !important;
+            min-height: 0 !important;
             margin: 0 !important;
             padding: 8mm 12mm !important;
             background: white !important;
@@ -448,11 +474,19 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
             border-radius: 0 !important;
             box-shadow: none !important;
             box-sizing: border-box !important;
-            overflow: hidden !important;
+            overflow: visible !important;
+            break-inside: auto !important;
           }
 
           .harvard-header {
             padding-bottom: 4px !important;
+          }
+
+          .harvard-profile-photo {
+            width: 22mm !important;
+            height: 28mm !important;
+            margin: 0 0 0 4mm !important;
+            border-radius: 2mm !important;
           }
 
           .harvard-section {
@@ -490,18 +524,20 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
           .mb-4 { margin-bottom: 8px !important; }
         }
 
-        /* 📄 PDF Download Layout — Exact 1-page A4 */
+        /* PDF download uses the same paginated A4 layout as printing. */
         #cv-document-card.downloading-pdf {
           display: block !important;
           width: 210mm !important;
-          height: 295mm !important;
+          height: auto !important;
+          min-height: 295mm !important;
           padding: 8mm 12mm !important;
           background: white !important;
           border: none !important;
           border-radius: 0 !important;
           box-shadow: none !important;
           box-sizing: border-box !important;
-          overflow: hidden !important;
+          overflow: visible !important;
+          break-inside: auto !important;
           margin: 0 !important;
         }
 
@@ -513,6 +549,13 @@ const PrintableCV = ({ onBack, autoDownload, clearAutoDownload }) => {
 
         #cv-document-card.downloading-pdf .harvard-header {
           padding-bottom: 4px !important;
+        }
+
+        #cv-document-card.downloading-pdf .harvard-profile-photo {
+          width: 22mm !important;
+          height: 28mm !important;
+          margin: 0 0 0 4mm !important;
+          border-radius: 2mm !important;
         }
 
         #cv-document-card.downloading-pdf .harvard-section {
