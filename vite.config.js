@@ -1,13 +1,74 @@
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
+import { Buffer } from 'node:buffer'
+import { cwd, env } from 'node:process'
+import typecastTtsHandler from './api/tts.js'
+
+const localTtsApi = (serverEnv) => ({
+  name: 'local-tts-api',
+  configureServer(server) {
+    for (const key of ['TYPECAST_API_KEY', 'TYPECAST_VOICE_ID', 'UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN']) {
+      if (!env[key] && serverEnv[key]) env[key] = serverEnv[key]
+    }
+
+    server.middlewares.use('/api/tts', (req, res) => {
+      const apiResponse = {
+        status(code) {
+          res.statusCode = code
+          return this
+        },
+        setHeader(name, value) {
+          res.setHeader(name, value)
+        },
+        json(body) {
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify(body))
+        },
+        send(body) {
+          res.end(body)
+        },
+      }
+
+      if (req.method !== 'POST') {
+        typecastTtsHandler(req, apiResponse)
+        return
+      }
+
+      const chunks = []
+      let size = 0
+      let tooLarge = false
+      req.on('data', (chunk) => {
+        size += chunk.length
+        if (size > 8192) {
+          tooLarge = true
+          chunks.length = 0
+        } else if (!tooLarge) {
+          chunks.push(chunk)
+        }
+      })
+      req.on('end', async () => {
+        if (tooLarge) {
+          apiResponse.status(413).json({ error: 'Request is too large.' })
+          return
+        }
+        try {
+          req.body = JSON.parse(Buffer.concat(chunks).toString('utf8'))
+          await typecastTtsHandler(req, apiResponse)
+        } catch (error) {
+          console.error('Local TTS request failed:', error)
+          apiResponse.status(400).json({ error: 'Invalid request body.' })
+        }
+      })
+    })
+  },
+})
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), '')
-  
+  const serverEnv = loadEnv(mode, cwd(), '')
   return {
-    cacheDir: process.env.PORTFOLIO_VITE_CACHE_DIR || undefined,
-    plugins: [react()],
+    cacheDir: env.PORTFOLIO_VITE_CACHE_DIR || undefined,
+    plugins: [react(), localTtsApi(serverEnv)],
     build: {
       // Production optimizations
       cssCodeSplit: true,
@@ -32,23 +93,5 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
-    server: {
-      proxy: {
-        '/api/tts': {
-          target: 'https://api.typecast.ai',
-          changeOrigin: true,
-          rewrite: () => '/v1/text-to-speech',
-          configure: (proxy) => {
-            proxy.on('proxyReq', (proxyReq) => {
-              // Inject the API key header server-side so it's never exposed to the browser
-              const apiKey = env.TYPECAST_API_KEY || env.VITE_TYPECAST_API_KEY || ''
-              if (apiKey) {
-                proxyReq.setHeader('X-API-KEY', apiKey)
-              }
-            })
-          }
-        }
-      }
-    }
   }
 })

@@ -1,71 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Eye, Download, Award, ChevronLeft, ChevronRight, X, ExternalLink } from 'lucide-react';
+import { certifications } from '../data/portfolio';
+import useDialogAccessibility from '../hooks/useDialogAccessibility';
 
 const Certificates = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [lightboxImg, setLightboxImg] = useState(null);
   const [direction, setDirection] = useState(0); // -1 for left, 1 for right
   const [isPaused, setIsPaused] = useState(false);
-
-  const certs = [
-    {
-      title: 'Fundamentals of Pitching and Startup Projects',
-      issuer: 'DICT Region IV-A',
-      date: 'March 3-4, 2025',
-      img: '/assets/cert_dict.png',
-      verifyUrl: 'https://dict.gov.ph/',
-      id: 'R4A_IIDB_DICT-R4A-2026184'
-    },
-    {
-      title: 'Elevate Your Security Career: Mastering Microsoft Security',
-      issuer: 'Trainocate (Microsoft Gold Partner)',
-      date: 'May 23, 2025',
-      img: '/assets/cert_trainocate.png',
-      verifyUrl: 'https://trainocate.com/',
-      id: 'VILT-Microsoft-Security'
-    },
-    {
-      title: 'Building Your Digital Backbone: Unlocking Secrets of Network Communication',
-      issuer: 'LSPU College of Computer Studies',
-      date: 'May 28, 2024',
-      img: '/assets/cert_lspu_networking.png',
-      verifyUrl: 'https://lspu.edu.ph/',
-      id: 'LSPU-CCS-Network-Communication'
-    },
-    {
-      title: 'Prompt Engineering Certification',
-      issuer: 'Sololearn',
-      date: 'March 11, 2026',
-      img: '/assets/cert_prompt_engineering.jpg',
-      verifyUrl: 'https://www.sololearn.com/certificates/CC-IYS7IPY3',
-      id: 'CC-IYS7IPY3'
-    },
-    {
-      title: 'Vibe Coding Certification',
-      issuer: 'Sololearn',
-      date: 'March 11, 2026',
-      img: '/assets/cert_vibe_coding.jpg',
-      verifyUrl: 'https://www.sololearn.com/certificates/CC-GQ4FCDTJ',
-      id: 'CC-GQ4FCDTJ'
-    },
-    {
-      title: 'Introduction to C#',
-      issuer: 'Sololearn',
-      date: 'January 12, 2026',
-      img: '/assets/cert_csharp.jpg',
-      verifyUrl: 'https://www.sololearn.com/certificates/CC-HV212WPI',
-      id: 'CC-HV212WPI'
-    },
-    {
-      title: 'Introduction to HTML',
-      issuer: 'Sololearn',
-      date: 'January 31, 2026',
-      img: '/assets/cert_html.jpg',
-      verifyUrl: 'https://www.sololearn.com/certificates/CC-5ULFDOUI',
-      id: 'CC-5ULFDOUI'
-    }
-  ];
+  const lightboxRef = useRef(null);
+  useDialogAccessibility(Boolean(lightboxImg), () => setLightboxImg(null), lightboxRef);
+  const certs = certifications;
 
   const slideVariants = {
     enter: (direction) => ({
@@ -112,7 +58,7 @@ const Certificates = () => {
       setCurrentIndex((prev) => (prev + 1) % certs.length);
     }, 4500);
     return () => clearInterval(interval);
-  }, [isPaused, lightboxImg]);
+  }, [isPaused, lightboxImg, certs.length]);
 
   return (
     <section id="certificates" className="relative py-16 sm:py-20 lg:py-24 border-t border-white/5 overflow-hidden">
@@ -158,7 +104,8 @@ const Certificates = () => {
                     src={certs[currentIndex].img} 
                     alt={certs[currentIndex].title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105"
-                    onError={(e) => { e.target.src = "https://placehold.co/600x450/1e1e2f/ffffff?text=Course+Certificate" }}
+                    loading="lazy"
+                    decoding="async"
                   />
                   {/* Image hover preview mask */}
                   <div className="absolute inset-0 bg-[#030014]/60 opacity-0 group-hover/img:opacity-100 flex items-center justify-center space-x-3 transition-opacity duration-300 pointer-events-none group-hover/img:pointer-events-auto">
@@ -275,10 +222,15 @@ const Certificates = () => {
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
+                ref={lightboxRef}
+                role="dialog"
+                aria-modal="true"
+                aria-label={`${lightboxImg.title} certificate`}
                 className="relative z-10 w-full max-w-4xl bg-[#0b0825] border border-white/15 rounded-2xl overflow-hidden p-3 shadow-2xl flex flex-col items-center"
               >
                 <button
                   onClick={() => setLightboxImg(null)}
+                  aria-label="Close certificate preview"
                   className="absolute top-4 right-4 p-1.5 rounded-lg border border-white/10 bg-white/5 text-gray-400 hover:text-white transition-all z-20"
                 >
                   <X className="w-5 h-5" />
@@ -288,7 +240,6 @@ const Certificates = () => {
                   src={lightboxImg.img} 
                   alt={lightboxImg.title} 
                   className="w-full h-auto rounded-lg max-h-[80vh] object-contain"
-                  onError={(e) => { e.target.src = "https://placehold.co/800x600/1e1e2f/ffffff?text=Course+Certificate" }}
                 />
                 
                 <div className="w-full px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4 bg-white/1.5 border-t border-white/5 mt-3 rounded-b-lg">

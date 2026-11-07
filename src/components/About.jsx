@@ -1,144 +1,16 @@
-import React, { useMemo, useEffect } from 'react';
 import { Terminal, Award, Code2, Users, Calendar } from 'lucide-react';
-import { gsap } from 'gsap';
 import { CONTACT_EMAIL } from '../contact';
+import { aboutHighlights, getAge, portfolioHighlights } from '../data/portfolio';
 
-const About = ({ isPaused }) => {
-  // Dynamic Age Calculator increments on October 11
-  const age = useMemo(() => {
-    const birthDate = new Date('2003-10-11');
-    const today = new Date();
-    let currentAge = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-      currentAge--;
-    }
-    return currentAge;
-  }, []);
+const About = () => {
+  const age = getAge();
 
   const stats = [
-    { icon: <Code2 className="w-6 h-6 text-neon-cyan" />, number: '15+', label: 'Projects Completed' },
-    { icon: <Award className="w-6 h-6 text-neon-violet" />, number: '12+', label: 'Technologies Mastered' },
+    { icon: <Code2 className="w-6 h-6 text-neon-cyan" />, ...portfolioHighlights[0] },
+    { icon: <Award className="w-6 h-6 text-neon-violet" />, ...portfolioHighlights[1] },
     { icon: <Terminal className="w-6 h-6 text-neon-fuchsia" />, number: 'SP Madrid', label: 'Internship Experience' },
-    { icon: <Users className="w-6 h-6 text-neon-rose" />, number: '100%', label: 'Client Satisfaction' }
+    { icon: <Users className="w-6 h-6 text-neon-rose" />, ...portfolioHighlights[2] }
   ];
-
-  const highlights = [
-    { title: 'Development & Design', desc: 'Crafting robust and highly secure server architectures using Python (Flask & Django) and modern frontends in React and Next.js.' },
-    { title: 'Low-Code & Visual Systems', desc: 'Developing rapid internal CRM infrastructures and workflow blast systems using visual engines like Bubble.io.' },
-    { title: 'AI-Assisted Efficiency', desc: 'Integrating machine learning APIs, advanced prompt engineering, and visual automation scripts into corporate systems.' },
-    { title: 'UX & Motion Design', desc: 'Creating smooth, human-centric responsive layouts optimized for fast load times and spectacular visual feedback.' }
-  ];
-
-  // GSAP Entrance reveals & Interactive 3D Parallax Tilts
-  useEffect(() => {
-    // 1. Staggered text and highlights reveal
-    gsap.fromTo('.about-reveal-text',
-      { opacity: 0, y: 35 },
-      {
-        opacity: 1,
-        y: 0,
-        stagger: 0.12,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '#about',
-          start: 'top 75%',
-        }
-      }
-    );
-
-    // 2. Stats cards back-out staggers
-    gsap.fromTo('.about-stat-card',
-      { opacity: 0, scale: 0.9, y: 40 },
-      {
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        stagger: 0.1,
-        duration: 0.75,
-        ease: 'back.out(1.15)',
-        scrollTrigger: {
-          trigger: '.about-stats-grid',
-          start: 'top 80%',
-        }
-      }
-    );
-
-  }, []);
-
-  // 3. Interactive 3D card tilt & shiny glare triggers
-  useEffect(() => {
-    const cards = document.querySelectorAll('.about-stat-card');
-    
-    if (isPaused) {
-      cards.forEach(card => {
-        gsap.to(card, {
-          rotateX: 0,
-          rotateY: 0,
-          x: 0,
-          y: 0,
-          duration: 0.3,
-          ease: 'power2.out'
-        });
-      });
-      return;
-    }
-
-    const listeners = [];
-
-    cards.forEach(card => {
-      const handleMouseMove = (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-
-        // Angle rotation values (max 12 degrees)
-        const tiltX = -(y / (rect.height / 2)) * 12;
-        const tiltY = (x / (rect.width / 2)) * 12;
-
-        const percentX = ((e.clientX - rect.left) / rect.width) * 100;
-        const percentY = ((e.clientY - rect.top) / rect.height) * 100;
-
-        card.style.setProperty('--shine-x', `${percentX}%`);
-        card.style.setProperty('--shine-y', `${percentY}%`);
-
-        gsap.to(card, {
-          rotateX: tiltX,
-          rotateY: tiltY,
-          x: x * 0.07,
-          y: y * 0.07,
-          duration: 0.3,
-          ease: 'power2.out'
-        });
-      };
-
-      const handleMouseLeave = () => {
-        gsap.to(card, {
-          rotateX: 0,
-          rotateY: 0,
-          x: 0,
-          y: 0,
-          duration: 0.7,
-          ease: 'elastic.out(1.1, 0.55)'
-        });
-      };
-
-      card.addEventListener('mousemove', handleMouseMove);
-      card.addEventListener('mouseleave', handleMouseLeave);
-      listeners.push({ card, handleMouseMove, handleMouseLeave });
-    });
-
-    return () => {
-      listeners.forEach(({ card, handleMouseMove, handleMouseLeave }) => {
-        if (card) {
-          card.removeEventListener('mousemove', handleMouseMove);
-          card.removeEventListener('mouseleave', handleMouseLeave);
-        }
-      });
-    };
-  }, [isPaused]);
 
   return (
     <section id="about" className="relative py-16 sm:py-20 lg:py-24 overflow-hidden border-t border-white/5">
@@ -196,7 +68,7 @@ const About = ({ isPaused }) => {
 
             {/* Highlighted Strengths Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 about-reveal-text">
-              {highlights.map((hl, idx) => (
+              {aboutHighlights.map((hl, idx) => (
                 <div key={idx} className="flex flex-col space-y-2 border-l border-white/10 pl-4 py-1 hover:border-neon-cyan/50 transition-colors duration-300">
                   <span className="text-sm font-bold text-white">{hl.title}</span>
                   <span className="text-xs text-gray-500 leading-normal">{hl.desc}</span>

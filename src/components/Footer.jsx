@@ -1,4 +1,3 @@
-import React from 'react';
 import { Mail, Heart } from 'lucide-react';
 import { CONTACT_EMAIL } from '../contact';
 
@@ -95,6 +94,8 @@ const Footer = () => {
             <a href="#projects" onClick={(e) => handleQuickLink(e, '#projects')} className="text-sm text-gray-400 hover:text-white transition-colors duration-200">Projects</a>
             <a href="#experience" onClick={(e) => handleQuickLink(e, '#experience')} className="text-sm text-gray-400 hover:text-white transition-colors duration-200">Experience</a>
             <a href="#certificates" onClick={(e) => handleQuickLink(e, '#certificates')} className="text-sm text-gray-400 hover:text-white transition-colors duration-200">Credentials</a>
+            <a href="#services" onClick={(e) => handleQuickLink(e, '#services')} className="text-sm text-gray-400 hover:text-white transition-colors duration-200">Services</a>
+            <a href="#testimonials" onClick={(e) => handleQuickLink(e, '#testimonials')} className="text-sm text-gray-400 hover:text-white transition-colors duration-200">Testimonials</a>
             <a href="#contact" onClick={(e) => handleQuickLink(e, '#contact')} className="text-sm text-gray-400 hover:text-white transition-colors duration-200">Contact</a>
           </div>
 

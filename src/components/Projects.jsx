@@ -1,209 +1,16 @@
-import React, { useState } from 'react';
+import { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ExternalLink, Sparkles, X, Terminal, Award, TrendingUp } from 'lucide-react';
+import useDialogAccessibility from '../hooks/useDialogAccessibility';
+import { projectFilters, projects } from '../data/portfolio';
 
 const Projects = () => {
   const [filter, setFilter] = useState('all');
   const [activeModal, setActiveModal] = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
-
-  const projects = [
-    {
-      id: 'odysseus',
-      title: 'Odysseus AI Workspace',
-      category: 'ai',
-      desc: 'A self-hosted, privacy-first AI workspace and agent platform showcasing mastery over AI-assisted programming, featuring multi-model chat, automated RAG, deep research, and sandbox terminal execution.',
-      tech: ['FastAPI', 'Python', 'SQLite', 'ChromaDB', 'Vanilla JS', 'Docker'],
-      liveUrl: '',
-      githubUrl: 'https://github.com/jezua-palma/odysseus',
-      details: {
-        problem: 'Commercial AI platforms lock users into proprietary clouds, compromise privacy, and lack deep native integration with personal workflows like local files, emails, and custom APIs.',
-        solution: 'Developed Odysseus, a secure, local-first AI workspace demonstrating mastery over AI-assisted programming by empowering users to interface with local LLMs, deploy autonomous MCP agents with terminal permissions, and automate RAG.',
-        designFocus: 'Futuristic, distraction-free SPA dashboard with a cohesive dark aesthetic, interactive tool overlays, real-time streaming components, and a fully fluid mobile-responsive layout.',
-        devFocus: 'Engineered a robust FastAPI backend coordinating async task pipelines for deep research, local vector DB retrieval via ChromaDB, IMAP/SMTP mail triage, and secure loopback authentication gates.',
-        features: ['Privacy-first chat with local LLMs (Ollama, llama.cpp) and APIs', 'Autonomous agents utilizing Model Context Protocol (MCP) and terminal tools', 'Async Deep Research system compiling web-synthesized reports', 'Integrated CalDAV calendar, notes/tasks, and AI-triaged email client'],
-        outcome: 'Demonstrated mastery over AI-assisted programming by successfully deploying a privacy-respecting local agent environment processing vector queries in under 50ms and automating multi-step tasks.'
-      }
-    },
-    {
-      id: 'shadow-depths',
-      title: 'Shadow Depths',
-      category: 'fullstack',
-      desc: 'A 2D roguelike forest adventure game built with HTML5 Canvas featuring procedurally generated wilds, real-time multiplayer parties, and secure Google auth leaderboards.',
-      tech: ['HTML5 Canvas', 'Vanilla CSS', 'JavaScript', 'Google GSI API', 'WebSockets', 'Vercel'],
-      liveUrl: 'https://gameweb-smoky.vercel.app',
-      githubUrl: 'https://github.com/jezua-palma/GAMEweb',
-      details: {
-        problem: 'Traditional web-based games struggle with performant 2D canvas rendering, real-time cooperative state sync, and secure, lightweight cheat-resistant leaderboard persistence.',
-        solution: 'Engineered Shadow Depths, a performant 2D roguelike utilizing a modular state engine, optimized Canvas rendering loops, WebSocket-based lobby sync, and Google GSI OAuth for secure score tracking.',
-        designFocus: 'Retro 8-bit aesthetic utilizing retro typography, screen shake, threat HUD meters, custom class relics, and responsive mobile virtual joystick overlays.',
-        devFocus: 'High-performance requestAnimationFrame game loops, procedural dungeon generation matrices, real-time party sync APIs, and Google OAuth security validation.',
-        features: ['Procedural forest generation and enemy AI behaviors', 'Four playable classes (Warrior, Rogue, Mage, Paladin) with distinct passive stats', 'Real-time WebSocket multiplayer party system and lobby chat', 'Secure Google Sign-In hall of legends leaderboard'],
-        outcome: 'Maintained a stable 60 FPS on both mobile and desktop browsers, securing score records for 100+ simulated concurrent dungeon runs.'
-      }
-    },
-    {
-      id: 'colorsense',
-      title: 'ColorSense AI Scanner',
-      category: 'ai',
-      desc: 'An AI-powered mobile color scanning web application that captures real-world colors, analyzes accessibility contrast, and generates matching color palettes.',
-      tech: ['React', 'Tailwind CSS', 'Mobile Web Camera API', 'AI Palette Engine', 'Vercel'],
-      liveUrl: 'https://color-sense-web.vercel.app',
-      githubUrl: 'https://github.com/jezua-palma/ColorSense-Web',
-      details: {
-        problem: 'Visually impaired users, UI/UX designers, and front-end developers face challenges capturing and validating precise color codes and WCAG contrast ratios in real-world environments.',
-        solution: 'Engineered ColorSense AI, a mobile-first web scanner leveraging real-time camera streams to pick, identify, and catalog precise hex codes, utilizing AI to predict beautiful palette matches and contrast metrics on-the-go.',
-        designFocus: 'Mobile-first viewport accessibility contrast metrics, custom grid alignment, dark cyberpunk UI branding, and fluid camera frame overlays.',
-        devFocus: 'High-performance Mobile device Camera API capture hooks, offline-first localStorage syncing, and sub-100ms palette parsing logic.',
-        features: ['Real-time device camera color scanner', 'AI-generated palette and color scheme recommendations', 'WCAG-compliant contrast and accessibility analyzer', 'Offline-first catalog saving and copy-to-clipboard HEX values'],
-        outcome: 'Achieved sub-100ms camera color capturing latency and successfully parsed complex color palettes with 98% AI color-tagging accuracy in production testing.'
-      }
-    },
-    {
-      id: 'dailymood',
-      title: 'DailyMood App',
-      category: 'fullstack',
-      desc: 'An emotional wellness tracking web application with mood analytics, AI-driven journal insights, and personalized health challenges.',
-      tech: ['Flask', 'Python', 'MySQL', 'Bootstrap', 'Gemini AI API'],
-      liveUrl: '',
-      githubUrl: 'https://github.com/jezua-palma/DailyMood',
-      details: {
-        problem: 'People struggle to identify mood patterns, emotional triggers, or receive personalized support without expensive therapies.',
-        solution: 'Built an elegant tracker that records daily scores, runs mood analytics on historical metrics, processes journal entries through Generative AI for emotional insights, and suggests tailored habit improvements.',
-        designFocus: 'Clean, calming wellness color theme, interactive responsive data visualization cards, and animated journal input fields.',
-        devFocus: 'Generative Gemini AI semantic prompt pipelines, secure email verification gates, and encrypted database schema relationships.',
-        features: ['Mood logging & analytics charts', 'AI-driven emotional journals', 'Dynamic daily habit challenges', 'Secure email authentication & dashboard encryption'],
-        outcome: 'Constructed mood-tracking analytics that successfully helped users discover negative emotional triggers in under 7 days of structured daily journaling.'
-      }
-    },
-    {
-      id: 'streetsmart',
-      title: 'StreetSmart Capstone Game',
-      category: 'fullstack',
-      desc: 'An interactive web-based safety game designed for preschool and elementary students, developed as a primary Capstone Research project to teach children street caution.',
-      tech: ['Python', 'Flask', 'MySQL', 'Tailwind CSS', 'Leaflet / Canvas APIs'],
-      liveUrl: 'https://streetsmart-r6x4.onrender.com',
-      githubUrl: 'https://github.com/jezua-palma/StreetSmart',
-      details: {
-        problem: 'Children need self-paced, gamified, and highly engaging methods to learn road navigation caution and street safety.',
-        solution: 'Engineered an educational web-based safety game incorporating interactive mapping coordinates, child-friendly safety matrices, and gamified incident logs.',
-        designFocus: 'Child-friendly color palette, interactive vector grid coordinate lines, playful maps, and gamified incident log cards.',
-        devFocus: 'Flask endpoint safety matrices, self-paced decision branching scripts, and robust SQL report logging.',
-        features: ['Interactive child-friendly safety maps', 'Gamified road caution decision matrices', 'Incident report logging databases', 'Fully optimized mobile responsive interface'],
-        outcome: 'Completed rigorous academic research with high safety validation, earning outstanding scores from the LSPU panel for child-usability.'
-      }
-    },
-    {
-      id: 'capstone-title',
-      title: 'Capstone Title Generator',
-      category: 'ai',
-      desc: 'An AI-powered generator designed to assist Information Technology and Computer Science students in conceptualizing capstone projects.',
-      tech: ['React', 'Tailwind CSS', 'Gemini Prompt Engine', 'Vercel Node'],
-      liveUrl: 'https://capstone-title-generator-sigma.vercel.app',
-      githubUrl: 'https://github.com/jezua-palma/capstone-title-generator',
-      details: {
-        problem: 'IT/CS college students lose weeks brainstorm-blocking their final capstone development ideas.',
-        solution: 'Engineered a highly responsive tool that takes tech constraints, interests, and domain types, and generates unique, academic-grade project outlines in seconds.',
-        designFocus: 'Vibrant neon cyber-deck dashboard, interactive clipboard indicators, and micro-animations for suggestion cards.',
-        devFocus: 'Gemini AI keyword injection pipelines, custom query validation arrays, and static edge-cached route rendering.',
-        features: ['Keyword & domain filter controls', 'One-click AI conceptualization', 'Fully responsive neon theme layout', 'Copy outline-details to clipboard'],
-        outcome: 'Assisted 200+ LSPU IT/CS students in brainstorm-blocking, generating 45+ approved capstone outlines in under 2 weeks.'
-      }
-    },
-    {
-      id: 'taleweave',
-      title: 'TaleWeave Storybook',
-      category: 'frontend',
-      desc: 'An interactive children\'s storytelling platform with custom interactive learning cards, audio, and bright visuals.',
-      tech: ['Flask', 'HTML5', 'Vanilla CSS', 'JavaScript'],
-      liveUrl: '',
-      githubUrl: 'https://github.com/jezua-palma/TaleWeave',
-      details: {
-        problem: 'Preschool and elementary children need visual, self-paced, and highly engaging methods to build early literacy.',
-        solution: 'Designed a clean, colorful, child-friendly reader experience containing interactive story nodes, pop-up vocab cards, and bright micro-interactions.',
-        designFocus: 'Bright illustrative cartoon theme, responsive popup vocabulary panels, and micro-interactive story cards.',
-        devFocus: 'Lightweight static HTML5 routing, client-side story branch decision arrays, and high-velocity audio preload structures.',
-        features: ['Story branch decision keys', 'Vocabulary card pop-overs', 'Vibrant responsive layouts', 'High performance static content delivery'],
-        outcome: 'Achieved lightweight static delivery speeds of under 500ms, enabling seamless storytelling micro-actions for children on low-bandwidth devices.'
-      }
-    },
-    {
-      id: 'happy-valentines',
-      title: 'Happy Valentine\'s Day',
-      category: 'frontend',
-      desc: 'An animated interactive micro-site showcasing advanced micro-interactions, responsive design, and smooth motion graphics.',
-      tech: ['HTML5', 'CSS Keyframes', 'JavaScript', 'Vercel CDN'],
-      liveUrl: 'https://happy-valentines-seven.vercel.app',
-      githubUrl: 'https://github.com/jezua-palma/happy-valentines',
-      details: {
-        problem: 'Traditional static greetings fail to capture user excitement or create memorable digital interactions.',
-        solution: 'Built a custom animated grid populated with flying hearts, responsive CSS scales, hidden letter states, and ambient audio toggles.',
-        designFocus: 'Custom CSS Keyframe visual particles, floating parallax element blurs, and animated greeting card grids.',
-        devFocus: 'High-performance requestAnimationFrame canvas loop rendering, mobile fluid touch triggers, and audio API preloading.',
-        features: ['Parallax floating heart nodes', 'CSS canvas animation matrices', 'Interactive greeting envelopes', 'Mobile fluid responsiveness'],
-        outcome: 'Gained 5,000+ interactive plays and showcased premium responsive keyframe matrix animations on Facebook and Instagram.'
-      }
-    },
-    {
-      id: 'mytemple',
-      title: 'My Temple Workspace',
-      category: 'frontend',
-      desc: 'A modern, clean productivity workspace focused on task organization, visual calendars, and workflow velocity.',
-      tech: ['React', 'Tailwind CSS', 'Framer Motion', 'LocalForage'],
-      liveUrl: '',
-      githubUrl: 'https://github.com/jezua-palma/My-Temple',
-      details: {
-        problem: 'Cluttered notes and task lists hamper developer concentration and daily project momentum.',
-        solution: 'Created an incredibly minimal but visually stunning glassmorphic dashboard inspired by premium developer workspaces to keep projects on track.',
-        designFocus: 'Premium glassmorphism card layouts, minimalistic focus timers, and clear color-coded Priority Kanban lanes.',
-        devFocus: 'LocalForage storage state management persistence, local check synchronizers, and timer tick calculations.',
-        features: ['Glassmorphic kanban sheets', 'Interactive focus timers', 'Dynamic daily priorities checklist', 'Local storage persistence'],
-        outcome: 'Boosted daily priority management efficiency for early-stage developers by 30% through local storage checklists.'
-      }
-    },
-    {
-      id: 'inventory',
-      title: 'Inventory Control System',
-      category: 'fullstack',
-      desc: 'An enterprise-oriented stock control and audit dashboard engineered to improve operational workflows for businesses.',
-      tech: ['Python', 'Flask', 'PostgreSQL', 'Tailwind CSS', 'Chart.js'],
-      liveUrl: '',
-      githubUrl: 'https://github.com/jezua-palma/inventory-system',
-      details: {
-        problem: 'Manual inventory bookkeeping results in transaction leakage, outdated logs, and high operational costs.',
-        solution: 'Constructed an integrated inventory tracker mapping product SKU counts, logging checkout audits, and charting consumption velocity.',
-        designFocus: 'Structured transactional spreadsheets, bold color-coded stock alerts, and high-visibility business analytics dashboards.',
-        devFocus: 'PostgreSQL transaction locks, secure roles-based access gates, SKU checksum scanners, and real-time Chart.js aggregates.',
-        features: ['Automated barcode registry', 'Checkout logging and alerts', 'Visual analytical charts', 'Role-based access permissions'],
-        outcome: 'Minimized manual bookkeeping transaction leaks by 95% and automated real-time checkout registry logs for stock audits.'
-      }
-    },
-    {
-      id: 'freelance-web',
-      title: 'Freelance Custom Projects',
-      category: 'fullstack',
-      desc: 'Tailored responsive sites, business systems, and bubble.io automation blast services built for dynamic startup clients.',
-      tech: ['Bubble.io', 'Next.js', 'PostgreSQL', 'Zapier Automation'],
-      liveUrl: '',
-      githubUrl: '',
-      details: {
-        problem: 'Small business owners require bespoke portals and automated systems without high architectural overhead.',
-        solution: 'Delivered customized client architectures integrating relational databases, custom notification systems, and high conversion landing pages.',
-        designFocus: 'Startup landing designs, bespoke client administration boards, and streamlined registration user flows.',
-        devFocus: 'Bubble.io CRM structures, multi-channel Zapier integrations, event-triggered email automations, and SQL synchronizations.',
-        features: ['Custom client login portals', 'Bubble.io database syncs', 'Automated email blast schedulers', 'Responsive branding design'],
-        outcome: 'Delivered 100% startup client retention, launching customized low-code relational dashboards 3x faster than classic code.'
-      }
-    }
-  ];
-
-  const filterOptions = [
-    { id: 'all', name: 'All Work' },
-    { id: 'fullstack', name: 'Development' },
-    { id: 'frontend', name: 'UI / Design' },
-    { id: 'ai', name: 'AI & Automations' }
-  ];
+  const modalRef = useRef(null);
+  useDialogAccessibility(Boolean(activeModal), () => setActiveModal(null), modalRef);
 
   const filteredProjects = projects.filter(
     (p) => filter === 'all' || p.category === filter
@@ -228,7 +35,7 @@ const Projects = () => {
 
         {/* Filter Buttons */}
         <div className="flex flex-wrap justify-center gap-2 mb-12">
-          {filterOptions.map((opt) => (
+          {projectFilters.map((opt) => (
             <button
               key={opt.id}
               onClick={() => setFilter(opt.id)}
@@ -362,11 +169,16 @@ const Projects = () => {
                 initial={{ scale: 0.95, y: 20, opacity: 0 }}
                 animate={{ scale: 1, y: 0, opacity: 1 }}
                 exit={{ scale: 0.95, y: 20, opacity: 0 }}
+                ref={modalRef}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="project-case-study-title"
                 className="relative z-10 my-auto max-h-[calc(100dvh-2rem)] w-full max-w-2xl overflow-y-auto rounded-2xl border border-white/10 bg-[#0b0825] p-5 shadow-2xl sm:p-8"
               >
                 {/* Close Button */}
                 <button
                   onClick={() => setActiveModal(null)}
+                  aria-label="Close project case study"
                   className="absolute top-4 right-4 p-1.5 rounded-lg border border-white/10 bg-white/5 text-gray-400 hover:text-white transition-all z-20"
                 >
                   <X className="w-5 h-5" />
@@ -378,7 +190,7 @@ const Projects = () => {
                     <span className="text-[10px] sm:text-xs font-semibold text-neon-cyan uppercase tracking-widest font-mono">
                       Project Case Study
                     </span>
-                    <h3 className="text-xl sm:text-2xl font-extrabold text-white mt-1">
+                    <h3 id="project-case-study-title" className="text-xl sm:text-2xl font-extrabold text-white mt-1">
                       {activeModal.title}
                     </h3>
                     <p className="text-gray-400 text-xs sm:text-sm mt-3 leading-relaxed">

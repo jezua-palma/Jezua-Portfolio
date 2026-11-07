@@ -1,29 +1,15 @@
-import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Printer, Moon, Eye, Download } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { Mail, Phone, MapPin, Printer, Eye, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CONTACT_EMAIL } from '../contact';
+import { certifications } from '../data/portfolio';
+import useDialogAccessibility from '../hooks/useDialogAccessibility';
 
 const PrintableCV = () => {
   const [cvLightbox, setCvLightbox] = useState(null);
   const [includePhoto, setIncludePhoto] = useState(false);
-
-  const certifications = [
-    { title: 'Prompt Engineering', issuer: 'Sololearn Academy', date: 'March 2026', img: '/assets/cert_prompt_engineering.jpg' },
-    { title: 'Vibe Coding', issuer: 'Sololearn Academy', date: 'March 2026', img: '/assets/cert_vibe_coding.jpg' },
-    { title: 'Introduction to C#', issuer: 'Sololearn Academy', date: 'January 2026', img: '/assets/cert_csharp.jpg' },
-    { title: 'Introduction to HTML', issuer: 'Sololearn Academy', date: 'January 2026', img: '/assets/cert_html.jpg' }
-  ];
-
-  const currentAge = (() => {
-    const birthDate = new Date('2003-10-11');
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-    return age;
-  })();
+  const cvLightboxRef = useRef(null);
+  useDialogAccessibility(Boolean(cvLightbox), () => setCvLightbox(null), cvLightboxRef);
 
   const [downloading, setDownloading] = useState(false);
 
@@ -382,6 +368,10 @@ const PrintableCV = () => {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.92, opacity: 0, y: 10 }}
               transition={{ type: 'spring', damping: 25, stiffness: 350 }}
+              ref={cvLightboxRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="cv-certificate-title"
               className="relative z-10 w-full max-w-2xl bg-white border border-zinc-200 rounded-3xl p-6 shadow-2xl flex flex-col items-center"
             >
               
@@ -400,12 +390,11 @@ const PrintableCV = () => {
                   src={cvLightbox.img} 
                   alt={cvLightbox.title} 
                   className="max-w-full max-h-full object-contain rounded-xl"
-                  onError={(e) => { e.target.src = "https://placehold.co/800x600/e4e4e7/09090b?text=Course+Certificate" }}
                 />
               </div>
               
               <div className="w-full text-center mt-5 pt-4 border-t border-zinc-100" style={{ fontFamily: "'Inter', 'Helvetica', sans-serif" }}>
-                <h4 className="font-extrabold text-zinc-950 text-base">{cvLightbox.title}</h4>
+                <h4 id="cv-certificate-title" className="font-extrabold text-zinc-950 text-base">{cvLightbox.title}</h4>
                 <p className="text-zinc-500 text-xs mt-1">{cvLightbox.issuer} — Verified Academic Credential</p>
                 <div className="mt-4 flex justify-center space-x-3">
                   <button 

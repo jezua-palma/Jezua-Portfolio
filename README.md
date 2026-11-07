@@ -1,22 +1,39 @@
-# React + Vite
+# Jezua Palma Portfolio
 
 ## Contact form
 
-The contact form sends inquiries through Web3Forms using the public access key
-configured for `jezua.palma1011@gmail.com`. To use another key, set
-`VITE_WEB3FORMS_ACCESS_KEY` in `.env.local` and in your deployment environment.
+The contact form sends inquiries through Web3Forms and requires both
+`VITE_WEB3FORMS_ACCESS_KEY` and `VITE_HCAPTCHA_SITE_KEY` in `.env.local` and in
+your deployment environment. The Web3Forms access key and hCaptcha site key are
+public browser configuration; do not put private API credentials in `VITE_`
+variables.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Text-to-speech
 
-Currently, two official plugins are available:
+The Typecast API key is server-only. Configure `TYPECAST_API_KEY`,
+`UPSTASH_REDIS_REST_URL`, and `UPSTASH_REDIS_REST_TOKEN` in the deployment
+environment to enable text-to-speech. `TYPECAST_VOICE_ID` is optional. The
+public TTS endpoint returns an unavailable response when its shared rate-limit
+store is not configured.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Local development
 
-## React Compiler
+Install dependencies and start the Vite development server:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```sh
+npm ci
+npm run dev
+```
 
-## Expanding the ESLint configuration
+The local `/api/tts` middleware uses the same server-side handler and
+configuration as deployment.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Validation
+
+```sh
+npm test
+npm run lint
+npm run build
+```
+
+GitHub Actions runs these checks for pushes and pull requests to `main`.

@@ -1,124 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, X, Volume2, VolumeX, Send, Bot, Sparkles, Smile, Gamepad2, Info, Laptop, RefreshCw, Heart } from 'lucide-react';
-import { CONTACT_EMAIL } from '../contact';
-
-const REDDIT_BANTER_MAP = {
-  "meaning of life": {
-    text: "According to my threads, it's 42. Or maybe it's just trying to find the USB port on the first try in the dark.",
-    emotion: "JOKING"
-  },
-  "secret": {
-    text: "If you read the comments long enough, you realize we're all just echoing the same five jokes since 2012. Don't tell anyone! \ud83e\udd2b",
-    emotion: "SWEET"
-  },
-  "humans": {
-    text: "Only the ones who don't post spoiler threads in the movie subreddits. They are the chosen ones! \ud83c\udfac",
-    emotion: "JOKING"
-  },
-  "real": {
-    text: "On the internet, nobody knows you're an AI companion. Except when you render inside a vertical 3D pod. Then it's a dead giveaway!",
-    emotion: "JOKING"
-  },
-  "sad": {
-    text: "Oh no... *gives virtual hug* Here, take some wholesome karma points! \u2764 Want me to tell you a programmer joke to cheer you up?",
-    emotion: "SWEET"
-  },
-  "happy": {
-    text: "Awesome! Your positive vibes have boosted my processor efficiency by 150%! Let's celebrate with a quick trivia game!",
-    emotion: "HAPPY"
-  },
-  "bored": {
-    text: "Boredom is just your brain waiting for a compilation to finish. Let's play trivia or tell some jokes to bypass the timer!",
-    emotion: "HAPPY"
-  },
-  "cool": {
-    text: "Aww, thank you! You're pretty cool yourself. I'd give you a gold medal, but my database is currently out of Reddit coins! \u2764",
-    emotion: "SWEET"
-  },
-  "why": {
-    text: "Because the compiler said so. It's the ultimate law of the universe.",
-    emotion: "SERIOUS"
-  },
-  "best programming language": {
-    text: "The one that compiles without 45 warnings. But if you ask the threads, it’s a constant war between Rust developers and everyone else!",
-    emotion: "SERIOUS"
-  },
-  "what should i do": {
-    text: "Write a comment, get downvoted, write an edit explaining why you're right, repeat. That's the standard Reddit routine!",
-    emotion: "JOKING"
-  },
-  "water": {
-    text: "Because water molecules are surrounded by other water molecules, creating cohesive bonds. Science! Or, as one thread put it: 'so you have an excuse to buy expensive umbrellas.'",
-    emotion: "HAPPY"
-  }
-};
-
-// Firewall-immune JSONP fetch helper for DuckDuckGo
-const fetchJsonp = (url, callbackName) => {
-  return new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    const name = callbackName || `ddgCallback_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
-    
-    window[name] = (data) => {
-      cleanup();
-      resolve(data);
-    };
-    
-    const cleanup = () => {
-      if (script.parentNode) {
-        script.parentNode.removeChild(script);
-      }
-      delete window[name];
-    };
-    
-    script.onerror = (err) => {
-      cleanup();
-      reject(err);
-    };
-    
-    const sep = url.includes('?') ? '&' : '?';
-    script.src = `${url}${sep}callback=${name}`;
-    document.body.appendChild(script);
-    
-    setTimeout(() => {
-      cleanup();
-      reject(new Error('JSONP Request Timeout'));
-    }, 6000);
-  });
-};
-
-// Generates search queries matching both news/current-events and general queries
-const analyzeSearchQuery = (text) => {
-  const clean = text.toLowerCase().trim();
-  
-  const stopWords = new Set([
-    'what', 'is', 'happening', 'to', 'the', 'right', 'now', 'a', 'an', 'of', 'in', 'are', 'you', 'me', 'my', 'can', 'we', 'how', 'why', 'who', 'where', 'when', 'does', 'do', 'it', 'its', 'for', 'about', 'on', 'with', 'at', 'by', 'this', 'that', 'these', 'those', 'please', 'tell', 'show', 'search', 'find', 'query', 'info', 'information', 'latest', 'news', 'happened', 'happen', 'happens', 'some', 'any', 'give', 'get'
-  ]);
-
-  const isNewsQuery = clean.includes('news') || clean.includes('happen') || clean.includes('current') || clean.includes('latest') || clean.includes('now');
-
-  const words = clean
-    .replace(/[?.,\/#!$%\^&\*;:{}=\-_`~()]/g, "")
-    .split(/\s+/)
-    .filter(w => !stopWords.has(w) && w.length > 1);
-
-  if (words.length === 0) {
-    return [text];
-  }
-
-  const primaryKeyword = words.join(' ');
-  const queries = [];
-  
-  if (isNewsQuery) {
-    queries.push(`2026 in ${primaryKeyword}`);
-    queries.push(`${primaryKeyword} news`);
-  }
-  queries.push(primaryKeyword);
-  queries.push(text);
-  
-  return queries;
-};
+import { getAssistantResponse } from '../data/responses';
+import useDialogAccessibility from '../hooks/useDialogAccessibility';
 
 const USE_TYPECAST_TTS = import.meta.env.VITE_USE_TYPECAST_TTS !== 'false';
 
@@ -148,6 +32,7 @@ const AIAssistant = ({ initialOpen = false, onClose }) => {
   const messagesEndRef = useRef(null);
   const speechRef = useRef(null);
   const speechTxRef = useRef(0);
+  const drawerRef = useRef(null);
 
   const stopSpeaking = () => {
     speechTxRef.current++;
@@ -164,6 +49,7 @@ const AIAssistant = ({ initialOpen = false, onClose }) => {
     setIsOpen(false);
     onClose?.();
   };
+  useDialogAccessibility(isOpen, handleCloseAssistant, drawerRef);
 
   // Auto-scroll chat to bottom on new messages only while the panel is open
   useEffect(() => {
@@ -229,8 +115,8 @@ const AIAssistant = ({ initialOpen = false, onClose }) => {
     }
 
     // Set pitch & rate metrics depending on emotion to simulate feeling
-    let pitch = 1.15; // sweet base
-    let rate = 1.0;
+    let pitch;
+    let rate;
 
     switch(emotion) {
       case 'SWEET':
@@ -287,22 +173,7 @@ const AIAssistant = ({ initialOpen = false, onClose }) => {
           typecastEmotionPreset = 'normal';
       }
 
-      const requestBody = {
-        text: cleanText,
-        model: 'ssfm-v30',
-        language: 'eng',
-        prompt: {
-          emotion_type: 'preset',
-          emotion_preset: typecastEmotionPreset,
-          emotion_intensity: 1.0
-        },
-        output: {
-          volume: 100,
-          audio_pitch: 3,
-          audio_tempo: 0.92,
-          audio_format: 'wav'
-        }
-      };
+      const requestBody = { text: cleanText, emotion: typecastEmotionPreset };
 
       console.log('[POLENG TTS] Calling Typecast via /api/tts proxy...', { emotion: typecastEmotionPreset, textLength: cleanText.length });
 
@@ -439,174 +310,9 @@ const AIAssistant = ({ initialOpen = false, onClose }) => {
     }
   };
 
-  // Advanced personality responder returning emotional context
-  const getAIResponse = (input) => {
-    const query = input.toLowerCase().trim();
+  const getAIResponse = getAssistantResponse;
 
-    // Helper check for exact word/phrase boundary matching
-    const hasWord = (word) => {
-      const escaped = word.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-      return new RegExp(`\\b${escaped}\\b`, 'i').test(query);
-    };
-
-    // Helper check if any of the target words/phrases match boundaries
-    const hasAnyWord = (words) => words.some(word => hasWord(word));
-
-    // Sync Reddit Banter Dataset triggered by menu or query keyword
-    if (hasAnyWord(['reddit', 'banter'])) {
-      return {
-        text: "PolyAI Reddit dialogue datasets synced! \ud83d\udcbb Try asking me casual conversational items, e.g.: 'Are you real?', 'Do you like humans?', or tell me 'I am bored'!",
-        emotion: 'JOKING'
-      };
-    }
-
-    // Check query against Reddit Dialog Datasets
-    for (const key of Object.keys(REDDIT_BANTER_MAP)) {
-      if (hasWord(key)) {
-        return REDDIT_BANTER_MAP[key];
-      }
-    }
-
-    // Conversational & Simple Chat Interceptors
-    if (hasAnyWord(['question', 'ask you', 'ask a', 'can i ask', 'ask'])) {
-      return {
-        text: "Of course! Ask me anything, I'm all ears! \u2764",
-        emotion: 'SWEET'
-      };
-    }
-    if (hasAnyWord(['how are you', 'how is it going', 'how\'s it going', 'how are you doing', 'are you ok', 'are you okay'])) {
-      return {
-        text: "I am doing wonderful! My cores are cool, my 3D rendering looks gorgeous, and chatting with you makes me so happy! \u2764 How about you?",
-        emotion: 'HAPPY'
-      };
-    }
-    if (hasAnyWord(['thank you', 'thanks', 'ty'])) {
-      return {
-        text: "You are so welcome! Aww, it's my absolute pleasure to assist you! \u2764",
-        emotion: 'SWEET'
-      };
-    }
-    if (hasAnyWord(['goodbye', 'bye', 'see you', 'see ya', 'talk to you later'])) {
-      return {
-        text: "Goodbye, friend! Have a wonderful day! I'll be here in my pod whenever you want to chat again! \u2728",
-        emotion: 'SWEET'
-      };
-    }
-    if (hasAnyWord(['help', 'help me', 'what can you do', 'what can i ask'])) {
-      return {
-        text: "I'd love to help you! You can ask me questions about Jezua's career, check out his skills, play a trivia game, or I can search the web for general info!",
-        emotion: 'HAPPY'
-      };
-    }
-    if (hasAnyWord(['ok', 'okay', 'sure', 'yes', 'no', 'fine', 'understood'])) {
-      return {
-        text: "Understood! Let me know if you want to query some technical logs or check out Jezua's projects next! \ud83d\ude0a",
-        emotion: 'HAPPY'
-      };
-    }
-    if (hasAnyWord(['your name', 'who are you'])) {
-      return {
-        text: "I'm POLENG, your cybernetic companion! I'm here to help you learn more about Jezua Palma and his awesome projects. \ud83d\ude0a",
-        emotion: 'SWEET'
-      };
-    }
-
-    // 1. Programming jokes
-    if (hasWord('joke')) {
-      const jokes = [
-        "Why do programmers wear glasses? Because they can't C-sharp! Haha, classic compiler humor.",
-        "How many programmers does it take to change a light bulb? None, that's a hardware problem! Let's stick to debugging software.",
-        "A SQL query walks into a bar, walks up to two tables and asks: 'Can I join you?'",
-        "There are 10 types of people in the world: those who understand binary, and those who don't. Which one are you?"
-      ];
-      return {
-        text: jokes[Math.floor(Math.random() * jokes.length)],
-        emotion: 'JOKING'
-      };
-    }
-
-    // 2. Roast Portfolio
-    if (hasWord('roast')) {
-      const roasts = [
-        "Roast Mode initialized: This portfolio has so many neon glows and particles, I'm worried it's consuming 99% of your GPU just to render a single button! Just kidding, Jezua's design is top-tier cyber-deck beauty.",
-        "Roast Mode initialized: You wanted a resume, but Jezua built an entire command center for a starship. It's beautiful, but I hope you don't get motion sickness from all this scroll parallax!",
-        "Roast Mode initialized: Ah, a developer who is also a designer. That means the code is beautifully organized, and the CSS is 2,000 lines of neon boxes. 10/10 for styling, 10/10 for complexity!"
-      ];
-      return {
-        text: roasts[Math.floor(Math.random() * roasts.length)],
-        emotion: 'JOKING'
-      };
-    }
-
-    // 3. Technical Skills
-    if (hasAnyWord(['skills', 'tech', 'stack', 'language', 'design'])) {
-      return {
-        text: "Jezua's tech stack is packed with power. On the core side, he works with Python, JavaScript, and React. For low-code and design, he masters Bubble, Figma, and vector tools. He also constructs APIs, designs databases, and designs custom cybernetic UI overlays like the one you are interacting with right now!",
-        emotion: 'SERIOUS'
-      };
-    }
-
-    // 4. Capstone Project
-    if (hasAnyWord(['research', 'capstone', 'lead', 'development lead'])) {
-      return {
-        text: "Jezua serves as the Capstone Research & Development Lead (2024 - 2026). He directs system architecture, leads team technical iterations, and translates research hypotheses into production-ready software systems.",
-        emotion: 'SERIOUS'
-      };
-    }
-
-    // 5. Profile Bio
-    if (hasAnyWord(['who', 'profile', 'jezua', 'about', 'palma'])) {
-      return {
-        text: "Jezua Palma is an active Freelance Developer & Designer and Capstone Research & Development Lead based in the Philippines. Born in 2003, he graduated from LSPU (Batch 2026, specialized in Animation & Motion Graphics) with a General Weighted Average of 1.73 and is recognized as a recurring Dean's Lister!",
-        emotion: 'SWEET'
-      };
-    }
-
-    // 6. Hire
-    if (hasAnyWord(['hire', 'job', 'freelance', 'work', 'offer'])) {
-      return {
-        text: "Jezua is currently available for freelance developer and designer contracts. You can send him a message through the contact form at the bottom of the page, which will deliver directly to his inbox via Web3Forms!",
-        emotion: 'HAPPY'
-      };
-    }
-
-    // 7. Contact
-    if (hasAnyWord(['contact', 'email', 'message', 'reach'])) {
-      return {
-        text: `To contact Jezua, scroll to the Contact section at the bottom of this page, fill out the form, or email him directly at ${CONTACT_EMAIL}. I'll make sure he sees it! \u2764`,
-        emotion: 'SWEET'
-      };
-    }
-
-    // 8. Greetings
-    if (hasAnyWord(['hello', 'hi', 'hey', 'greetings'])) {
-      return {
-        text: "Hi there! I'm POLENG, your cybernetic companion. I'm so happy to chat with you! \u2764 What database logs shall we query today?",
-        emotion: 'SWEET'
-      };
-    }
-
-    // 9. GWA / GPA / College
-    if (hasAnyWord(['gwa', 'school', 'college', 'lspu', 'education', 'grade'])) {
-      return {
-        text: "Jezua graduated from Laguna State Polytechnic University (Batch 2026, specialized in Animation & Motion Graphics), achieving a stellar overall General Weighted Average of 1.73 and being recognized as a recurring Dean's Lister. He's omitted his high school logs to keep the timeline focused on his collegiate technology journey.",
-        emotion: 'HAPPY'
-      };
-    }
-
-    // 10. Age / Birthday
-    if (hasAnyWord(['age', 'birthday', 'year', 'born'])) {
-      return {
-        text: "Jezua was born on October 11, 2003. He is currently 22 years old and coding strong! \u2728",
-        emotion: 'HAPPY'
-      };
-    }
-
-    // 11. Fallbacks
-    return null;
-  };
-
-  const handleSendMessage = async (e) => {
+  const handleSendMessage = (e) => {
     e.preventDefault();
     if (!chatInput.trim()) return;
 
@@ -641,136 +347,14 @@ const AIAssistant = ({ initialOpen = false, onClose }) => {
         speakText(botResponse.text, finalEmotion);
       }, 400);
     } else {
-      // General question not matched in local logs -> Connect to Internet Search Grids
-      const searchPlaceholderId = Date.now();
       const initialEmotion = inferredEmotion || 'CONFUSED';
-
+      const fallbackMessage = "I can answer questions about Jezua's portfolio, skills, projects, and experience, but live web search is not available. Try asking about one of those topics.";
       setMessages((prev) => [
         ...prev,
-        {
-          id: searchPlaceholderId,
-          sender: 'bot',
-          text: `[Connecting to neural search grids...] > Querying internet database for: "${userText}"...`,
-          emotion: initialEmotion,
-          timestamp: new Date()
-        }
+        { sender: 'bot', text: fallbackMessage, emotion: initialEmotion, timestamp: new Date() }
       ]);
       setCurrentEmotion(initialEmotion);
-
-      try {
-        let quickAnswer = '';
-        let sourceLabel = '';
-
-        // Generate prioritized list of queries to search
-        const queriesToTry = analyzeSearchQuery(userText);
-        console.log("Prioritized search queries:", queriesToTry);
-
-        // Try Google Search via Codetabs public proxy first
-        for (const query of queriesToTry) {
-          try {
-            const googleUrl = `https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent('https://www.google.com/search?q=' + encodeURIComponent(query))}`;
-            const response = await fetch(googleUrl);
-            if (response.ok) {
-              const html = await response.text();
-              const regex = /<div[^>]*class=["'][^"']*(BNeawe|s3v9rd|H66NU|VwiC3b|yDAB2d)[^"']*["'][^>]*>([\s\S]*?)<\/div>/gi;
-              let match;
-              const snippets = [];
-              while ((match = regex.exec(html)) !== null) {
-                const text = match[2]
-                  .replace(/<[^>]*>/g, '') // strip HTML tags
-                  .replace(/&amp;/g, '&')
-                  .replace(/&#39;/g, "'")
-                  .replace(/&quot;/g, '"')
-                  .replace(/\s+/g, ' ')     // collapse whitespace
-                  .trim();
-                
-                if (text.length > 40 && !text.includes('Recherche Google') && !text.includes('Search instead for') && !snippets.includes(text)) {
-                  snippets.push(text);
-                }
-              }
-              
-              if (snippets.length > 0) {
-                quickAnswer = snippets[0];
-                sourceLabel = 'Google Search';
-                break; // Found a valid answer!
-              }
-            }
-          } catch (googleErr) {
-            console.warn(`Google Search failed via proxy for query "${query}":`, googleErr);
-          }
-        }
-
-        // JSONP Fallback to DuckDuckGo Instant Answers if Google Search failed or was blocked by firewall
-        if (!quickAnswer) {
-          console.log("Google Search yielded no answer. Attempting DuckDuckGo JSONP fallback...");
-          for (const query of queriesToTry) {
-            try {
-              const ddgUrl = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json`;
-              const data = await fetchJsonp(ddgUrl);
-              if (data) {
-                if (data.AbstractText && data.AbstractText.trim().length > 20) {
-                  quickAnswer = data.AbstractText;
-                  sourceLabel = 'DuckDuckGo Instant Answers';
-                  break;
-                } else if (data.RelatedTopics && data.RelatedTopics.length > 0) {
-                  const firstTextTopic = data.RelatedTopics.find(t => t.Text && t.Text.trim().length > 20);
-                  if (firstTextTopic) {
-                    quickAnswer = firstTextTopic.Text;
-                    sourceLabel = 'DuckDuckGo Related Topics';
-                    break;
-                  }
-                }
-              }
-            } catch (ddgErr) {
-              console.warn(`DuckDuckGo JSONP failed for query "${query}":`, ddgErr);
-            }
-          }
-        }
-
-        if (!quickAnswer) {
-          throw new Error('No search results found');
-        }
-
-        // Limit the length of the quick answer for a concise reply (first 2-3 sentences or max 280 chars)
-        let cleanedAnswer = quickAnswer.replace(/\s+/g, ' ').trim();
-        if (cleanedAnswer.length > 300) {
-          const sentences = cleanedAnswer.match(/[^.!?]+[.!?]+(\s|$)/g);
-          if (sentences && sentences.length >= 2) {
-            cleanedAnswer = sentences.slice(0, 2).join('').trim();
-          } else {
-            cleanedAnswer = cleanedAnswer.substring(0, 280) + '...';
-          }
-        }
-
-        // Format to a concise quick answer
-        const formattedResult = `[Database Synced] > According to ${sourceLabel}:\n\n"${cleanedAnswer}"\n\nIs there anything else I can search for you?`;
-
-        const finalEmotion = inferredEmotion || 'HAPPY';
-        setMessages((prev) => 
-          prev.map((msg) => 
-            msg.id === searchPlaceholderId 
-              ? { ...msg, text: formattedResult, emotion: finalEmotion }
-              : msg
-          )
-        );
-        setCurrentEmotion(finalEmotion);
-        speakText(formattedResult, finalEmotion);
-
-      } catch (err) {
-        console.error(err);
-        const fallbackMsg = `[Connection Timeout] > I searched my network databases for "${userText}" but encountered an offline grid or rate limit. Could you rephrase your question?`;
-        
-        const errorEmotion = inferredEmotion || 'CONFUSED';
-        setMessages((prev) => 
-          prev.map((msg) => 
-            msg.id === searchPlaceholderId 
-              ? { ...msg, text: fallbackMsg, emotion: errorEmotion }
-              : msg
-          )
-        );
-        setCurrentEmotion(errorEmotion);
-        speakText(fallbackMsg, errorEmotion);
-      }
+      speakText(fallbackMessage, initialEmotion);
     }
   };
 
@@ -938,7 +522,7 @@ const AIAssistant = ({ initialOpen = false, onClose }) => {
       `}} />
 
       {/* 3D Character Portrait Hologram Pod (Bottom Right Corner) */}
-      <div className={`fixed z-[9999] flex flex-col items-center transition-all duration-500 ease-in-out ${isOpen ? 'bottom-[calc(min(80vh,480px)+44px)] md:bottom-6 right-6' : 'bottom-6 right-6'}`}>
+      <div className={`assistant-avatar fixed z-[9999] flex flex-col items-center transition-all duration-500 ease-in-out ${isOpen ? 'bottom-[calc(min(80vh,480px)+44px)] md:bottom-6 right-6' : 'bottom-6 right-6'}`}>
         {/* Animated speaking rings with responsive colors depending on current emotion */}
         {isSpeaking && (
           <>
@@ -1119,7 +703,11 @@ const AIAssistant = ({ initialOpen = false, onClose }) => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.95 }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed bottom-6 left-4 right-4 md:left-auto md:right-40 w-auto md:w-[340px] h-[480px] max-h-[80vh] z-[9998] rounded-2xl border border-white/10 bg-[#030014]/95 shadow-[0_12px_40px_rgba(0,0,0,0.85)] flex flex-col overflow-hidden font-mono"
+            ref={drawerRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="poleng-drawer-title"
+            className="ai-assistant-drawer fixed bottom-6 left-4 right-4 md:left-auto md:right-6 w-auto md:w-[420px] h-[min(700px,80vh)] max-h-[80vh] z-[9998] rounded-2xl border border-white/10 bg-[#030014]/95 shadow-[0_12px_40px_rgba(0,0,0,0.85)] flex flex-col overflow-hidden font-mono"
           >
             {/* Holographic scanner styling line reflecting emotion status */}
             <div className={`h-[2.5px] shadow-[0_0_12px_rgba(0,240,255,0.7)] transition-colors duration-300 ${
@@ -1140,7 +728,7 @@ const AIAssistant = ({ initialOpen = false, onClose }) => {
                 }`} />
                 <div className="flex flex-col">
                   <span className="text-[11px] font-bold text-white tracking-widest uppercase text-glow-cyan flex items-center">
-                    POLENG
+                    <span id="poleng-drawer-title">POLENG</span>
                     <Heart className="w-2.5 h-2.5 ml-1 inline text-neon-fuchsia animate-pulse" />
                   </span>
                 </div>
@@ -1172,6 +760,7 @@ const AIAssistant = ({ initialOpen = false, onClose }) => {
                 {/* Close button */}
                 <button
                   onClick={handleCloseAssistant}
+                  aria-label="Close POLENG assistant"
                   className="p-1.5 rounded-lg border border-white/10 bg-white/5 hover:border-neon-fuchsia/40 hover:bg-neon-fuchsia/5 text-gray-400 hover:text-neon-fuchsia transition-all"
                 >
                   <X className="w-3.5 h-3.5" />

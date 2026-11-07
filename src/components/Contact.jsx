@@ -1,7 +1,31 @@
-import React, { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Phone, Mail, MapPin, CheckCircle, AlertCircle, Loader } from 'lucide-react';
-import { CONTACT_EMAIL, WEB3FORMS_ACCESS_KEY } from '../contact';
+import { CONTACT_EMAIL, HCAPTCHA_SITE_KEY, WEB3FORMS_ACCESS_KEY } from '../contact';
+
+let hcaptchaLoadPromise;
+
+const loadHCaptcha = () => {
+  if (window.hcaptcha) return Promise.resolve(window.hcaptcha);
+  if (!hcaptchaLoadPromise) {
+    hcaptchaLoadPromise = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://js.hcaptcha.com/1/api.js?render=explicit';
+      script.async = true;
+      script.defer = true;
+      script.onload = () => {
+        if (window.hcaptcha) resolve(window.hcaptcha);
+        else reject(new Error('hCaptcha did not initialize.'));
+      };
+      script.onerror = () => {
+        hcaptchaLoadPromise = null;
+        reject(new Error('Unable to load hCaptcha.'));
+      };
+      document.head.appendChild(script);
+    });
+  }
+  return hcaptchaLoadPromise;
+};
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +40,42 @@ const Contact = () => {
     success: null,
     message: ''
   });
+  const [hcaptchaToken, setHcaptchaToken] = useState('');
+  const [captchaError, setCaptchaError] = useState('');
+  const captchaContainerRef = useRef(null);
+  const captchaWidgetRef = useRef(null);
+
+  useEffect(() => {
+    if (!HCAPTCHA_SITE_KEY) return undefined;
+    let active = true;
+
+    loadHCaptcha()
+      .then((hcaptcha) => {
+        if (!active || !captchaContainerRef.current) return;
+        captchaWidgetRef.current = hcaptcha.render(captchaContainerRef.current, {
+          sitekey: HCAPTCHA_SITE_KEY,
+          size: 'compact',
+          callback: setHcaptchaToken,
+          'expired-callback': () => setHcaptchaToken(''),
+          'error-callback': () => {
+            setHcaptchaToken('');
+            setCaptchaError('Anti-spam verification failed to load. Please email directly.');
+          },
+        });
+      })
+      .catch((error) => {
+        console.error('hCaptcha initialization error:', error);
+        if (active) setCaptchaError('Anti-spam verification is unavailable. Please email directly.');
+      });
+
+    return () => {
+      active = false;
+      if (captchaWidgetRef.current !== null && window.hcaptcha) {
+        window.hcaptcha.remove(captchaWidgetRef.current);
+        captchaWidgetRef.current = null;
+      }
+    };
+  }, []);
 
   const handleChange = (e) => {
     setFormData({
@@ -37,6 +97,11 @@ const Contact = () => {
       return;
     }
 
+    if (!HCAPTCHA_SITE_KEY || !hcaptchaToken || captchaError) {
+      showFeedback(false, `Please complete the anti-spam verification, or email ${CONTACT_EMAIL} directly.`);
+      return;
+    }
+
     setStatus({ submitting: true, success: null, message: '' });
 
     try {
@@ -52,7 +117,8 @@ const Contact = () => {
           email: formData.email,
           subject: `New Portfolio Inquiry: ${formData.subject} from ${formData.name}`,
           message: formData.message,
-          from_name: 'Jezua dev Portfolio'
+          from_name: 'Jezua dev Portfolio',
+          'h-captcha-response': hcaptchaToken,
         })
       });
       const data = await response.json();
@@ -63,8 +129,12 @@ const Contact = () => {
 
       showFeedback(true, 'Message sent successfully! I will reach back to you shortly.');
       setFormData({ name: '', email: '', subject: 'Hire Me', message: '' });
+      setHcaptchaToken('');
+      window.hcaptcha?.reset(captchaWidgetRef.current);
     } catch (error) {
       console.error('Web3Forms error:', error);
+      setHcaptchaToken('');
+      window.hcaptcha?.reset(captchaWidgetRef.current);
       showFeedback(false, `Unable to send your message. Please email ${CONTACT_EMAIL} directly.`);
     }
   };
@@ -271,6 +341,17 @@ const Contact = () => {
                     required
                   ></textarea>
                 </div>
+
+                {HCAPTCHA_SITE_KEY ? (
+                  <div>
+                    <div ref={captchaContainerRef} />
+                    {captchaError && <p className="mt-2 text-sm text-rose-300">{captchaError}</p>}
+                  </div>
+                ) : (
+                  <p className="text-sm text-amber-300">
+                    Contact verification is not configured. Please email {CONTACT_EMAIL} directly.
+                  </p>
+                )}
 
                 {/* Submit Action */}
                 <button
