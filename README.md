@@ -3,10 +3,11 @@
 ## Contact form
 
 The contact form sends inquiries through Web3Forms and requires both
-`VITE_WEB3FORMS_ACCESS_KEY` and `VITE_HCAPTCHA_SITE_KEY` in `.env.local` and in
-your deployment environment. The Web3Forms access key and hCaptcha site key are
-public browser configuration; do not put private API credentials in `VITE_`
-variables.
+`VITE_WEB3FORMS_ACCESS_KEY` in `.env.local` and in your deployment environment.
+The hCaptcha public site key is configured in the app and can be overridden with
+`VITE_HCAPTCHA_SITE_KEY`. Allow `localhost` and your production domain in the
+hCaptcha dashboard. These are public browser values; never put private API
+credentials in `VITE_` variables.
 
 ## Text-to-speech
 
