@@ -10,7 +10,7 @@ const loadHCaptcha = () => {
   if (!hcaptchaLoadPromise) {
     hcaptchaLoadPromise = new Promise((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = 'https://js.hcaptcha.com/1/api.js?render=explicit';
+      script.src = 'https://js.hcaptcha.com/1/api.js?render=explicit&recaptchacompat=off';
       script.async = true;
       script.defer = true;
       script.onload = () => {

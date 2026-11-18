@@ -1,7 +1,14 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { CONTACT_EMAIL, HCAPTCHA_SITE_KEY, WEB3FORMS_ACCESS_KEY } from '../src/contact.js';
 import { certifications, getAge, projects } from '../src/data/portfolio.js';
 import { getAssistantResponse } from '../src/data/responses.js';
+
+test('contact form has public Web3Forms and hCaptcha configuration', () => {
+  assert.equal(CONTACT_EMAIL, 'jezua.palma1011@gmail.com');
+  assert.ok(WEB3FORMS_ACCESS_KEY);
+  assert.ok(HCAPTCHA_SITE_KEY);
+});
 
 test('age calculation handles birthdays before and on the birthday', () => {
   assert.equal(getAge(new Date('2026-10-10T12:00:00')), 22);
