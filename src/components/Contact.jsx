@@ -38,7 +38,8 @@ const Contact = () => {
   const [status, setStatus] = useState({
     submitting: false,
     success: null,
-    message: ''
+    message: '',
+    fallbackHref: ''
   });
   const [hcaptchaToken, setHcaptchaToken] = useState('');
   const [captchaError, setCaptchaError] = useState('');
@@ -84,6 +85,18 @@ const Contact = () => {
     });
   };
 
+  const getEmailDraftHref = () => {
+    const subject = `Portfolio inquiry: ${formData.subject}`;
+    const body = [
+      `Name: ${formData.name}`,
+      `Email: ${formData.email}`,
+      `Inquiry type: ${formData.subject}`,
+      '',
+      formData.message,
+    ].join('\n');
+    return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -93,12 +106,20 @@ const Contact = () => {
     }
 
     if (!WEB3FORMS_ACCESS_KEY) {
-      showFeedback(false, `The contact form is not configured yet. Please email ${CONTACT_EMAIL} directly.`);
+      showFeedback(
+        false,
+        'The form service is unavailable. You can still send your inquiry using your email app.',
+        getEmailDraftHref(),
+      );
       return;
     }
 
     if (!HCAPTCHA_SITE_KEY || !hcaptchaToken || captchaError) {
-      showFeedback(false, `Please complete the anti-spam verification, or email ${CONTACT_EMAIL} directly.`);
+      showFeedback(
+        false,
+        'Please complete the anti-spam check, or send your inquiry using your email app.',
+        getEmailDraftHref(),
+      );
       return;
     }
 
@@ -135,20 +156,25 @@ const Contact = () => {
       console.error('Web3Forms error:', error);
       setHcaptchaToken('');
       window.hcaptcha?.reset(captchaWidgetRef.current);
-      showFeedback(false, `Unable to send your message. Please email ${CONTACT_EMAIL} directly.`);
+      showFeedback(
+        false,
+        'The form could not send your message. You can still send it using your email app.',
+        getEmailDraftHref(),
+      );
     }
   };
 
-  const showFeedback = (isSuccess, text) => {
+  const showFeedback = (isSuccess, text, fallbackHref = '') => {
     setStatus({
       submitting: false,
       success: isSuccess,
-      message: text
+      message: text,
+      fallbackHref,
     });
     
     // Auto clear toast after 5 seconds
     setTimeout(() => {
-      setStatus(prev => ({ ...prev, success: null, message: '' }));
+      setStatus(prev => ({ ...prev, success: null, message: '', fallbackHref: '' }));
     }, 5000);
   };
 
@@ -176,7 +202,17 @@ const Contact = () => {
             ) : (
               <AlertCircle className="w-5 h-5 text-rose-400 flex-shrink-0" />
             )}
-            <span className="text-xs sm:text-sm font-medium leading-relaxed">{status.message}</span>
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm font-medium leading-relaxed">{status.message}</p>
+              {status.fallbackHref && (
+                <a
+                  href={status.fallbackHref}
+                  className="mt-2 inline-block text-xs sm:text-sm font-bold underline underline-offset-2"
+                >
+                  Open email draft for {CONTACT_EMAIL}
+                </a>
+              )}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
